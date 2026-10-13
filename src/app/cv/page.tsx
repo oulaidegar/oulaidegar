@@ -146,18 +146,58 @@ export default function CVPage() {
               </div>
             ))}
 
-            {cvData.talks.map((talk, idx) => (
-              <div key={idx} className="space-y-0.5 pt-2">
-                <div className="font-serif-title text-base sm:text-lg text-stone-900 dark:text-stone-100">
-                  {talk.title}
+            {cvData.talks && cvData.talks.length > 0 &&
+              cvData.talks.map((talk: { title: string; event: string; location: string; year: string }, idx: number) => (
+                <div key={idx} className="space-y-0.5 pt-2">
+                  <div className="font-serif-title text-base sm:text-lg text-stone-900 dark:text-stone-100">
+                    {talk.title}
+                  </div>
+                  <div className="text-stone-500 dark:text-stone-400 font-mono-meta text-xs">
+                    {talk.event} &bull; {talk.location} &bull; {talk.year}
+                  </div>
                 </div>
-                <div className="text-stone-500 dark:text-stone-400 font-mono-meta text-xs">
-                  {talk.event} &bull; {talk.location} &bull; {talk.year}
-                </div>
-              </div>
-            ))}
+              ))}
           </div>
         </section>
+
+        {/* Selected Projects if present */}
+        {cvData.projects && cvData.projects.length > 0 && (
+          <section className="space-y-6">
+            <h3 className="text-xs font-mono-meta uppercase tracking-wider text-stone-400 dark:text-stone-500 font-semibold border-b border-stone-200/60 dark:border-stone-800/60 pb-2">
+              Civic Technology & Research Projects
+            </h3>
+
+            <div className="space-y-6">
+              {cvData.projects.map((proj: any, idx: number) => (
+                <div key={idx} className="space-y-1.5">
+                  <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-0.5">
+                    <div className="flex items-baseline gap-2">
+                      <h4 className="font-serif-title text-lg text-stone-900 dark:text-stone-100 font-normal">
+                        {proj.title}
+                      </h4>
+                      <span className="text-[10px] font-mono-meta text-stone-400">
+                        {proj.type}
+                      </span>
+                    </div>
+                    <span className="text-xs font-mono-meta text-stone-400 shrink-0">
+                      {proj.period}
+                    </span>
+                  </div>
+
+                  <p className="text-xs text-stone-600 dark:text-stone-400 leading-relaxed font-sans max-w-2xl">
+                    {proj.description}
+                  </p>
+
+                  {proj.technologies && (
+                    <div className="text-[11px] font-mono-meta text-stone-400 pt-0.5">
+                      {proj.technologies.join(" &bull; ")}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Competencies & Skills */}
         <section className="space-y-6">

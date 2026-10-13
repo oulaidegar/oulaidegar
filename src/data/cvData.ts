@@ -1,3 +1,4 @@
+
 export interface CVEducation {
   degree: string;
   institution: string;
@@ -9,71 +10,158 @@ export interface CVEducation {
 
 export const cvData = {
   name: "oulaidegar",
-  title: "Creative Technologist & Researcher | AI Ethics, Cultural Data & Democratic Systems",
+  title:
+    "Creative Technologist & Researcher | AI Ethics, Civic Technology & Digital Media",
   email: "hello@oulaidegar.com",
   website: "https://oulaidegar.com",
   github: "https://github.com",
   location: "Paris / Remote",
+
   summary:
-    "Creative technologist and researcher working at the nexus of AI ethics, cultural data, and democratic systems. Dedicated to building open-source public-interest software, auditing algorithmic representation in foundational models, and designing speculative tools for citizen assemblies and collective deliberation.",
+    "Creative technologist and researcher working at the intersection of artificial intelligence, digital humanities, journalism, and democratic systems. With a background in literary and cultural analysis, AI integration, and multimedia production, I combine technical development with critical inquiry into how technologies shape human agency, public knowledge, and institutional power. My work spans AI-assisted civic infrastructure, privacy-first applications, newsroom automation, and independent research into algorithmic accountability, digital sovereignty, and the political economy of AI. I am particularly interested in building public-interest technologies that address information inequality and the infrastructural challenges facing the Middle East.",
 
   education: [
     {
-      degree: "Master of Science in Cultural Data and Artificial Intelligence",
-      institution: "Faculty of Humanities & Computational Sciences",
-      location: "Paris, France",
-      period: "2024 — Present (Expected 2026)",
+      degree: "Master of Arts in Cultural Data & Artificial Intelligence",
+      institution: "University of Amsterdam (UvA), Faculty of Humanities",
+      location: "Amsterdam, Netherlands",
+      period: "2025 — 2026",
       thesisTopic:
-        "Thesis: 'Latent Assemblies: AI Ethics, Cultural Data, and the Democratic Politics of Collective Memory' — auditing representational skew and epistemic justice in multimodal foundation models trained on digitized heritage.",
+        "402 Payment Required: Agency, Dependency, and the Lebanese Official Gazette — A practice-based investigation into AI-driven democratic empowerment, technological and epistemic agency, commercial dependency, and linguistic sovereignty through the reconstruction of Lebanon's official legal archive.",
       details: [
-        "Focus areas: AI Ethics, Democratic Epistemology, Multimodal Machine Learning, Archival Ontologies (CIDOC-CRM), Critical Data Studies.",
-        "Awarded Graduate Research Fellowship in Public-Interest Computational Technology.",
+        "Interdisciplinary research combining artificial intelligence, digital humanities, critical data studies, and philosophy of technology.",
+        "Developed a practice-based autoethnographic methodology to examine the relationship between human agency, agentic AI systems, and infrastructural constraints.",
+        "Investigated the political economy of AI, algorithmic colonialism, linguistic inequality, and the implications of Western and GCC-backed AI infrastructure for digital sovereignty.",
+        "Built and evaluated an experimental Arabic-language civic information platform using OCR, multilingual semantic search, and AI-assisted software development.",
       ],
     },
     {
-      degree: "Bachelor of Science in Computer Science & Humanities",
-      institution: "Department of Computer Science",
-      location: "Paris, France",
-      period: "2020 — 2024",
+      degree: "Bachelor of Arts in Literary & Cultural Analysis",
+      institution: "University of Amsterdam (UvA)",
+      location: "Amsterdam, Netherlands",
+      period: "2018 — 2021",
       details: [
-        "Graduated with First Class Honors.",
-        "Concentration on algorithms, civic networks, and philosophy of technology.",
-        "Capstone project: Interactive semantic search engine for digitized manuscript fragments.",
+        "Studied literary and cultural theory, philosophy, comparative literature, narrative theory, and visual and media analysis.",
+        "Developed competencies in discourse analysis, semiotics, qualitative research, and critical interpretation of political and cultural systems.",
+        "Focused on the relationship between cultural production, ideology, representation, and structures of power.",
+      ],
+    },
+    {
+      degree: "French Baccalauréat — Literary Track (Série L)",
+      institution: "Lycée Français International de Dubaï",
+      location: "Dubai, United Arab Emirates",
+      period: "2014 — 2018",
+      details: [
+        "Completed the French Baccalauréat in the literary stream, with a focus on philosophy, literature, languages, and history.",
+        "Developed foundations in critical reasoning, textual analysis, philosophical argumentation, and intercultural communication.",
+      ],
+    },
+  ] as CVEducation[],
+
+  experience: [
+    {
+      role: "Lead AI Integration & Research",
+      organization: "Daraj Media",
+      location: "Beirut, Lebanon",
+      period: "March 2024 — August 2025",
+      highlights: [
+        "Led AI research and integration across an independent digital media organization, aligning technical initiatives with editorial, operational, and strategic objectives.",
+        "Developed and evaluated AI-assisted workflows for research, document analysis, data extraction, content production, and audience analytics.",
+        "Worked with journalists, editors, and developers to identify and implement tools supporting investigative reporting and newsroom efficiency.",
+        "Addressed ethical and operational challenges involving data privacy, source protection, Arabic-language processing, and the use of proprietary AI models in journalism.",
+        "Researched emerging developments in AI, particularly their implications for journalism, civil society, and the Middle East.",
+        "Supported responsible AI adoption through technical experimentation, workflow design, and cross-disciplinary collaboration.",
+      ],
+    },
+    {
+      role: "Operational & Creative Consultant",
+      organization: "FR Agency",
+      location: "Amsterdam, Netherlands",
+      period: "November 2021 — June 2023",
+      highlights: [
+        "Coordinated creative productions, studio sessions, music video shoots, and live events for musical artists.",
+        "Managed logistics involving production crews, locations, technical equipment, accommodations, and artist schedules.",
+        "Developed brand partnerships and product-seeding initiatives connecting artists with fashion and lifestyle companies.",
+        "Worked with creative teams, artists, vendors, and venues to execute productions and commercial projects.",
+        "Combined production planning, client communication, and creative direction across multidisciplinary assignments.",
+      ],
+    },
+    {
+      role: "Podcast Head — Development",
+      organization: "The Next Cartel",
+      location: "Amsterdam, Netherlands",
+      period: "2022",
+      highlights: [
+        "Contributed to the development of a podcast concept, including research, editorial planning, and creative coordination.",
+        "Collaborated with the team on production planning and the program's editorial direction.",
+      ],
+    },
+    {
+      role: "Studio Assistant",
+      organization: "Westerpark Studios",
+      location: "Amsterdam, Netherlands",
+      period: "September — December 2022",
+      highlights: [
+        "Supported photography and audiovisual productions through studio preparation, equipment management, and technical setup.",
+        "Coordinated with clients and creative teams to ensure smooth production operations.",
+        "Contributed to the organization and maintenance of studio facilities and equipment.",
+      ],
+    },
+    {
+      role: "Young Journalist Award Participant",
+      organization: "Dubai International Film Festival",
+      location: "Dubai, United Arab Emirates",
+      period: "December 2017",
+      highlights: [
+        "Selected as a finalist and participant in the festival's Young Journalist Award program.",
+        "Produced film reviews, interviews, and cultural reporting under editorial deadlines.",
+        "Gained practical experience in journalism, film criticism, interviewing, and arts reporting.",
+      ],
+    },
+    {
+      role: "Commercial Photographer",
+      organization: "The Good Life",
+      location: "Dubai, United Arab Emirates",
+      period: "April 2016 — June 2017",
+      highlights: [
+        "Produced photography and visual assets for the company's website, social media, and brand communications.",
+        "Covered events and commercial activations, combining photography with guest interaction and visual storytelling.",
+        "Worked with the creative team to maintain consistency across the company's visual identity.",
       ],
     },
   ],
 
-  experience: [
+  projects: [
     {
-      role: "Creative Technologist & Civic AI Researcher",
-      organization: "Laboratory for Computational Culture & Democratic Systems",
-      location: "Paris, France",
-      period: "2024 — Present",
-      highlights: [
-        "Designed and prototyped Agora Deliberate, an open-source deliberative platform using local LLMs to cluster citizen assembly testimonies without partisan flattening.",
-        "Formulated the Archival Drift evaluation suite to quantify representational erasure in foundational vision-language models across 200,000+ cultural artifacts.",
-        "Collaborated with municipal civic bodies and digital humanities scholars on democratic technology guidelines.",
+      title: "Lebanese Official Gazette Reconstruction",
+      type: "Civic Technology & AI Research",
+      period: "2026",
+      link: "https://gazette-reader.vercel.app/",
+      description:
+        "A practice-based civic technology project developed alongside my master's thesis at the University of Amsterdam. Attempted to reconstruct Lebanon's paywalled and largely unsearchable legal archive using AI-assisted web scraping, Arabic OCR, and multilingual semantic search. The project involved a collection of 816 Gazette issues, 149,094 images, and approximately 14.52 GB of archival material, with technical experimentation focused on a smaller 2025 corpus. The resulting prototype became an empirical case study of how commercial infrastructure, algorithmic opacity, and linguistic inequalities constrain AI-driven democratic empowerment. The research also examined the geopolitical risks of substituting Western AI providers with regional, including GCC-backed, alternatives.",
+      technologies: [
+        "Python",
+        "Arabic OCR",
+        "Multilingual NLP",
+        "Cohere",
+        "Supabase",
+        "Gemini",
+        "AI-Assisted Development",
       ],
     },
     {
-      role: "Software Engineer / Data Specialist",
-      organization: "Digital Heritage & Public Commons Institute",
-      location: "Remote / Europe",
-      period: "2023 — 2024",
-      highlights: [
-        "Engineered linked open data pipelines converting proprietary museum databases into validated RDF/SPARQL knowledge graphs.",
-        "Developed interactive WebGL vector visualization tooling allowing citizens and non-technical curators to inspect high-dimensional semantic spaces.",
-        "Advocated for open data licensing and sovereign digital infrastructure across institutional partners.",
-      ],
-    },
-    {
-      role: "Research Fellow in Algorithmic Accountability",
-      organization: "Center for Media Epistemology & Digital Rights",
-      location: "Berlin, Germany",
-      period: "Summer 2023",
-      highlights: [
-        "Audited training datasets of large commercial text-to-image models for non-Western representational stereotypes.",
-        "Co-authored public-interest policy brief on cultural heritage enclosure by corporate AI labs.",
+      title: "DotFocus",
+      type: "Independent Web Application",
+      period: "2025 — Present",
+      link: "https://dotfocus.app/",
+      description:
+        "An independently developed, privacy-first web application for attention training through visual fixation and gaze-based exercises. Designed around minimalist interaction, client-side visual processing, and privacy-conscious data practices. The project combines experimental human-computer interaction, web development, and product design, exploring how technology can support concentration rather than compete for attention.",
+      technologies: [
+        "TypeScript",
+        "React",
+        "Supabase",
+        "Web-Based Computer Vision",
+        "Privacy-by-Design",
       ],
     },
   ],
@@ -81,82 +169,77 @@ export const cvData = {
   publications: [
     {
       title:
-        "Building for Deliberation: Participatory AI Systems for Citizen Assemblies and Public Infrastructure",
-      venue: "Working Paper / Journal of Public Interest Technology & Democracy",
-      year: "2025",
-      type: "Preprint",
-    },
-    {
-      title:
-        "Probing the Latent Archive: Representational Skew and Epistemic Injustice in Multimodal Foundation Models",
-      venue: "Digital Humanities 2025 / Computational Culture Track",
-      year: "2025",
-      type: "Conference Paper",
-    },
-    {
-      title: "Beyond the Search Bar: Exploratory Topologies for Cultural Collections and the Public Sphere",
-      venue: "International Conference on Cultural Informatics & Memory Institutions",
-      year: "2024",
-      type: "Conference Paper",
+        "402 Payment Required: Agency, Dependency, and the Lebanese Official Gazette",
+      venue: "University of Amsterdam — Master's Thesis",
+      year: "2026",
+      type: "Academic Thesis",
     },
   ],
 
-  talks: [
-    {
-      title: "Building for Democracy with AI: Designing Public Deliberation Beyond Corporate Enclosure",
-      event: "Civic Tech & Democratic AI Summit",
-      location: "Brussels",
-      year: "2025",
-    },
-    {
-      title: "Algorithmic Assemblies: What Machine Learning Sees in Cultural Memory",
-      event: "Symposium on AI Ethics and Cultural Heritage",
-      location: "Paris",
-      year: "2025",
-    },
-    {
-      title: "Creative Technology as Counter-Power: Speculative Interfaces for Civic Oversight",
-      event: "Digital Arts & Technology Colloquium",
-      location: "Online",
-      year: "2024",
-    },
-  ],
+  talks: [] as { title: string; event: string; location: string; year: string }[],
 
   skills: {
     democraticCivicAI: [
-      "Deliberative Intelligence Systems",
-      "Participatory Design",
-      "Public-Interest Computing",
-      "Local-First & Privacy-Preserving AI",
+      "Civic Technology & Public-Interest Computing",
+      "Digital Sovereignty & Information Access",
+      "AI-Assisted Public Infrastructure",
+      "Democratic & Epistemic Agency",
+      "Responsible AI in Journalism",
+      "Privacy-by-Design",
     ],
+
     aiEthicsAuditing: [
-      "Algorithmic Bias Auditing",
-      "Zero-Shot Entropy Analysis",
-      "Representation Probing",
-      "Model Transparency & Red-Teaming",
+      "AI Ethics & Governance",
+      "Algorithmic Accountability",
+      "Critical AI Studies",
+      "AI Policy Research",
+      "Algorithmic Colonialism",
+      "Commercial AI Dependency Analysis",
+      "Linguistic Sovereignty & Arabic NLP",
+      "Data Privacy & Source Protection",
     ],
+
     creativeTechnology: [
-      "WebGL / Three.js",
-      "Creative Coding & Speculative UI",
-      "Interactive Data Visualization (D3.js)",
-      "Next.js / React / TypeScript",
+      "Creative Technology & Prototyping",
+      "Web Application Development",
+      "React / Next.js / TypeScript",
+      "Interactive Data Visualization",
+      "AI-Assisted Software Development",
+      "Digital Product Design",
+      "Photography & Visual Storytelling",
+      "Podcast & Multimedia Production",
     ],
+
     culturalDataStandards: [
-      "CIDOC-CRM",
-      "RDF / SPARQL Knowledge Graphs",
-      "IIIF Protocol",
-      "Linked Open Data (LOD)",
-      "Dublin Core",
+      "Cultural Data Analysis",
+      "Digital Humanities",
+      "Archival Research & Digitization",
+      "Optical Character Recognition (OCR)",
+      "Metadata & Archiving",
+      "Text Mining & Document Processing",
+      "Qualitative Research & Discourse Analysis",
+      "Multilingual Information Retrieval",
     ],
+
     engineeringStack: [
       "Python",
-      "PyTorch",
-      "Hugging Face Transformers",
-      "TypeScript",
-      "Tailwind CSS",
-      "Rust (intermediate)",
+      "TypeScript / JavaScript",
+      "React / Next.js",
       "SQL",
+      "Supabase / PostgreSQL",
+      "REST APIs & API Integration",
+      "Web Scraping & Automation",
+      "Multilingual Semantic Search",
+      "Cohere / Gemini",
+      "Make.com",
+      "Git / GitHub",
     ],
-    languages: ["English (Fluent)", "French (Native/Fluent)", "Arabic (Conversational)"],
+
+    languages: [
+      "French (Native)",
+      "English (Fluent)",
+      "Arabic (Conversational)",
+      "Spanish (B1)",
+    ],
   },
 };

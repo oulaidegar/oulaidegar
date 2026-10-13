@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "convex/react";
-import { api } from "../../convex/_generated/api";
-import { Id } from "../../convex/_generated/dataModel";
+import { api } from "@convex/_generated/api";
+import { Id } from "@convex/_generated/dataModel";
 import { initialPhotos, Photo } from "@/data/photos";
 import PhotoLightbox from "./PhotoLightbox";
-import { Plus, Trash2, Camera, Info, X, Cloud, Loader2 } from "lucide-react";
+import { Plus, Trash2, X, Lock, Unlock, Loader2, Key } from "lucide-react";
 
 export default function PhotoGallery() {
   const convexPhotos = useQuery(api.photos.list);
@@ -16,7 +16,51 @@ export default function PhotoGallery() {
 
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState<number | null>(null);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [isAdminLoginOpen, setIsAdminLoginOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Admin secret management
+  const [adminSecret, setAdminSecret] = useState<string>("");
+  const [passphraseInput, setPassphraseInput] = useState<string>("");
+  const [passphraseError, setPassphraseError] = useState<string>("");
+
+  useEffect(() => {
+    // Check if admin secret is stored in localStorage
+    const savedSecret = localStorage.getItem("oulaidegar_admin_secret");
+    if (savedSecret) {
+      setAdminSecret(savedSecret);
+    }
+
+    // Keyboard shortcut to trigger admin modal: Cmd+Shift+U or Ctrl+Shift+U
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key.toLowerCase() === "u") {
+        e.preventDefault();
+        setIsAdminLoginOpen(true);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  const handleLoginAdmin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!passphraseInput.trim()) {
+      setPassphraseError("Please enter your admin passphrase.");
+      return;
+    }
+    const secret = passphraseInput.trim();
+    localStorage.setItem("oulaidegar_admin_secret", secret);
+    setAdminSecret(secret);
+    setPassphraseInput("");
+    setPassphraseError("");
+    setIsAdminLoginOpen(false);
+  };
+
+  const handleLogoutAdmin = () => {
+    localStorage.removeItem("oulaidegar_admin_secret");
+    setAdminSecret("");
+  };
 
   // Form state
   const [title, setTitle] = useState("");
@@ -32,7 +76,6 @@ export default function PhotoGallery() {
   const [uploadError, setUploadError] = useState("");
 
   // Merge live Convex photos with initial curated archive
-  // Convex photos appear first
   const displayPhotos: (Photo & { _id?: Id<"photos">; isConvex?: boolean })[] = [
     ...(convexPhotos || []).map((p) => ({
       id: p._id,
@@ -60,8 +103,8 @@ export default function PhotoGallery() {
       return;
     }
 
-    if (file.size > 15 * 1024 * 1024) {
-      setUploadError("File size exceeds 15MB.");
+    if (file.size > 20 * 1024 * 1024) {
+      setUploadError("File size exceeds 20MB.");
       return;
     }
 
@@ -82,16 +125,20 @@ export default function PhotoGallery() {
       setUploadError("Please enter a title for the picture.");
       return;
     }
+    if (!adminSecret) {
+      setUploadError("Admin authorization required. Please authenticate.");
+      return;
+    }
 
     setIsSubmitting(true);
     setUploadError("");
 
     try {
       if (selectedFile) {
-        // Step 1: Request temporary upload URL from Convex Storage
-        const uploadUrl = await generateUploadUrl();
+        // Step 1: Request upload URL from Convex Storage using adminSecret
+        const uploadUrl = await generateUploadUrl({ adminSecret });
 
-        // Step 2: POST the raw file directly to Convex storage
+        // Step 2: POST the file directly to Convex storage
         const response = await fetch(uploadUrl, {
           method: "POST",
           headers: { "Content-Type": selectedFile.type },
@@ -99,13 +146,14 @@ export default function PhotoGallery() {
         });
 
         if (!response.ok) {
-          throw new Error("Failed to upload image to Convex storage.");
+          throw new Error("Failed to upload image file to Convex storage.");
         }
 
         const { storageId } = await response.json();
 
-        // Step 3: Insert photo document into Convex database
+        // Step 3: Insert document into Convex database with adminSecret
         await addPhotoMutation({
+          adminSecret,
           title,
           caption: caption || undefined,
           location: location || undefined,
@@ -118,6 +166,7 @@ export default function PhotoGallery() {
       } else {
         // Direct URL insertion
         await addPhotoMutation({
+          adminSecret,
           title,
           caption: caption || undefined,
           location: location || undefined,
@@ -150,13 +199,14 @@ export default function PhotoGallery() {
 
   const handleDeletePhoto = async (photo: typeof displayPhotos[0], e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!photo._id) return;
+    if (!photo._id || !adminSecret) return;
     if (confirm(`Delete "${photo.title}" from Convex storage?`)) {
       try {
-        await deletePhotoMutation({ id: photo._id });
+        await deletePhotoMutation({ adminSecret, id: photo._id });
         if (selectedPhotoIndex !== null) setSelectedPhotoIndex(null);
       } catch (err) {
         console.error("Failed to delete photo:", err);
+        alert(err instanceof Error ? err.message : "Unauthorized to delete photo.");
       }
     }
   };
@@ -165,25 +215,30 @@ export default function PhotoGallery() {
     selectedPhotoIndex !== null ? displayPhotos[selectedPhotoIndex] : null;
 
   return (
-    <div className="space-y-6">
-      {/* Top Action Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-stone-200/80 dark:border-stone-800/80">
-        <div className="flex items-center gap-2 text-xs font-mono-meta text-stone-500 dark:text-stone-400">
-          <Cloud className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-          <span>Convex Real-Time Backend &bull; {displayPhotos.length} photos</span>
-          {convexPhotos === undefined && (
-            <span className="text-[10px] text-stone-400 animate-pulse">(connecting...)</span>
-          )}
+    <div className="space-y-8">
+      {/* Admin Mode Bar (Only visible when Admin Secret is set) */}
+      {adminSecret ? (
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-sm border border-emerald-300 dark:border-emerald-800/80 bg-emerald-50/60 dark:bg-emerald-950/20 text-xs font-mono-meta text-emerald-900 dark:text-emerald-200">
+          <div className="flex items-center gap-2">
+            <Unlock className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+            <span>Admin Mode Active &bull; Authorized Uploader</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setIsUploadOpen(true)}
+              className="px-2.5 py-1 rounded-sm bg-emerald-900 text-emerald-50 dark:bg-emerald-200 dark:text-emerald-950 hover:opacity-90 font-medium cursor-pointer"
+            >
+              + Upload Picture
+            </button>
+            <button
+              onClick={handleLogoutAdmin}
+              className="px-2 py-1 text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100 cursor-pointer"
+            >
+              Lock / Exit
+            </button>
+          </div>
         </div>
-
-        <button
-          onClick={() => setIsUploadOpen(true)}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono-meta rounded-sm bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 hover:opacity-90 transition-opacity self-start sm:self-auto cursor-pointer"
-        >
-          <Plus className="w-3.5 h-3.5" />
-          <span>Upload Picture to Convex</span>
-        </button>
-      </div>
+      ) : null}
 
       {/* Grid of Photos */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -201,12 +256,8 @@ export default function PhotoGallery() {
                 loading="lazy"
                 className="w-full h-full object-cover transition-all duration-500 grayscale hover:grayscale-0 group-hover:scale-105"
               />
-              {photo.isConvex && (
-                <div className="absolute top-2 left-2 px-1.5 py-0.5 rounded-xs bg-black/70 backdrop-blur-xs text-[9px] font-mono-meta text-emerald-300">
-                  convex
-                </div>
-              )}
-              {photo._id && (
+              {/* Only show delete button if admin mode is unlocked */}
+              {adminSecret && photo._id && (
                 <button
                   onClick={(e) => handleDeletePhoto(photo, e)}
                   title="Delete photo from Convex"
@@ -230,6 +281,19 @@ export default function PhotoGallery() {
         ))}
       </div>
 
+      {/* Discrete footer trigger for admin login */}
+      <div className="pt-6 border-t border-stone-200/40 dark:border-stone-800/40 flex justify-between items-center text-[11px] font-mono-meta text-stone-400 dark:text-stone-500">
+        <span>{displayPhotos.length} photographs</span>
+        <button
+          onClick={() => setIsAdminLoginOpen(true)}
+          className="flex items-center gap-1 hover:text-stone-700 dark:hover:text-stone-300 transition-colors cursor-pointer"
+          title="Admin Access (Shortcut: Cmd+Shift+U)"
+        >
+          {adminSecret ? <Unlock className="w-3 h-3 text-emerald-500" /> : <Lock className="w-3 h-3" />}
+          <span>{adminSecret ? "admin active" : "admin"}</span>
+        </button>
+      </div>
+
       {/* Lightbox Modal */}
       <PhotoLightbox
         photo={currentPhoto}
@@ -248,6 +312,69 @@ export default function PhotoGallery() {
         hasNext={displayPhotos.length > 1}
       />
 
+      {/* Admin Passphrase Login Modal */}
+      {isAdminLoginOpen && (
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-[#faf8f5] dark:bg-[#161514] border border-stone-300 dark:border-stone-800 rounded-sm max-w-sm w-full p-5 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-stone-200 dark:border-stone-800 pb-2">
+              <div className="flex items-center gap-2 text-stone-900 dark:text-stone-100 font-serif-title text-lg">
+                <Key className="w-4 h-4" />
+                <span>Admin Passphrase</span>
+              </div>
+              <button
+                onClick={() => setIsAdminLoginOpen(false)}
+                className="text-stone-400 hover:text-stone-700 dark:hover:text-stone-200"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <form onSubmit={handleLoginAdmin} className="space-y-3 text-xs font-mono-meta">
+              {passphraseError && (
+                <div className="p-2 rounded bg-red-50 text-red-700 dark:bg-red-950/40 dark:text-red-300 text-[11px]">
+                  {passphraseError}
+                </div>
+              )}
+
+              <div>
+                <label className="block text-stone-600 dark:text-stone-400 mb-1">
+                  Enter your ADMIN_SECRET
+                </label>
+                <input
+                  type="password"
+                  required
+                  autoFocus
+                  placeholder="Passphrase..."
+                  value={passphraseInput}
+                  onChange={(e) => setPassphraseInput(e.target.value)}
+                  className="w-full px-3 py-1.5 rounded-xs border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 focus:outline-none"
+                />
+              </div>
+
+              <p className="text-[10px] text-stone-400 dark:text-stone-500 leading-normal">
+                Stored securely in your local browser storage. Verified server-side by Convex on every upload or deletion.
+              </p>
+
+              <div className="flex justify-end gap-2 pt-2 border-t border-stone-200 dark:border-stone-800">
+                <button
+                  type="button"
+                  onClick={() => setIsAdminLoginOpen(false)}
+                  className="px-2.5 py-1 text-stone-500 hover:text-stone-800"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-3 py-1 rounded-xs bg-stone-900 text-stone-50 dark:bg-stone-100 dark:text-stone-900 font-medium hover:opacity-90"
+                >
+                  Unlock
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {/* Upload Picture Modal */}
       {isUploadOpen && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
@@ -255,10 +382,10 @@ export default function PhotoGallery() {
             <div className="flex items-center justify-between border-b border-stone-200 dark:border-stone-800 pb-3">
               <div>
                 <h3 className="font-serif-title text-xl text-stone-900 dark:text-stone-100">
-                  Upload Picture to Convex Storage
+                  Upload Picture to Convex
                 </h3>
-                <p className="text-[11px] font-mono-meta text-stone-500 dark:text-stone-400 mt-0.5">
-                  Stored directly in Convex cloud storage and indexed in real-time.
+                <p className="text-[11px] font-mono-meta text-emerald-600 dark:text-emerald-400 mt-0.5">
+                  Authenticated via ADMIN_SECRET
                 </p>
               </div>
               <button

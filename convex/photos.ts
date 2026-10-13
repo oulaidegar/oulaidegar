@@ -1,7 +1,29 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
-// List all photos sorted newest first
+// Helper function to verify admin secret against server environment
+function verifyAdminSecret(providedSecret?: string) {
+  const serverSecret = process.env.ADMIN_SECRET;
+  // If ADMIN_SECRET is configured on Convex, enforce it strictly
+  if (serverSecret && providedSecret !== serverSecret) {
+    throw new Error("Unauthorized: Invalid admin passphrase.");
+  }
+}
+
+// Check whether a provided passphrase is valid
+export const checkAdminPassphrase = query({
+  args: { adminSecret: v.string() },
+  handler: async (ctx, args) => {
+    const serverSecret = process.env.ADMIN_SECRET;
+    if (!serverSecret) {
+      // If not configured yet on Convex, allow for initial setup
+      return { configured: false, valid: true };
+    }
+    return { configured: true, valid: args.adminSecret === serverSecret };
+  },
+});
+
+// List all photos sorted newest first (public read-only query)
 export const list = query({
   args: {},
   handler: async (ctx) => {
@@ -29,17 +51,21 @@ export const list = query({
   },
 });
 
-// Generate an upload URL to upload directly to Convex file storage
+// Generate an upload URL - PROTECTED by adminSecret
 export const generateUploadUrl = mutation({
-  args: {},
-  handler: async (ctx) => {
+  args: {
+    adminSecret: v.string(),
+  },
+  handler: async (ctx, args) => {
+    verifyAdminSecret(args.adminSecret);
     return await ctx.storage.generateUploadUrl();
   },
 });
 
-// Add a new photo record (either with storageId or external URL)
+// Add a new photo record - PROTECTED by adminSecret
 export const addPhoto = mutation({
   args: {
+    adminSecret: v.string(),
     title: v.string(),
     caption: v.optional(v.string()),
     location: v.optional(v.string()),
@@ -51,6 +77,8 @@ export const addPhoto = mutation({
     aspectRatio: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
+    verifyAdminSecret(args.adminSecret);
+
     return await ctx.db.insert("photos", {
       title: args.title,
       caption: args.caption,
@@ -65,10 +93,15 @@ export const addPhoto = mutation({
   },
 });
 
-// Delete a photo and its stored file
+// Delete a photo and its stored file - PROTECTED by adminSecret
 export const deletePhoto = mutation({
-  args: { id: v.id("photos") },
+  args: {
+    adminSecret: v.string(),
+    id: v.id("photos"),
+  },
   handler: async (ctx, args) => {
+    verifyAdminSecret(args.adminSecret);
+
     const photo = await ctx.db.get(args.id);
     if (!photo) return;
 
