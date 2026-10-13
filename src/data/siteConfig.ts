@@ -1,3 +1,4 @@
+
 export interface SiteConfig {
   name: string;
   domain: string;
@@ -19,24 +20,39 @@ export interface SiteConfig {
 export const siteConfig: SiteConfig = {
   name: "oulaidegar",
   domain: "oulaidegar.com",
-  title: "oulaidegar — Creative Technologist & AI Ethics Researcher",
+
+  title:
+    "oulaidegar — Creative Technologist & Researcher",
+
   role: "Creative Technologist & Researcher",
+
   description:
-    "Building open systems at the intersection of AI ethics, cultural data, and democratic public infrastructure. Exploring creative technology and algorithmic accountability.",
-  bio: "Creative technologist and researcher working across AI ethics, cultural data, and democratic technologies. Exploring how computational models shape public memory, algorithmic governance, and collective agency.",
+    "Exploring the intersection of artificial intelligence, creative technology, journalism, and democratic systems. Building digital tools and investigating how technology shapes knowledge, agency, and power.",
+
+  bio:
+    "I'm a creative technologist and researcher with a Master of Arts in Cultural Data & Artificial Intelligence from the University of Amsterdam. My work brings together technical development, critical research, and creative practice, with particular interests in civic technology, digital sovereignty, journalism, and the political economy of AI. My master's thesis examined the promises and structural limitations of AI-driven democratic empowerment through the reconstruction of the Lebanese Official Gazette. Previously, I led AI integration and research at Daraj Media, working at the intersection of emerging technologies and independent journalism. Alongside my research, I develop independent digital products, including DotFocus, a privacy-first attention-training application.",
+
   statement:
-    "We cannot surrender our public spheres to black-box corporate monopolies. I build speculative interfaces, algorithmic auditing tools, and open civic systems to ensure artificial intelligence serves democratic deliberation and pluralistic human culture.",
+    "Access to technology is not the same as access to power. Artificial intelligence may lower the barriers to building, but the systems we depend on remain shaped by corporate interests, political institutions, and unequal access to resources. I'm interested in what technology makes possible, what it quietly constrains, and how we can build tools that expand human agency rather than reproduce existing dependencies.",
+
   email: "hello@oulaidegar.com",
-  github: "https://github.com",
-  twitter: "https://x.com",
+
+  // Add verified personal profile URLs when available.
+  github: "",
+  twitter: "",
+
   location: "Paris / Remote",
-  status: "Designing AI for democratic deliberation & writing M.Sc. thesis in Cultural Data & AI",
+
+  status:
+    "Building independent digital tools · Researching AI, agency & digital sovereignty",
+
   focusAreas: [
-    "Building for Democracy",
-    "AI Ethics & Algorithmic Accountability",
-    "Cultural Data & Digital Heritage",
-    "Creative Technology & Speculative UI",
+    "Civic Technology & Public Knowledge",
+    "AI Ethics, Agency & Digital Sovereignty",
+    "Journalism, Automation & Arabic NLP",
+    "Creative Technology & Privacy-First Tools",
   ],
+
   navLinks: [
     { name: "About", href: "/" },
     { name: "Thesis", href: "/thesis" },

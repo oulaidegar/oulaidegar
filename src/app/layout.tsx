@@ -21,7 +21,13 @@ export const metadata: Metadata = {
     "oulaidegar",
   ],
   icons: {
-    icon: "/favicon.ico",
+    icon: [
+      { url: "/logo.png" },
+      { url: "/favicon.ico" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png" },
+    ],
   },
 };
 

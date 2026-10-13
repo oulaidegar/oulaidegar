@@ -22,9 +22,14 @@ export default function Header() {
         {/* Logo / Domain identity */}
         <Link
           href="/"
-          className="group flex items-center gap-2 font-mono-meta text-sm font-medium tracking-tight text-stone-900 dark:text-stone-100"
+          className="group flex items-center gap-2.5 font-mono-meta text-sm font-medium tracking-tight text-stone-900 dark:text-stone-100"
         >
-          <span className="w-2 h-2 rounded-full bg-stone-900 dark:bg-stone-100 group-hover:scale-125 transition-transform duration-200" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/logo.png"
+            alt="oulaidegar"
+            className="w-5 h-5 object-contain rounded-xs transition-transform duration-200 group-hover:scale-110"
+          />
           <span>{siteConfig.name}</span>
         </Link>
 
