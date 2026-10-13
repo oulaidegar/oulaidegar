@@ -4,7 +4,13 @@ import { useState } from "react";
 import { notes } from "@/data/notes";
 import { Search } from "lucide-react";
 
-const noteCategories = ["All", "Reading", "Idea", "Code", "Epistemology"] as const;
+const noteCategories = [
+  "All",
+  "Democracy",
+  "AI Ethics",
+  "Creative Tech",
+  "Cultural Data",
+] as const;
 
 export default function NotesPage() {
   const [selectedCat, setSelectedCat] = useState<string>("All");
@@ -28,7 +34,7 @@ export default function NotesPage() {
           Field Notes & Garden
         </h1>
         <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 font-sans">
-          Atomic thoughts, reading highlights, theoretical marginalia, and unfinished hypotheses maintained in a public digital garden.
+          Atomic thoughts, civic tech reflections, AI ethics notes, and speculative marginalia maintained in a public digital garden.
         </p>
 
         {/* Search & Categories */}

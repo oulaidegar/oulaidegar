@@ -8,6 +8,10 @@ export interface ThesisData {
   status: "In Progress" | "Completed" | "Under Review";
   abstract: string;
   coreQuestions: string[];
+  pillars: {
+    title: string;
+    description: string;
+  }[];
   methodologies: {
     title: string;
     description: string;
@@ -35,106 +39,120 @@ export interface ThesisData {
 }
 
 export const thesisData: ThesisData = {
-  degree: "Master of Science / Research Master",
-  field: "Cultural Data and Artificial Intelligence",
+  degree: "Master of Science in Cultural Data and Artificial Intelligence",
+  field: "Cultural Data, AI Ethics & Democratic Epistemology",
   institution: "Faculty of Humanities & Computational Sciences",
-  expectedYear: "2025 – 2026",
-  workingTitle: "Latent Archives: Generative Models, Cultural Bias, and the Algorithmic Curation of Collective Memory",
-  subtitle: "Examining how foundational multi-modal models interpret, distort, and synthesize institutional cultural heritage collections",
+  expectedYear: "2024 – 2026",
+  workingTitle: "Latent Assemblies: AI Ethics, Cultural Data, and the Democratic Politics of Collective Memory",
+  subtitle: "Auditing representational skew, epistemic justice, and civic sovereignty in multimodal foundation models trained on digitized heritage",
   status: "In Progress",
   abstract: `
-This thesis investigates the epistemological consequences of applying modern generative artificial intelligence models to digitized cultural heritage archives. As museums, national libraries, and cultural institutions digitize millions of historical artifacts, machine learning algorithms increasingly serve as the intermediaries through which public memory is indexed, retrieved, and generated.
+This thesis interrogates how foundational multi-modal artificial intelligence systems mediate and reshape democratic collective memory. As civic institutions and national archives digitize millions of cultural artifacts, proprietary AI models increasingly become the default epistemic gateways through which citizens discover, synthesize, and interact with human heritage.
 
-Focusing on the tension between institutional archival taxonomy and latent vector representations, this research interrogates whether foundational vision-language models capture cultural nuances or flatten historical pluralism into algorithmic consensus. Through a combination of computational analysis (embedding probing, semantic drift quantification) and critical data studies, the project develops an open-source audit framework to evaluate cultural representation in foundational datasets.
+By framing cultural data as a vital democratic commons, this research investigates the ethical hazards of corporate algorithmic enclosure—specifically how continuous latent vector spaces flatten regional pluralism into monocultural consensus. Combining computational probing (semantic drift quantification, zero-shot entropy audits) with democratic theory and critical data studies, this project develops an open-source civic audit framework. The ultimate aim is to propose technical and institutional safeguards that protect public knowledge, prevent synthetic disinformation from eroding cultural archives, and reimagine generative AI as an infrastructure for democratic pluralism.
   `.trim(),
   coreQuestions: [
-    "How do vision-language models (e.g., CLIP, SigLIP, multi-modal LLMs) project non-Western and marginalized cultural artifacts within continuous embedding spaces?",
-    "Can unsupervised semantic clustering reveal latent archival topologies that traditional hierarchical cataloging overlooks without reinforcing historical biases?",
-    "What are the ethical and technical parameters for an interactive 'speculative archive' that transparently communicates algorithmic hallucination to researchers and the public?",
+    "Democratic Commons vs. Corporate Enclosure: How do proprietary foundation models extract value from public cultural heritage without returning transparent, democratically auditable mechanisms?",
+    "Epistemic Bias in Latent Space: How do continuous multimodal embeddings (CLIP, SigLIP, VLM weights) systematically distort or marginalize non-Western civic and cultural expressions?",
+    "Building for Democratic Deliberation: Can we construct participatory, pluralistic 'counter-embeddings' that support democratic discourse rather than algorithmic consensus manufacturing?",
+  ],
+  pillars: [
+    {
+      title: "Democratic Epistemology",
+      description: "Treating archival memory not as static commodified training tokens, but as living public infrastructure essential for democratic discourse.",
+    },
+    {
+      title: "Algorithmic Ethics & Auditability",
+      description: "Developing empirical, reproducible metrics to hold vision-language models accountable for representational harm and cultural erasure.",
+    },
+    {
+      title: "Creative Counter-Interfaces",
+      description: "Designing speculative user interfaces that expose algorithmic uncertainties and empower citizens to contest machine-generated classifications.",
+    },
   ],
   methodologies: [
     {
-      title: "Embedding Space Analysis & Probing",
+      title: "Algorithmic Auditing & Embedding Probing",
       description:
-        "Geometric analysis of multi-modal embeddings across cross-cultural archival artifacts to quantify semantic clustering, dispersion, and western-centric bias.",
+        "Developing statistical pipelines to measure representational skew and semantic drift across historical and regional artifacts passed through foundational vision models.",
       tools: ["Python", "PyTorch", "Hugging Face", "UMAP / t-SNE", "SciPy"],
     },
     {
-      title: "Archival Metadata & Knowledge Graphs",
+      title: "Civic Knowledge Graphs & Linked Data",
       description:
-        "Extracting structured entity relationships from institutional catalog metadata (CIDOC-CRM, Dublin Core) to compare against AI-generated semantic captions.",
-      tools: ["RDF / SPARQL", "NetworkX", "spaCy", "Neo4j"],
+        "Building verifiable provenance networks from institutional catalog metadata (CIDOC-CRM, Dublin Core) to cross-examine AI-generated synthetic captions.",
+      tools: ["SPARQL / RDF", "NetworkX", "Graphology", "Neo4j"],
     },
     {
-      title: "Critical Hermeneutics & Cultural Studies",
+      title: "Critical Data Studies & Democratic Theory",
       description:
-        "Contextualizing computational metrics within post-colonial archival theory, data provenance, and ethical AI frameworks.",
-      tools: ["Qualitative Coding", "Archival Close-Reading", "Provenance Tracing"],
+        "Contextualizing computational metrics within theories of agonistic pluralism, participatory democracy, and post-colonial archival theory.",
+      tools: ["Close-Reading", "Participatory Workshop Design", "Policy Auditing"],
     },
   ],
   datasets: [
     {
       name: "Rijksmuseum Open Cultural Data Collection",
-      description: "Over 700k high-resolution art objects, detailed historical provenance, and multilingual annotations.",
+      description: "700,000+ open-access historical artifacts with detailed provenance records used to evaluate colonial artifact classifications.",
       size: "~720,000 items",
       type: "Image & Structured Metadata",
     },
     {
       name: "Europeana Aggregated Cultural Heritage",
-      description: "Pan-European open dataset spanning manuscripts, textiles, cartography, and photographic records.",
-      size: "Sample of 150,000 items",
+      description: "Cross-border democratic cultural heritage repository spanning multilingual records across 2,000+ European institutions.",
+      size: "150,000 sampled items",
       type: "Multi-institutional Heritage",
     },
     {
-      name: "Custom Curated Cross-Cultural Benchmark",
-      description: "Hand-annotated subset of indigenous and regional archival artifacts tested against state-of-the-art vision models.",
-      size: "2,500 curated pairings",
-      type: "Benchmark & Evaluation",
+      name: "Cross-Cultural Pluralism Benchmark",
+      description: "Hand-curated evaluation dataset assessing how state-of-the-art multimodal models respond to non-Western ceremonial and civic heritage.",
+      size: "2,500 annotated pairings",
+      type: "Benchmark & Ethical Evaluation",
     },
   ],
   theoreticalFramework: [
-    "Critical Data Studies (Dalton, Thatcher, Noble)",
-    "Archival Silences & Power (Michel-Rolph Trouillot, Saidiya Hartman)",
-    "Algorithmic Governmentality & Epistemology (Rouvroy, Berns)",
-    "Computational Hermeneutics & Digital Humanities (Moretti, Jockers)",
+    "Agonistic Pluralism & The Public Sphere (Chantal Mouffe, Jürgen Habermas)",
+    "Critical Data Studies & Data Feminism (Noble, D'Ignazio & Klein)",
+    "Archival Silences & Epistemic Justice (Miranda Fricker, Michel-Rolph Trouillot)",
+    "Algorithmic Governmentality & Commons (Antoinette Rouvroy, Elinor Ostrom)",
   ],
   keyReadings: [
     {
-      title: "Algorithms of Oppression: How Search Engines Reinforce Racism",
+      title: "The Agonistic Public Sphere",
+      author: "Chantal Mouffe",
+      year: "2000",
+      note: "Essential framework for why democratic AI must preserve dissensus rather than forced consensus.",
+    },
+    {
+      title: "Algorithms of Oppression",
       author: "Safiya Umoja Noble",
       year: "2018",
-      note: "Foundational perspective on algorithmic ordering of knowledge.",
+      note: "Foundational audit of how commercial algorithmic search distorts public knowledge.",
     },
     {
-      title: "Silencing the Past: Power and the Production of History",
-      author: "Michel-Rolph Trouillot",
-      year: "1995",
-      note: "Framework for analyzing gaps and silences in archival institutions.",
-    },
-    {
-      title: "Data Feminism",
-      author: "Catherine D'Ignazio & Lauren F. Klein",
-      year: "2020",
-      note: "Direct guide for ethical and reflexively situated data science.",
+      title: "Epistemic Injustice: Power and the Ethics of Knowing",
+      author: "Miranda Fricker",
+      year: "2007",
+      note: "Philosophical foundation for understanding testimonial and hermeneutical erasure in AI training corpora.",
     },
   ],
   artifacts: [
     {
       title: "Archival Drift Auditor (Codebase)",
-      type: "Python CLI & Library",
+      type: "Open Source Python Library",
       link: "https://github.com/oulaidegar/archival-drift",
-      description: "Tool to measure representational skew in multimodal embeddings of museum collections.",
+      description: "Ethical auditing toolkit to measure representational skew in foundation model embeddings.",
     },
     {
-      title: "Interactive Latent Explorer",
-      type: "Web Application",
+      title: "Interactive Latent Assembly Explorer",
+      type: "Web Application & Speculative UI",
       link: "/work",
-      description: "Three-dimensional semantic exploration interface for cultural collection embeddings.",
+      description: "Creative interactive 3D tool revealing how multimodal algorithms cluster and categorize cultural history.",
     },
     {
-      title: "Working Thesis Draft (PDF)",
-      type: "Academic Manuscript",
-      description: "Regularly updated chapters, available upon request or for committee review.",
+      title: "Working Thesis Draft & Policy Memo",
+      type: "Research Manuscript",
+      description: "Available for peer review and public-interest researchers exploring AI in democratic memory institutions.",
     },
   ],
 };

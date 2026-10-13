@@ -6,10 +6,10 @@ import { ArrowUpRight } from "lucide-react";
 
 const categories = [
   "All",
-  "AI & Data",
-  "Research",
-  "Web & Tools",
-  "Cultural & Creative",
+  "Democracy & Civic AI",
+  "AI Ethics & Audits",
+  "Creative Tech & Interfaces",
+  "Cultural Data",
 ] as const;
 
 export default function WorkPage() {
@@ -28,7 +28,7 @@ export default function WorkPage() {
           Selected Works & Systems
         </h1>
         <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 font-sans">
-          Software, research frameworks, algorithmic evaluations, and minimalist digital tools built at the intersection of cultural data and machine learning.
+          Creative technology prototypes, AI ethics evaluation tools, open civic platforms for democratic deliberation, and cultural data systems.
         </p>
 
         {/* Filter Pills */}

@@ -2,64 +2,64 @@ export interface Note {
   id: string;
   title: string;
   date: string;
-  category: "Reading" | "Idea" | "Code" | "Epistemology";
+  category: "Democracy" | "AI Ethics" | "Creative Tech" | "Cultural Data";
   tags: string[];
   content: string;
 }
 
 export const notes: Note[] = [
   {
+    id: "n-09",
+    title: "Deliberation vs. Sentiment Aggregation",
+    date: "2025-03-05",
+    category: "Democracy",
+    tags: ["deliberation", "civic-ai", "democracy"],
+    content:
+      "Most commercial AI tools treat democratic voice as mere 'sentiment analysis' to be averaged. But real democracy is about transformation through discourse: citizen assemblies change minds when participants hear perspectives they had never encountered. AI must facilitate encounter, not calculate a mathematical mean.",
+  },
+  {
     id: "n-08",
     title: "Latent space as a territorial map",
     date: "2025-03-01",
-    category: "Epistemology",
-    tags: ["representation", "cartography", "ai"],
+    category: "Cultural Data",
+    tags: ["representation", "cartography", "ai-ethics"],
     content:
       "Borges' 1:1 map that covers the empire was impossible physically, but latent space is its inverted contemporary equivalent: an ungraspable coordinate cloud that claims to contain the entirety of human symbolic output within a 4096-dimensional tensor.",
   },
   {
     id: "n-07",
-    title: "CIDOC-CRM vs Neo4j property graphs",
-    date: "2025-02-14",
-    category: "Code",
-    tags: ["rdf", "knowledge-graphs", "ontologies"],
+    title: "The fallacy of the neutral civic algorithm",
+    date: "2025-02-18",
+    category: "AI Ethics",
+    tags: ["algorithmic-bias", "governance", "ethics"],
     content:
-      "RDF triples feel verbose until you need to express temporal uncertainty and multiple conflicting attributions of ownership. Graph databases simplify querying, but CIDOC-CRM remains unbeatable for capturing philosophical nuance in historical provenance.",
+      "Whenever a technologist claims their AI algorithm is 'unbiased because it just computes math,' they are concealing a political choice inside an optimization loss function. Optimization functions always have a beneficiary.",
   },
   {
     id: "n-06",
-    title: "Reading Hartman on critical fabulation",
-    date: "2025-01-20",
-    category: "Reading",
-    tags: ["archives", "theory", "literature"],
+    title: "Speculative interfaces as democratic instruments",
+    date: "2025-01-24",
+    category: "Creative Tech",
+    tags: ["speculative-design", "ui", "public-space"],
     content:
-      "Saidiya Hartman's concept of 'critical fabulation'—writing into the silence of the archive without pretending the void can be smoothly resolved. Generative AI attempts the opposite: it smooths every void into a plausible statistical average.",
+      "Creative technology is most potent when it acts as an ontological provocation: showing the public how an algorithm thinks so they realize it is not magic, but human-made mechanics that can be challenged, regulated, and redesigned.",
   },
   {
     id: "n-05",
-    title: "Why typography is 90% of user interface",
-    date: "2024-12-18",
-    category: "Idea",
-    tags: ["design", "typography", "minimalism"],
+    title: "CIDOC-CRM vs corporate property graphs",
+    date: "2024-12-14",
+    category: "Cultural Data",
+    tags: ["rdf", "knowledge-graphs", "ontologies"],
     content:
-      "If the rhythm of lines, the optical weight of headers, and the breathing room between paragraphs are right, you need almost no borders, shadows, or decorative background tints. Good type carries the entire emotional weight of the screen.",
+      "RDF triples feel verbose until you need to express historical uncertainty, disputed custody, and community attribution. CIDOC-CRM remains essential for capturing philosophical nuance in cultural provenance against commercial oversimplification.",
   },
   {
     id: "n-04",
-    title: "UMAP reproducibility caveats",
-    date: "2024-11-29",
-    category: "Code",
-    tags: ["python", "umap", "data-viz"],
+    title: "Why typography is 90% of civic software",
+    date: "2024-11-20",
+    category: "Creative Tech",
+    tags: ["design", "typography", "minimalism"],
     content:
-      "Always set random_state and n_neighbors cautiously when visualizing cultural embeddings for non-technical audiences. A cluster that looks tight on a 2D scatter plot can easily be an artifact of metric projection rather than cultural kinship.",
-  },
-  {
-    id: "n-03",
-    title: "Flusser on the technical image",
-    date: "2024-10-05",
-    category: "Reading",
-    tags: ["flusser", "media-theory", "photography"],
-    content:
-      "Vilém Flusser's 'Towards a Philosophy of Photography': images produced by apparatuses do not depict the world; they signify program concepts. Every AI image generation prompt is the logical culmination of Flusser's programmed imagination.",
+      "If the rhythm of lines, the optical weight of headers, and the breathing room between paragraphs are right, you need almost no manipulative UI tricks. Good type honors the citizen's cognitive autonomy.",
   },
 ];

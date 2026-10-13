@@ -17,26 +17,41 @@ export default function Home() {
   return (
     <div className="space-y-16">
       {/* Intro Hero Section */}
-      <section className="space-y-5">
+      <section className="space-y-6">
         <div className="space-y-2">
-          <div className="flex items-center gap-2 text-xs font-mono-meta text-stone-500 dark:text-stone-400">
-            <span className="w-1.5 h-1.5 rounded-full bg-stone-400 dark:bg-stone-500" />
-            <span>{siteConfig.location}</span>
+          <div className="flex flex-wrap items-center gap-2 text-xs font-mono-meta text-stone-500 dark:text-stone-400">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+            <span>{siteConfig.role}</span>
             <span>&bull;</span>
-            <span>{siteConfig.status}</span>
+            <span>{siteConfig.location}</span>
           </div>
           <h1 className="font-serif-title text-3xl sm:text-4xl text-stone-900 dark:text-stone-100 font-normal tracking-tight">
             {siteConfig.name}
           </h1>
+          <p className="text-xs font-mono-meta text-stone-500 dark:text-stone-400">
+            {siteConfig.status}
+          </p>
         </div>
 
-        <p className="text-base sm:text-lg text-stone-700 dark:text-stone-300 font-serif-title italic leading-relaxed max-w-2xl">
-          &ldquo;Investigating the epistemological shifts when human cultural memory is compressed into continuous latent vector spaces.&rdquo;
+        <p className="text-base sm:text-lg text-stone-800 dark:text-stone-200 font-serif-title italic leading-relaxed max-w-2xl border-l-2 border-stone-300 dark:border-stone-700 pl-4 py-0.5">
+          &ldquo;{siteConfig.statement}&rdquo;
         </p>
 
         <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed font-sans max-w-2xl">
           {siteConfig.bio}
         </p>
+
+        {/* Focus Pillars */}
+        <div className="flex flex-wrap gap-1.5 pt-1">
+          {siteConfig.focusAreas.map((area) => (
+            <span
+              key={area}
+              className="text-[11px] font-mono-meta px-2 py-0.5 rounded border border-stone-200 dark:border-stone-800 bg-stone-100/60 dark:bg-stone-900/60 text-stone-700 dark:text-stone-300"
+            >
+              {area}
+            </span>
+          ))}
+        </div>
 
         <div className="flex flex-wrap items-center gap-4 text-xs font-mono-meta pt-1">
           <Link
@@ -45,6 +60,13 @@ export default function Home() {
           >
             <FileText className="w-3.5 h-3.5" />
             <span>View CV</span>
+          </Link>
+          <Link
+            href="/work"
+            className="flex items-center gap-1 px-3 py-1.5 rounded border border-stone-300 dark:border-stone-700 hover:border-stone-900 dark:hover:border-stone-200 text-stone-800 dark:text-stone-200 transition-colors"
+          >
+            <span>Explore Systems</span>
+            <ArrowRight className="w-3.5 h-3.5" />
           </Link>
           <a
             href={siteConfig.github}

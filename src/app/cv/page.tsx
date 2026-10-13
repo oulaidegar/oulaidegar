@@ -165,39 +165,57 @@ export default function CVPage() {
             Competencies & Skills
           </h3>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
             <div>
-              <span className="font-medium text-stone-800 dark:text-stone-200 block mb-1">
-                Machine Learning & AI:
+              <span className="font-medium text-stone-900 dark:text-stone-100 block mb-1">
+                Democratic & Civic AI:
               </span>
-              <p className="text-stone-600 dark:text-stone-400 font-mono-meta text-[11px]">
-                {cvData.skills.machineLearning.join(", ")}
+              <p className="text-stone-600 dark:text-stone-400 font-mono-meta text-[11px] leading-relaxed">
+                {cvData.skills.democraticCivicAI.join(", ")}
               </p>
             </div>
 
             <div>
-              <span className="font-medium text-stone-800 dark:text-stone-200 block mb-1">
+              <span className="font-medium text-stone-900 dark:text-stone-100 block mb-1">
+                AI Ethics & Algorithmic Auditing:
+              </span>
+              <p className="text-stone-600 dark:text-stone-400 font-mono-meta text-[11px] leading-relaxed">
+                {cvData.skills.aiEthicsAuditing.join(", ")}
+              </p>
+            </div>
+
+            <div>
+              <span className="font-medium text-stone-900 dark:text-stone-100 block mb-1">
+                Creative Technology & Speculative UI:
+              </span>
+              <p className="text-stone-600 dark:text-stone-400 font-mono-meta text-[11px] leading-relaxed">
+                {cvData.skills.creativeTechnology.join(", ")}
+              </p>
+            </div>
+
+            <div>
+              <span className="font-medium text-stone-900 dark:text-stone-100 block mb-1">
                 Cultural Data & Standards:
               </span>
-              <p className="text-stone-600 dark:text-stone-400 font-mono-meta text-[11px]">
-                {cvData.skills.culturalData.join(", ")}
+              <p className="text-stone-600 dark:text-stone-400 font-mono-meta text-[11px] leading-relaxed">
+                {cvData.skills.culturalDataStandards.join(", ")}
               </p>
             </div>
 
             <div>
-              <span className="font-medium text-stone-800 dark:text-stone-200 block mb-1">
-                Programming & Tools:
+              <span className="font-medium text-stone-900 dark:text-stone-100 block mb-1">
+                Engineering Stack:
               </span>
-              <p className="text-stone-600 dark:text-stone-400 font-mono-meta text-[11px]">
-                {cvData.skills.programming.join(", ")}
+              <p className="text-stone-600 dark:text-stone-400 font-mono-meta text-[11px] leading-relaxed">
+                {cvData.skills.engineeringStack.join(", ")}
               </p>
             </div>
 
             <div>
-              <span className="font-medium text-stone-800 dark:text-stone-200 block mb-1">
+              <span className="font-medium text-stone-900 dark:text-stone-100 block mb-1">
                 Languages:
               </span>
-              <p className="text-stone-600 dark:text-stone-400 font-mono-meta text-[11px]">
+              <p className="text-stone-600 dark:text-stone-400 font-mono-meta text-[11px] leading-relaxed">
                 {cvData.skills.languages.join(", ")}
               </p>
             </div>

@@ -49,6 +49,33 @@ export default function ThesisPage() {
         </div>
       </section>
 
+      {/* Core Research Pillars */}
+      {thesisData.pillars && (
+        <section className="space-y-3">
+          <h2 className="font-mono-meta text-xs uppercase tracking-wider text-stone-400 dark:text-stone-500 font-semibold">
+            Pillars of Inquiry
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {thesisData.pillars.map((pillar, i) => (
+              <div
+                key={i}
+                className="p-4 rounded border border-stone-200 dark:border-stone-800 bg-[#faf9f6] dark:bg-[#121110] space-y-1.5"
+              >
+                <div className="font-mono-meta text-[11px] text-stone-400 dark:text-stone-500 font-medium">
+                  Pillar 0{i + 1}
+                </div>
+                <h3 className="font-serif-title text-base text-stone-900 dark:text-stone-100">
+                  {pillar.title}
+                </h3>
+                <p className="text-xs text-stone-600 dark:text-stone-400 font-sans leading-relaxed">
+                  {pillar.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* Core Research Questions */}
       <section className="space-y-3">
         <h2 className="font-mono-meta text-xs uppercase tracking-wider text-stone-400 dark:text-stone-500 font-semibold">
