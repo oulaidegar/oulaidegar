@@ -4,14 +4,16 @@ import { projects } from "@/data/projects";
 import { posts } from "@/data/posts";
 import { notes } from "@/data/notes";
 import { initialPhotos } from "@/data/photos";
+import { recommendations } from "@/data/recommendations";
 import { ArrowUpRight, ArrowRight, FileText } from "lucide-react";
-import { GithubIcon } from "@/components/Icons";
+import { SubstackIcon, SpotifyIcon } from "@/components/Icons";
 
 export default function Home() {
   const featuredProjects = projects.filter((p) => p.featured).slice(0, 4);
   const recentPosts = posts.slice(0, 3);
   const recentNotes = notes.slice(0, 3);
   const previewPhotos = initialPhotos.slice(0, 3);
+  const featuredRecs = recommendations.filter((r) => r.featured).slice(0, 3);
 
   return (
     <div className="space-y-20 sm:space-y-24">
@@ -70,13 +72,22 @@ export default function Home() {
             <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
           </Link>
           <a
-            href={siteConfig.github}
+            href={siteConfig.substack}
             target="_blank"
             rel="noopener noreferrer"
             className="text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100 flex items-center gap-1 transition-colors"
           >
-            <GithubIcon className="w-3.5 h-3.5" />
-            <span>GitHub</span>
+            <SubstackIcon className="w-3.5 h-3.5" />
+            <span>Substack</span>
+          </a>
+          <a
+            href={siteConfig.spotify}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100 flex items-center gap-1 transition-colors"
+          >
+            <SpotifyIcon className="w-3.5 h-3.5" />
+            <span>Spotify</span>
           </a>
         </div>
       </section>
@@ -173,43 +184,45 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Writing / Essays - Clean Literary Index */}
-      <section className="space-y-6 pt-4 border-t border-stone-200/80 dark:border-stone-800/80">
-        <div className="flex items-baseline justify-between">
-          <h2 className="font-mono-meta text-xs uppercase tracking-wider text-stone-400 dark:text-stone-500">
-            Essays & Writings
-          </h2>
-          <Link
-            href="/writing"
-            className="text-xs font-mono-meta text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100 flex items-center gap-1 group"
-          >
-            <span>All essays ({posts.length})</span>
-            <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
-          </Link>
-        </div>
-
-        <div className="divide-y divide-stone-200/60 dark:divide-stone-800/60">
-          {recentPosts.map((post) => (
+      {/* Writing / Essays - Clean Literary Index (renders once user publishes essays) */}
+      {recentPosts.length > 0 && (
+        <section className="space-y-6 pt-4 border-t border-stone-200/80 dark:border-stone-800/80">
+          <div className="flex items-baseline justify-between">
+            <h2 className="font-mono-meta text-xs uppercase tracking-wider text-stone-400 dark:text-stone-500">
+              Essays & Writings
+            </h2>
             <Link
-              key={post.slug}
-              href={`/writing/${post.slug}`}
-              className="group block py-4.5 transition-colors"
+              href="/writing"
+              className="text-xs font-mono-meta text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100 flex items-center gap-1 group"
             >
-              <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 mb-1">
-                <h3 className="font-serif-title text-lg sm:text-xl text-stone-900 dark:text-stone-100 group-hover:text-stone-600 dark:group-hover:text-stone-300 transition-colors">
-                  {post.title}
-                </h3>
-                <span className="text-[11px] font-mono-meta text-stone-400 dark:text-stone-500 shrink-0">
-                  {post.date}
-                </span>
-              </div>
-              <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 line-clamp-2 leading-relaxed font-sans">
-                {post.summary}
-              </p>
+              <span>All essays ({posts.length})</span>
+              <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
             </Link>
-          ))}
-        </div>
-      </section>
+          </div>
+
+          <div className="divide-y divide-stone-200/60 dark:divide-stone-800/60">
+            {recentPosts.map((post) => (
+              <Link
+                key={post.slug}
+                href={`/writing/${post.slug}`}
+                className="group block py-4.5 transition-colors"
+              >
+                <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 mb-1">
+                  <h3 className="font-serif-title text-lg sm:text-xl text-stone-900 dark:text-stone-100 group-hover:text-stone-600 dark:group-hover:text-stone-300 transition-colors">
+                    {post.title}
+                  </h3>
+                  <span className="text-[11px] font-mono-meta text-stone-400 dark:text-stone-500 shrink-0">
+                    {post.date}
+                  </span>
+                </div>
+                <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 line-clamp-2 leading-relaxed font-sans">
+                  {post.summary}
+                </p>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Field Notes - Clean Stream */}
       <section className="space-y-6 pt-4 border-t border-stone-200/80 dark:border-stone-800/80">
@@ -259,12 +272,12 @@ export default function Home() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {previewPhotos.map((photo) => (
             <Link
               key={photo.id}
               href="/visuals"
-              className="group block aspect-[4/3] overflow-hidden bg-stone-100 dark:bg-stone-900 relative"
+              className="group block aspect-[4/3] max-w-sm overflow-hidden bg-stone-100 dark:bg-stone-900 relative"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -273,6 +286,43 @@ export default function Home() {
                 className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Curated Canon & Recommendations Strip */}
+      <section className="space-y-6 pt-4 border-t border-stone-200/80 dark:border-stone-800/80">
+        <div className="flex items-baseline justify-between">
+          <h2 className="font-mono-meta text-xs uppercase tracking-wider text-stone-400 dark:text-stone-500">
+            Curated Canon & Media
+          </h2>
+          <Link
+            href="/recommendations"
+            className="text-xs font-mono-meta text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100 flex items-center gap-1 group"
+          >
+            <span>All recommendations ({recommendations.length})</span>
+            <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {featuredRecs.map((rec) => (
+            <Link
+              key={rec.id}
+              href="/recommendations"
+              className="p-4 rounded-sm border border-stone-200/80 dark:border-stone-800/80 hover:border-stone-400 dark:hover:border-stone-600 bg-white/40 dark:bg-stone-900/30 space-y-2 transition-all block group"
+            >
+              <div className="flex items-center justify-between text-[10px] font-mono-meta text-stone-400">
+                <span>{rec.categoryLabel}</span>
+                {rec.subscribers && <span>{rec.subscribers} subs</span>}
+              </div>
+              <h3 className="font-serif-title text-base text-stone-900 dark:text-stone-100 group-hover:underline">
+                {rec.title}
+              </h3>
+              <p className="text-xs text-stone-600 dark:text-stone-400 font-sans line-clamp-3 leading-relaxed">
+                {rec.description}
+              </p>
             </Link>
           ))}
         </div>

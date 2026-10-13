@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { siteConfig } from "@/data/siteConfig";
 import { ArrowUpRight, Mail } from "lucide-react";
-import { GithubIcon, TwitterIcon } from "@/components/Icons";
+import { SpotifyIcon, SubstackIcon } from "@/components/Icons";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -20,29 +20,29 @@ export default function Footer() {
 
         <div className="flex flex-wrap items-center gap-4 text-xs">
           <a
-            href={siteConfig.github}
+            href={siteConfig.spotify}
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-stone-900 dark:hover:text-stone-100 flex items-center gap-1 transition-colors"
+            className="hover:text-stone-900 dark:hover:text-stone-100 flex items-center gap-1.5 transition-colors"
           >
-            <GithubIcon className="w-3.5 h-3.5" />
-            <span>GitHub</span>
+            <SpotifyIcon className="w-3.5 h-3.5" />
+            <span>Spotify</span>
           </a>
           <a
-            href={siteConfig.twitter}
+            href={siteConfig.substack}
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-stone-900 dark:hover:text-stone-100 flex items-center gap-1 transition-colors"
+            className="hover:text-stone-900 dark:hover:text-stone-100 flex items-center gap-1.5 transition-colors"
           >
-            <TwitterIcon className="w-3.5 h-3.5" />
-            <span>X</span>
+            <SubstackIcon className="w-3.5 h-3.5" />
+            <span>Substack</span>
           </a>
           <a
             href={`mailto:${siteConfig.email}`}
-            className="hover:text-stone-900 dark:hover:text-stone-100 flex items-center gap-1 transition-colors"
+            className="hover:text-stone-900 dark:hover:text-stone-100 flex items-center gap-1.5 transition-colors"
           >
             <Mail className="w-3.5 h-3.5" />
-            <span>Email</span>
+            <span>{siteConfig.email}</span>
           </a>
           <Link
             href="/cv"
@@ -50,6 +50,12 @@ export default function Footer() {
           >
             <span>CV</span>
             <ArrowUpRight className="w-3 h-3" />
+          </Link>
+          <Link
+            href="/play"
+            className="hover:text-stone-900 dark:hover:text-stone-100 flex items-center gap-0.5 transition-colors"
+          >
+            <span>Pong</span>
           </Link>
         </div>
       </div>

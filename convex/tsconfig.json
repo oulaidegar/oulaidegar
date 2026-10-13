@@ -6,6 +6,7 @@
     "moduleResolution": "NodeNext",
     "lib": ["ESNext"],
     "strict": true,
+    "noEmit": true,
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true
   },

@@ -8,8 +8,10 @@ export interface SiteConfig {
   bio: string;
   statement: string;
   email: string;
-  github: string;
-  twitter: string;
+  substack: string;
+  spotify: string;
+  github?: string;
+  twitter?: string;
   scholar?: string;
   location: string;
   status: string;
@@ -35,11 +37,10 @@ export const siteConfig: SiteConfig = {
   statement:
     "Access to technology is not the same as access to power. Artificial intelligence may lower the barriers to building, but the systems we depend on remain shaped by corporate interests, political institutions, and unequal access to resources. I'm interested in what technology makes possible, what it quietly constrains, and how we can build tools that expand human agency rather than reproduce existing dependencies.",
 
-  email: "hello@oulaidegar.com",
+  email: "oulaidegar@gmail.com",
 
-  // Add verified personal profile URLs when available.
-  github: "",
-  twitter: "",
+  substack: "https://substack.com/@oulaidegar?utm_source=user-menu",
+  spotify: "https://open.spotify.com/show/5XDjy78JWpnpbEgSOln3Qj?si=ae428a1436c74fbd",
 
   location: "Paris / Remote",
 
@@ -60,6 +61,7 @@ export const siteConfig: SiteConfig = {
     { name: "Writing", href: "/writing" },
     { name: "Notes", href: "/notes" },
     { name: "Visuals", href: "/visuals" },
+    { name: "Recs", href: "/recommendations" },
     { name: "CV", href: "/cv" },
   ],
 };

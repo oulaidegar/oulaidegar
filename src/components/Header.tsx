@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { siteConfig } from "@/data/siteConfig";
 import ThemeToggle from "./ThemeToggle";
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Gamepad2 } from "lucide-react";
 
 export default function Header() {
   const pathname = usePathname();
@@ -51,13 +51,31 @@ export default function Header() {
               </Link>
             );
           })}
-          <div className="pl-1.5 border-l border-stone-200 dark:border-stone-800 ml-1">
+          <div className="pl-1.5 border-l border-stone-200 dark:border-stone-800 ml-1 flex items-center gap-1">
+            <Link
+              href="/play"
+              title="Play Monastic Pong"
+              className={`p-1.5 rounded transition-colors ${
+                pathname === "/play"
+                  ? "text-stone-950 dark:text-white bg-stone-200/60 dark:bg-stone-800/70"
+                  : "text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100"
+              }`}
+            >
+              <Gamepad2 className="w-3.5 h-3.5" />
+            </Link>
             <ThemeToggle />
           </div>
         </nav>
 
         {/* Mobile controls */}
         <div className="flex sm:hidden items-center gap-1">
+          <Link
+            href="/play"
+            title="Play Monastic Pong"
+            className="p-1.5 text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100"
+          >
+            <Gamepad2 className="w-4 h-4" />
+          </Link>
           <ThemeToggle />
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

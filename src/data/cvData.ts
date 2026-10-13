@@ -12,7 +12,7 @@ export const cvData = {
   name: "oulaidegar",
   title:
     "Creative Technologist & Researcher | AI Ethics, Civic Technology & Digital Media",
-  email: "hello@oulaidegar.com",
+  email: "oulaidegar@gmail.com",
   website: "https://oulaidegar.com",
   github: "https://github.com",
   location: "Paris / Remote",

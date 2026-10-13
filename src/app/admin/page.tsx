@@ -4,7 +4,18 @@ import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@convex/_generated/api";
 import { Id } from "@convex/_generated/dataModel";
-import { Key, Lock, Unlock, Upload, Trash2, ArrowLeft, Loader2, Check } from "lucide-react";
+import {
+  Key,
+  Lock,
+  Unlock,
+  Upload,
+  Trash2,
+  ArrowLeft,
+  Loader2,
+  Check,
+  Folder as FolderIcon,
+  FolderPlus,
+} from "lucide-react";
 import Link from "next/link";
 
 export default function AdminPage() {
@@ -21,13 +32,23 @@ export default function AdminPage() {
   const [year, setYear] = useState(new Date().getFullYear().toString());
   const [camera, setCamera] = useState("");
   const [film, setFilm] = useState("");
+  const [targetFolderId, setTargetFolderId] = useState<Id<"folders"> | "">("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState("");
 
+  // New folder form
+  const [newFolderName, setNewFolderName] = useState("");
+  const [newFolderDesc, setNewFolderDesc] = useState("");
+
   const convexPhotos = useQuery(api.photos.list);
+  const convexFolders = useQuery(api.photos.listFolders);
+
   const generateUploadUrl = useMutation(api.photos.generateUploadUrl);
   const addPhotoMutation = useMutation(api.photos.addPhoto);
   const deletePhotoMutation = useMutation(api.photos.deletePhoto);
+  const createFolderMutation = useMutation(api.photos.createFolder);
+  const deleteFolderMutation = useMutation(api.photos.deleteFolder);
+  const movePhotoMutation = useMutation(api.photos.movePhoto);
 
   useEffect(() => {
     const saved = localStorage.getItem("oulaidegar_admin_secret");
@@ -73,6 +94,8 @@ export default function AdminPage() {
     setSuccessMsg("");
 
     try {
+      const folderParam = targetFolderId ? (targetFolderId as Id<"folders">) : undefined;
+
       if (selectedFile) {
         const uploadUrl = await generateUploadUrl({ adminSecret });
         const res = await fetch(uploadUrl, {
@@ -93,6 +116,7 @@ export default function AdminPage() {
           camera: camera || undefined,
           film: film || undefined,
           storageId,
+          folderId: folderParam,
         });
       } else {
         await addPhotoMutation({
@@ -104,6 +128,7 @@ export default function AdminPage() {
           camera: camera || undefined,
           film: film || undefined,
           url: imageUrl,
+          folderId: folderParam,
         });
       }
 
@@ -115,11 +140,40 @@ export default function AdminPage() {
       setFilm("");
       setSelectedFile(null);
       setImageUrl("");
+      setTargetFolderId("");
     } catch (err) {
       console.error(err);
       setErrorMsg(err instanceof Error ? err.message : "Upload failed.");
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleCreateFolder = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newFolderName.trim() || !adminSecret) return;
+    setErrorMsg("");
+    try {
+      await createFolderMutation({
+        adminSecret,
+        name: newFolderName,
+        description: newFolderDesc || undefined,
+      });
+      setSuccessMsg(`Created folder "${newFolderName}".`);
+      setNewFolderName("");
+      setNewFolderDesc("");
+    } catch (err) {
+      setErrorMsg(err instanceof Error ? err.message : "Failed to create folder.");
+    }
+  };
+
+  const handleDeleteFolder = async (id: Id<"folders">, name: string) => {
+    if (!confirm(`Delete folder "${name}"? Photos will be moved back to unorganized.`)) return;
+    try {
+      await deleteFolderMutation({ adminSecret, id });
+      setSuccessMsg(`Deleted folder "${name}".`);
+    } catch (err) {
+      setErrorMsg(err instanceof Error ? err.message : "Failed to delete folder.");
     }
   };
 
@@ -133,13 +187,22 @@ export default function AdminPage() {
     }
   };
 
+  const handleMovePhoto = async (photoId: Id<"photos">, folderId?: Id<"folders">) => {
+    try {
+      await movePhotoMutation({ adminSecret, photoId, folderId });
+      setSuccessMsg("Updated photo folder.");
+    } catch (err) {
+      setErrorMsg(err instanceof Error ? err.message : "Failed to move photo.");
+    }
+  };
+
   return (
     <div className="space-y-10 max-w-xl mx-auto">
       {/* Header */}
       <div className="flex items-center justify-between pb-4 border-b border-stone-200/80 dark:border-stone-800/80">
         <div className="flex items-center gap-2">
           <Link
-            href="/"
+            href="/visuals"
             className="text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -168,7 +231,7 @@ export default function AdminPage() {
               Authentication Required
             </h2>
             <p className="text-xs text-stone-500 font-mono-meta">
-              Enter your secret admin passphrase to unlock uploads and management.
+              Enter your secret admin passphrase to unlock uploads, folders, and management.
             </p>
           </div>
 
@@ -207,13 +270,90 @@ export default function AdminPage() {
             </div>
           )}
 
+          {/* Create Folder Section */}
+          <section className="space-y-3 p-5 rounded-sm border border-stone-200 dark:border-stone-800 bg-[#faf8f5] dark:bg-[#161514]">
+            <h2 className="font-serif-title text-xl text-stone-900 dark:text-stone-100 flex items-center gap-2">
+              <FolderPlus className="w-4 h-4 text-stone-500" />
+              <span>Create New Folder</span>
+            </h2>
+
+            <form onSubmit={handleCreateFolder} className="space-y-3 font-mono-meta text-xs">
+              <input
+                type="text"
+                required
+                placeholder="Folder name (e.g. Paris 2024, Architecture)..."
+                value={newFolderName}
+                onChange={(e) => setNewFolderName(e.target.value)}
+                className="w-full px-3 py-1.5 rounded-xs border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 focus:outline-none"
+              />
+              <input
+                type="text"
+                placeholder="Optional description..."
+                value={newFolderDesc}
+                onChange={(e) => setNewFolderDesc(e.target.value)}
+                className="w-full px-3 py-1.5 rounded-xs border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 focus:outline-none"
+              />
+              <button
+                type="submit"
+                className="px-3 py-1.5 rounded-xs bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 font-medium cursor-pointer"
+              >
+                Create Folder
+              </button>
+            </form>
+
+            {convexFolders && convexFolders.length > 0 && (
+              <div className="pt-2 border-t border-stone-200 dark:border-stone-800 space-y-1.5 text-xs font-mono-meta">
+                <span className="text-stone-400">Existing folders:</span>
+                <div className="flex flex-wrap gap-2">
+                  {convexFolders.map((f) => (
+                    <span
+                      key={f._id}
+                      className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-xs bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300"
+                    >
+                      <span>{f.name} ({f.count})</span>
+                      <button
+                        onClick={() => handleDeleteFolder(f._id, f.name)}
+                        className="text-stone-400 hover:text-red-500 cursor-pointer"
+                        title="Delete folder"
+                      >
+                        &times;
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </section>
+
           {/* Upload Form */}
           <section className="space-y-4 p-5 rounded-sm border border-stone-200 dark:border-stone-800 bg-[#faf8f5] dark:bg-[#161514]">
-            <h2 className="font-serif-title text-xl text-stone-900 dark:text-stone-100">
-              Upload New Photograph
+            <h2 className="font-serif-title text-xl text-stone-900 dark:text-stone-100 flex items-center gap-2">
+              <Upload className="w-4 h-4 text-stone-500" />
+              <span>Upload New Photograph</span>
             </h2>
 
             <form onSubmit={handleUploadPhoto} className="space-y-3 font-mono-meta text-xs">
+              {/* Destination folder */}
+              {convexFolders && convexFolders.length > 0 && (
+                <div>
+                  <label className="block text-stone-600 dark:text-stone-400 mb-1">
+                    Destination Folder
+                  </label>
+                  <select
+                    value={targetFolderId}
+                    onChange={(e) => setTargetFolderId(e.target.value as any)}
+                    className="w-full px-3 py-1.5 rounded-xs border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 focus:outline-none"
+                  >
+                    <option value="">None (Unsorted Stream on Left)</option>
+                    {convexFolders.map((f) => (
+                      <option key={f._id} value={f._id}>
+                        {f.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+
               <div>
                 <label className="block text-stone-600 dark:text-stone-400 mb-1">
                   Choose Photo File
@@ -266,9 +406,7 @@ export default function AdminPage() {
               </div>
 
               <div>
-                <label className="block text-stone-600 dark:text-stone-400 mb-1">
-                  Caption
-                </label>
+                <label className="block text-stone-600 dark:text-stone-400 mb-1">Caption</label>
                 <textarea
                   rows={2}
                   value={caption}
@@ -336,34 +474,60 @@ export default function AdminPage() {
               {convexPhotos?.length === 0 ? (
                 <div className="py-4 text-stone-400">No photos in Convex yet.</div>
               ) : (
-                convexPhotos?.map((p) => (
-                  <div key={p._id} className="py-3 flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-3 truncate">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={p.url}
-                        alt={p.title}
-                        className="w-10 h-10 object-cover rounded-xs shrink-0"
-                      />
-                      <div className="truncate">
-                        <div className="text-stone-900 dark:text-stone-100 font-medium truncate">
-                          {p.title}
-                        </div>
-                        <div className="text-[10px] text-stone-400 truncate">
-                          {p.location} &bull; {p.year}
+                convexPhotos?.map((p) => {
+                  const assignedFolder = convexFolders?.find((f) => f._id === p.folderId);
+                  return (
+                    <div key={p._id} className="py-3 flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-3 truncate">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={p.url}
+                          alt={p.title}
+                          className="w-10 h-10 object-cover rounded-xs shrink-0"
+                        />
+                        <div className="truncate">
+                          <div className="text-stone-900 dark:text-stone-100 font-medium truncate">
+                            {p.title}
+                          </div>
+                          <div className="text-[10px] text-stone-400 truncate">
+                            {assignedFolder ? `Folder: ${assignedFolder.name}` : "Unsorted"} &bull; {p.location}
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    <button
-                      onClick={() => handleDeletePhoto(p._id, p.title)}
-                      className="text-stone-400 hover:text-red-500 p-1 cursor-pointer shrink-0"
-                      title="Delete photo"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                ))
+                      <div className="flex items-center gap-2 shrink-0">
+                        {/* Move folder select */}
+                        {convexFolders && convexFolders.length > 0 && (
+                          <select
+                            value={p.folderId || ""}
+                            onChange={(e) =>
+                              handleMovePhoto(
+                                p._id,
+                                e.target.value ? (e.target.value as Id<"folders">) : undefined
+                              )
+                            }
+                            className="text-[10px] px-1.5 py-0.5 rounded-xs border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900"
+                          >
+                            <option value="">Stream (Unsorted)</option>
+                            {convexFolders.map((f) => (
+                              <option key={f._id} value={f._id}>
+                                {f.name}
+                              </option>
+                            ))}
+                          </select>
+                        )}
+
+                        <button
+                          onClick={() => handleDeletePhoto(p._id, p.title)}
+                          className="text-stone-400 hover:text-red-500 p-1 cursor-pointer"
+                          title="Delete photo"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })
               )}
             </div>
           </section>
