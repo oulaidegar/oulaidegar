@@ -1,14 +1,22 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useQuery, useMutation } from "convex/react";
+import { api } from "../../convex/_generated/api";
+import { Id } from "../../convex/_generated/dataModel";
 import { initialPhotos, Photo } from "@/data/photos";
 import PhotoLightbox from "./PhotoLightbox";
-import { Plus, Upload, Trash2, Camera, Info, X } from "lucide-react";
+import { Plus, Trash2, Camera, Info, X, Cloud, Loader2 } from "lucide-react";
 
 export default function PhotoGallery() {
-  const [photos, setPhotos] = useState<Photo[]>(initialPhotos);
+  const convexPhotos = useQuery(api.photos.list);
+  const generateUploadUrl = useMutation(api.photos.generateUploadUrl);
+  const addPhotoMutation = useMutation(api.photos.addPhoto);
+  const deletePhotoMutation = useMutation(api.photos.deletePhoto);
+
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState<number | null>(null);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Form state
   const [title, setTitle] = useState("");
@@ -18,54 +26,56 @@ export default function PhotoGallery() {
   const [camera, setCamera] = useState("");
   const [film, setFilm] = useState("");
   const [aspectRatio, setAspectRatio] = useState<"portrait" | "landscape" | "square">("landscape");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState("");
+  const [previewUrl, setPreviewUrl] = useState("");
   const [uploadError, setUploadError] = useState("");
 
-  // Load custom photos from localStorage on client mount
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem("oulaidegar_user_photos");
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setPhotos([...parsed, ...initialPhotos]);
-        }
-      }
-    } catch (e) {
-      console.error("Could not load photos from storage:", e);
-    }
-  }, []);
+  // Merge live Convex photos with initial curated archive
+  // Convex photos appear first
+  const displayPhotos: (Photo & { _id?: Id<"photos">; isConvex?: boolean })[] = [
+    ...(convexPhotos || []).map((p) => ({
+      id: p._id,
+      _id: p._id,
+      url: p.url,
+      title: p.title,
+      caption: p.caption || "",
+      location: p.location || "Archive",
+      year: p.year || "",
+      camera: p.camera,
+      film: p.film,
+      aspectRatio: (p.aspectRatio as "portrait" | "landscape" | "square") || "landscape",
+      isConvex: true,
+    })),
+    ...initialPhotos,
+  ];
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUploadError("");
     const file = e.target.files?.[0];
     if (!file) return;
 
     if (!file.type.startsWith("image/")) {
-      setUploadError("Please select a valid image file (JPEG, PNG, WebP).");
+      setUploadError("Please select an image file (JPEG, PNG, WebP).");
       return;
     }
 
-    if (file.size > 8 * 1024 * 1024) {
-      setUploadError("File size exceeds 8MB. Please choose a smaller image.");
+    if (file.size > 15 * 1024 * 1024) {
+      setUploadError("File size exceeds 15MB.");
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const result = event.target?.result as string;
-      setImageUrl(result);
-      if (!title) {
-        setTitle(file.name.replace(/\.[^/.]+$/, ""));
-      }
-    };
-    reader.readAsDataURL(file);
+    setSelectedFile(file);
+    setPreviewUrl(URL.createObjectURL(file));
+    if (!title) {
+      setTitle(file.name.replace(/\.[^/.]+$/, ""));
+    }
   };
 
-  const handleSavePhoto = (e: React.FormEvent) => {
+  const handleSavePhoto = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!imageUrl) {
-      setUploadError("Please provide an image file or direct URL.");
+    if (!selectedFile && !imageUrl) {
+      setUploadError("Please choose an image file or provide an image URL.");
       return;
     }
     if (!title) {
@@ -73,103 +83,145 @@ export default function PhotoGallery() {
       return;
     }
 
-    const newPhoto: Photo = {
-      id: "user-" + Date.now(),
-      url: imageUrl,
-      title,
-      caption: caption || title,
-      location: location || "Archive",
-      year: year || new Date().getFullYear().toString(),
-      aspectRatio,
-      camera: camera || undefined,
-      film: film || undefined,
-    };
-
-    const updated = [newPhoto, ...photos];
-    setPhotos(updated);
-
-    // Save user uploaded photos
-    try {
-      const stored = localStorage.getItem("oulaidegar_user_photos");
-      const currentList: Photo[] = stored ? JSON.parse(stored) : [];
-      localStorage.setItem(
-        "oulaidegar_user_photos",
-        JSON.stringify([newPhoto, ...currentList])
-      );
-    } catch (err) {
-      console.error("Error saving photo to local storage:", err);
-    }
-
-    // Reset form
-    setTitle("");
-    setCaption("");
-    setLocation("");
-    setCamera("");
-    setFilm("");
-    setImageUrl("");
+    setIsSubmitting(true);
     setUploadError("");
-    setIsUploadOpen(false);
+
+    try {
+      if (selectedFile) {
+        // Step 1: Request temporary upload URL from Convex Storage
+        const uploadUrl = await generateUploadUrl();
+
+        // Step 2: POST the raw file directly to Convex storage
+        const response = await fetch(uploadUrl, {
+          method: "POST",
+          headers: { "Content-Type": selectedFile.type },
+          body: selectedFile,
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to upload image to Convex storage.");
+        }
+
+        const { storageId } = await response.json();
+
+        // Step 3: Insert photo document into Convex database
+        await addPhotoMutation({
+          title,
+          caption: caption || undefined,
+          location: location || undefined,
+          year: year || undefined,
+          camera: camera || undefined,
+          film: film || undefined,
+          storageId,
+          aspectRatio,
+        });
+      } else {
+        // Direct URL insertion
+        await addPhotoMutation({
+          title,
+          caption: caption || undefined,
+          location: location || undefined,
+          year: year || undefined,
+          camera: camera || undefined,
+          film: film || undefined,
+          url: imageUrl,
+          aspectRatio,
+        });
+      }
+
+      // Reset form and close
+      setTitle("");
+      setCaption("");
+      setLocation("");
+      setCamera("");
+      setFilm("");
+      setSelectedFile(null);
+      setImageUrl("");
+      setPreviewUrl("");
+      setIsUploadOpen(false);
+    } catch (err: unknown) {
+      console.error("Convex upload error:", err);
+      const msg = err instanceof Error ? err.message : "Failed to save photo to Convex.";
+      setUploadError(msg);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const clearCustomPhotos = () => {
-    if (confirm("Reset gallery back to default photographs?")) {
-      localStorage.removeItem("oulaidegar_user_photos");
-      setPhotos(initialPhotos);
+  const handleDeletePhoto = async (photo: typeof displayPhotos[0], e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!photo._id) return;
+    if (confirm(`Delete "${photo.title}" from Convex storage?`)) {
+      try {
+        await deletePhotoMutation({ id: photo._id });
+        if (selectedPhotoIndex !== null) setSelectedPhotoIndex(null);
+      } catch (err) {
+        console.error("Failed to delete photo:", err);
+      }
     }
   };
 
   const currentPhoto =
-    selectedPhotoIndex !== null ? photos[selectedPhotoIndex] : null;
+    selectedPhotoIndex !== null ? displayPhotos[selectedPhotoIndex] : null;
 
   return (
     <div className="space-y-6">
       {/* Top Action Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-stone-200 dark:border-stone-800">
-        <div className="text-xs font-mono-meta text-stone-500 dark:text-stone-400">
-          Visual Archive &bull; {photos.length} photos
-        </div>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => setIsUploadOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono-meta rounded border border-stone-300 dark:border-stone-700 hover:border-stone-900 dark:hover:border-stone-300 text-stone-800 dark:text-stone-200 transition-colors"
-          >
-            <Plus className="w-3.5 h-3.5" />
-            <span>Upload Picture</span>
-          </button>
-          {photos.length > initialPhotos.length && (
-            <button
-              onClick={clearCustomPhotos}
-              title="Reset uploaded pictures"
-              className="p-1.5 text-xs font-mono-meta text-stone-400 hover:text-red-500 rounded transition-colors"
-            >
-              <Trash2 className="w-3.5 h-3.5" />
-            </button>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-stone-200/80 dark:border-stone-800/80">
+        <div className="flex items-center gap-2 text-xs font-mono-meta text-stone-500 dark:text-stone-400">
+          <Cloud className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+          <span>Convex Real-Time Backend &bull; {displayPhotos.length} photos</span>
+          {convexPhotos === undefined && (
+            <span className="text-[10px] text-stone-400 animate-pulse">(connecting...)</span>
           )}
         </div>
+
+        <button
+          onClick={() => setIsUploadOpen(true)}
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono-meta rounded-sm bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 hover:opacity-90 transition-opacity self-start sm:self-auto cursor-pointer"
+        >
+          <Plus className="w-3.5 h-3.5" />
+          <span>Upload Picture to Convex</span>
+        </button>
       </div>
 
       {/* Grid of Photos */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {photos.map((photo, index) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {displayPhotos.map((photo, index) => (
           <div
-            key={photo.id}
+            key={photo.id || index}
             onClick={() => setSelectedPhotoIndex(index)}
-            className="group cursor-pointer rounded-sm overflow-hidden bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-stone-800/80 transition-all hover:border-stone-400 dark:hover:border-stone-600"
+            className="group cursor-pointer space-y-2"
           >
-            <div className="aspect-[4/3] w-full overflow-hidden relative">
+            <div className="aspect-[4/3] w-full overflow-hidden bg-stone-100 dark:bg-stone-900 relative">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={photo.url}
                 alt={photo.title}
                 loading="lazy"
-                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                className="w-full h-full object-cover transition-all duration-500 grayscale hover:grayscale-0 group-hover:scale-105"
               />
+              {photo.isConvex && (
+                <div className="absolute top-2 left-2 px-1.5 py-0.5 rounded-xs bg-black/70 backdrop-blur-xs text-[9px] font-mono-meta text-emerald-300">
+                  convex
+                </div>
+              )}
+              {photo._id && (
+                <button
+                  onClick={(e) => handleDeletePhoto(photo, e)}
+                  title="Delete photo from Convex"
+                  className="absolute top-2 right-2 p-1.5 rounded-xs bg-black/60 text-stone-300 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                </button>
+              )}
             </div>
-            <div className="p-2.5 bg-[#faf9f6] dark:bg-[#161514] font-mono-meta">
-              <div className="text-xs text-stone-900 dark:text-stone-100 truncate font-medium">
+
+            <div className="space-y-0.5">
+              <div className="text-xs font-serif-title text-stone-900 dark:text-stone-100 truncate group-hover:text-stone-600 dark:group-hover:text-stone-300 transition-colors font-medium">
                 {photo.title}
               </div>
-              <div className="text-[11px] text-stone-500 dark:text-stone-400 flex justify-between items-center mt-1">
+              <div className="text-[11px] font-mono-meta text-stone-400 dark:text-stone-500 flex justify-between items-center">
                 <span className="truncate pr-2">{photo.location}</span>
                 <span>{photo.year}</span>
               </div>
@@ -184,26 +236,31 @@ export default function PhotoGallery() {
         onClose={() => setSelectedPhotoIndex(null)}
         onPrev={() =>
           setSelectedPhotoIndex((prev) =>
-            prev !== null && prev > 0 ? prev - 1 : photos.length - 1
+            prev !== null && prev > 0 ? prev - 1 : displayPhotos.length - 1
           )
         }
         onNext={() =>
           setSelectedPhotoIndex((prev) =>
-            prev !== null && prev < photos.length - 1 ? prev + 1 : 0
+            prev !== null && prev < displayPhotos.length - 1 ? prev + 1 : 0
           )
         }
-        hasPrev={photos.length > 1}
-        hasNext={photos.length > 1}
+        hasPrev={displayPhotos.length > 1}
+        hasNext={displayPhotos.length > 1}
       />
 
       {/* Upload Picture Modal */}
       {isUploadOpen && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#faf9f6] dark:bg-[#161514] border border-stone-300 dark:border-stone-700 rounded-lg max-w-lg w-full p-6 shadow-2xl space-y-4">
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-[#faf8f5] dark:bg-[#161514] border border-stone-300 dark:border-stone-800 rounded-sm max-w-lg w-full p-6 shadow-2xl space-y-5">
             <div className="flex items-center justify-between border-b border-stone-200 dark:border-stone-800 pb-3">
-              <h3 className="font-serif-title text-xl text-stone-900 dark:text-stone-100">
-                Upload New Picture
-              </h3>
+              <div>
+                <h3 className="font-serif-title text-xl text-stone-900 dark:text-stone-100">
+                  Upload Picture to Convex Storage
+                </h3>
+                <p className="text-[11px] font-mono-meta text-stone-500 dark:text-stone-400 mt-0.5">
+                  Stored directly in Convex cloud storage and indexed in real-time.
+                </p>
+              </div>
               <button
                 onClick={() => setIsUploadOpen(false)}
                 className="text-stone-400 hover:text-stone-700 dark:hover:text-stone-200"
@@ -219,37 +276,41 @@ export default function PhotoGallery() {
                 </div>
               )}
 
-              {/* File upload or URL */}
+              {/* File upload input */}
               <div>
                 <label className="block text-stone-700 dark:text-stone-300 mb-1">
-                  Choose Image File
+                  Choose Photo File
                 </label>
                 <input
                   type="file"
                   accept="image/*"
-                  onChange={handleFileUpload}
-                  className="w-full text-stone-500 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border file:border-stone-300 dark:file:border-stone-700 file:text-xs file:bg-stone-100 dark:file:bg-stone-800 file:text-stone-800 dark:file:text-stone-200 hover:file:bg-stone-200 cursor-pointer"
+                  onChange={handleFileChange}
+                  className="w-full text-stone-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-xs file:border file:border-stone-300 dark:file:border-stone-700 file:text-xs file:bg-stone-100 dark:file:bg-stone-800 file:text-stone-800 dark:file:text-stone-200 hover:file:bg-stone-200 cursor-pointer"
                 />
               </div>
 
+              {/* Or direct URL */}
               <div>
                 <label className="block text-stone-700 dark:text-stone-300 mb-1">
-                  Or Image URL
+                  Or External Image URL
                 </label>
                 <input
                   type="url"
-                  placeholder="https://example.com/photo.jpg"
+                  placeholder="https://..."
                   value={imageUrl}
-                  onChange={(e) => setImageUrl(e.target.value)}
-                  className="w-full px-3 py-1.5 rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-1 focus:ring-stone-500"
+                  onChange={(e) => {
+                    setImageUrl(e.target.value);
+                    setPreviewUrl(e.target.value);
+                  }}
+                  className="w-full px-3 py-1.5 rounded-xs border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 focus:outline-none"
                 />
               </div>
 
-              {imageUrl && (
-                <div className="w-full h-32 relative border border-stone-200 dark:border-stone-800 rounded overflow-hidden">
+              {previewUrl && (
+                <div className="w-full h-32 relative border border-stone-200 dark:border-stone-800 rounded-xs overflow-hidden">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={imageUrl}
+                    src={previewUrl}
                     alt="Preview"
                     className="w-full h-full object-cover"
                   />
@@ -264,10 +325,10 @@ export default function PhotoGallery() {
                   <input
                     type="text"
                     required
-                    placeholder="E.g. Monolith at Sunrise"
+                    placeholder="E.g. Monolithic Shadow"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    className="w-full px-3 py-1.5 rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-1 focus:ring-stone-500"
+                    className="w-full px-3 py-1.5 rounded-xs border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 focus:outline-none"
                   />
                 </div>
                 <div>
@@ -279,21 +340,21 @@ export default function PhotoGallery() {
                     placeholder="Paris, France"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
-                    className="w-full px-3 py-1.5 rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-1 focus:ring-stone-500"
+                    className="w-full px-3 py-1.5 rounded-xs border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 focus:outline-none"
                   />
                 </div>
               </div>
 
               <div>
                 <label className="block text-stone-700 dark:text-stone-300 mb-1">
-                  Caption / Description
+                  Caption
                 </label>
                 <textarea
                   rows={2}
-                  placeholder="Short reflection or context..."
+                  placeholder="Context or photographic reflection..."
                   value={caption}
                   onChange={(e) => setCaption(e.target.value)}
-                  className="w-full px-3 py-1.5 rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-1 focus:ring-stone-500"
+                  className="w-full px-3 py-1.5 rounded-xs border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 focus:outline-none"
                 />
               </div>
 
@@ -306,7 +367,7 @@ export default function PhotoGallery() {
                     type="text"
                     value={year}
                     onChange={(e) => setYear(e.target.value)}
-                    className="w-full px-2.5 py-1.5 rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 focus:outline-none"
+                    className="w-full px-2.5 py-1.5 rounded-xs border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 focus:outline-none"
                   />
                 </div>
                 <div>
@@ -315,10 +376,10 @@ export default function PhotoGallery() {
                   </label>
                   <input
                     type="text"
-                    placeholder="Leica / iPhone"
+                    placeholder="Leica M6"
                     value={camera}
                     onChange={(e) => setCamera(e.target.value)}
-                    className="w-full px-2.5 py-1.5 rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 focus:outline-none"
+                    className="w-full px-2.5 py-1.5 rounded-xs border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 focus:outline-none"
                   />
                 </div>
                 <div>
@@ -327,34 +388,36 @@ export default function PhotoGallery() {
                   </label>
                   <input
                     type="text"
-                    placeholder="Kodak Tri-X"
+                    placeholder="Tri-X 400"
                     value={film}
                     onChange={(e) => setFilm(e.target.value)}
-                    className="w-full px-2.5 py-1.5 rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 focus:outline-none"
+                    className="w-full px-2.5 py-1.5 rounded-xs border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 focus:outline-none"
                   />
                 </div>
               </div>
 
-              <div className="p-2.5 bg-stone-100 dark:bg-stone-800/50 rounded flex items-start gap-2 text-[11px] text-stone-500 dark:text-stone-400">
-                <Info className="w-4 h-4 shrink-0 mt-0.5" />
-                <span>
-                  Photos uploaded here persist immediately in your browser. To make photos permanent in the source code, drop files into <code>public/photos/</code> and add them to <code>src/data/photos.ts</code>.
-                </span>
-              </div>
-
-              <div className="flex justify-end gap-2 pt-2">
+              <div className="flex justify-end gap-2 pt-2 border-t border-stone-200 dark:border-stone-800">
                 <button
                   type="button"
                   onClick={() => setIsUploadOpen(false)}
-                  className="px-3 py-1.5 rounded border border-stone-300 dark:border-stone-700 text-stone-600 dark:text-stone-400 hover:text-stone-900"
+                  disabled={isSubmitting}
+                  className="px-3 py-1.5 rounded-xs border border-stone-300 dark:border-stone-700 text-stone-600 dark:text-stone-400 hover:text-stone-900 cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-1.5 rounded bg-stone-900 text-stone-50 dark:bg-stone-100 dark:text-stone-900 font-medium hover:opacity-90"
+                  disabled={isSubmitting}
+                  className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xs bg-stone-900 text-stone-50 dark:bg-stone-100 dark:text-stone-900 font-medium hover:opacity-90 cursor-pointer disabled:opacity-50"
                 >
-                  Add to Gallery
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      <span>Uploading to Convex...</span>
+                    </>
+                  ) : (
+                    <span>Save to Convex</span>
+                  )}
                 </button>
               </div>
             </form>

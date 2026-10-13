@@ -1,0 +1,13 @@
+{
+  /* This tsconfig is used for Convex functions code in the convex/ folder. */
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ESNext"],
+    "strict": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["./**/*"]
+}
