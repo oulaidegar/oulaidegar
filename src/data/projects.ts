@@ -113,5 +113,6 @@ export const projects: Project[] = [
       "Distinguishing measurable engagement, documented contributions, and verified outcomes rather than treating correlation as proof of causal impact.",
       "Currently in development; proposed capabilities are not presented as completed or validated features.",
     ],
+
   },
 ];
