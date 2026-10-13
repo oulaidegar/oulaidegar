@@ -4,201 +4,206 @@ import { projects } from "@/data/projects";
 import { posts } from "@/data/posts";
 import { notes } from "@/data/notes";
 import { initialPhotos } from "@/data/photos";
-import ThesisHighlight from "@/components/ThesisHighlight";
-import { ArrowUpRight, ArrowRight, Mail, FileText } from "lucide-react";
+import { ArrowUpRight, ArrowRight, FileText } from "lucide-react";
 import { GithubIcon } from "@/components/Icons";
 
 export default function Home() {
-  const featuredProjects = projects.filter((p) => p.featured).slice(0, 3);
+  const featuredProjects = projects.filter((p) => p.featured).slice(0, 4);
   const recentPosts = posts.slice(0, 3);
   const recentNotes = notes.slice(0, 3);
   const previewPhotos = initialPhotos.slice(0, 3);
 
   return (
-    <div className="space-y-16">
-      {/* Intro Hero Section */}
-      <section className="space-y-6">
-        <div className="space-y-2">
-          <div className="flex flex-wrap items-center gap-2 text-xs font-mono-meta text-stone-500 dark:text-stone-400">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-            <span>{siteConfig.role}</span>
-            <span>&bull;</span>
+    <div className="space-y-20 sm:space-y-24">
+      {/* Editorial Hero */}
+      <section className="space-y-6 pt-4 sm:pt-8">
+        <div className="space-y-3">
+          <div className="flex items-center gap-2.5 text-xs font-mono-meta text-stone-500 dark:text-stone-400">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
             <span>{siteConfig.location}</span>
+            <span>&bull;</span>
+            <span>{siteConfig.role}</span>
           </div>
-          <h1 className="font-serif-title text-3xl sm:text-4xl text-stone-900 dark:text-stone-100 font-normal tracking-tight">
+
+          <h1 className="font-serif-title text-4xl sm:text-5xl lg:text-6xl text-stone-900 dark:text-stone-100 font-normal tracking-tight leading-[1.08]">
             {siteConfig.name}
           </h1>
-          <p className="text-xs font-mono-meta text-stone-500 dark:text-stone-400">
-            {siteConfig.status}
-          </p>
         </div>
 
-        <p className="text-base sm:text-lg text-stone-800 dark:text-stone-200 font-serif-title italic leading-relaxed max-w-2xl border-l-2 border-stone-300 dark:border-stone-700 pl-4 py-0.5">
+        <p className="text-lg sm:text-xl text-stone-800 dark:text-stone-200 font-serif-title italic leading-relaxed max-w-2xl border-l-2 border-stone-300 dark:border-stone-700 pl-4 py-0.5">
           &ldquo;{siteConfig.statement}&rdquo;
         </p>
 
-        <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed font-sans max-w-2xl">
+        <p className="text-sm sm:text-base text-stone-600 dark:text-stone-400 leading-relaxed font-sans max-w-2xl">
           {siteConfig.bio}
         </p>
 
-        {/* Focus Pillars */}
-        <div className="flex flex-wrap gap-1.5 pt-1">
-          {siteConfig.focusAreas.map((area) => (
-            <span
-              key={area}
-              className="text-[11px] font-mono-meta px-2 py-0.5 rounded border border-stone-200 dark:border-stone-800 bg-stone-100/60 dark:bg-stone-900/60 text-stone-700 dark:text-stone-300"
-            >
-              {area}
+        {/* Focus Areas as subtle text tags */}
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs font-mono-meta text-stone-500 dark:text-stone-400 pt-1">
+          <span className="text-stone-400 dark:text-stone-600">Focus:</span>
+          {siteConfig.focusAreas.map((area, i) => (
+            <span key={area} className="flex items-center gap-2">
+              <span className="hover:text-stone-900 dark:hover:text-stone-200 transition-colors">
+                {area}
+              </span>
+              {i < siteConfig.focusAreas.length - 1 && (
+                <span className="text-stone-300 dark:text-stone-700">&bull;</span>
+              )}
             </span>
           ))}
         </div>
 
-        <div className="flex flex-wrap items-center gap-4 text-xs font-mono-meta pt-1">
+        {/* Quiet Actions */}
+        <div className="flex flex-wrap items-center gap-5 text-xs font-mono-meta pt-2">
           <Link
             href="/cv"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 hover:opacity-90 transition-opacity font-medium"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-sm bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 font-medium hover:opacity-90 transition-opacity"
           >
             <FileText className="w-3.5 h-3.5" />
-            <span>View CV</span>
+            <span>Curriculum Vitae</span>
           </Link>
           <Link
-            href="/work"
-            className="flex items-center gap-1 px-3 py-1.5 rounded border border-stone-300 dark:border-stone-700 hover:border-stone-900 dark:hover:border-stone-200 text-stone-800 dark:text-stone-200 transition-colors"
+            href="/thesis"
+            className="text-stone-700 dark:text-stone-300 hover:text-stone-950 dark:hover:text-stone-100 flex items-center gap-1 group transition-colors editorial-link"
           >
-            <span>Explore Systems</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            <span>Master&apos;s Thesis</span>
+            <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
           </Link>
           <a
             href={siteConfig.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1 text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 transition-colors"
+            className="text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100 flex items-center gap-1 transition-colors"
           >
             <GithubIcon className="w-3.5 h-3.5" />
             <span>GitHub</span>
           </a>
-          <a
-            href={`mailto:${siteConfig.email}`}
-            className="flex items-center gap-1 text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 transition-colors"
-          >
-            <Mail className="w-3.5 h-3.5" />
-            <span>Contact</span>
-          </a>
         </div>
       </section>
 
-      {/* Featured Master's Thesis Spotlight */}
-      <ThesisHighlight />
+      {/* Featured Master's Thesis Section - Editorial Publication Style */}
+      <section className="space-y-4 pt-4 border-t border-stone-200/80 dark:border-stone-800/80">
+        <div className="flex items-baseline justify-between text-xs font-mono-meta text-stone-400 dark:text-stone-500">
+          <span className="uppercase tracking-wider">Research Focus</span>
+          <span>M.Sc. Cultural Data & AI &bull; 2024–2026</span>
+        </div>
 
-      {/* Featured Work / What I Built */}
-      <section className="space-y-6">
-        <div className="flex items-center justify-between pb-2 border-b border-stone-200 dark:border-stone-800">
-          <h2 className="font-serif-title text-xl text-stone-900 dark:text-stone-100">
-            Selected Works
+        <div className="space-y-3">
+          <h2 className="font-serif-title text-2xl sm:text-3xl text-stone-900 dark:text-stone-100 leading-snug">
+            Latent Assemblies: AI Ethics, Cultural Data, and the Democratic Politics of Collective Memory
+          </h2>
+          <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed font-sans max-w-2xl">
+            Investigating the epistemological consequences of applying multimodal foundation models to digitized public cultural heritage. Developing an open audit suite to evaluate cultural skew and proposing sovereign AI architectures for citizen assemblies.
+          </p>
+        </div>
+
+        <div className="pt-2">
+          <Link
+            href="/thesis"
+            className="inline-flex items-center gap-1.5 text-xs font-mono-meta font-medium text-stone-900 dark:text-stone-100 group editorial-link"
+          >
+            <span>Read full thesis proposal & methodologies</span>
+            <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+          </Link>
+        </div>
+      </section>
+
+      {/* Selected Works - Refined Typographic Index */}
+      <section className="space-y-6 pt-4 border-t border-stone-200/80 dark:border-stone-800/80">
+        <div className="flex items-baseline justify-between">
+          <h2 className="font-mono-meta text-xs uppercase tracking-wider text-stone-400 dark:text-stone-500">
+            Selected Works & Systems
           </h2>
           <Link
             href="/work"
-            className="text-xs font-mono-meta text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100 flex items-center gap-1"
+            className="text-xs font-mono-meta text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100 flex items-center gap-1 group"
           >
             <span>All projects ({projects.length})</span>
-            <ArrowRight className="w-3 h-3" />
+            <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
           </Link>
         </div>
 
-        <div className="space-y-4">
+        <div className="divide-y divide-stone-200/60 dark:divide-stone-800/60">
           {featuredProjects.map((project) => (
             <article
               key={project.id}
-              className="group p-4 rounded-md border border-stone-200/90 dark:border-stone-800/80 hover:border-stone-400 dark:hover:border-stone-600 transition-colors space-y-2 bg-[#faf9f6]/40 dark:bg-[#121110]/40"
+              className="group py-4.5 transition-colors flex flex-col sm:flex-row sm:items-baseline justify-between gap-2"
             >
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-semibold text-stone-900 dark:text-stone-100 font-mono-meta">
+              <div className="space-y-1 max-w-xl">
+                <div className="flex items-baseline gap-2.5">
+                  <h3 className="font-serif-title text-lg sm:text-xl text-stone-900 dark:text-stone-100 group-hover:text-stone-600 dark:group-hover:text-stone-300 transition-colors">
                     {project.title}
                   </h3>
-                  {project.metrics && (
-                    <span className="text-[10px] font-mono-meta px-1.5 py-0.5 rounded bg-stone-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300">
-                      {project.metrics}
-                    </span>
-                  )}
+                  <span className="text-[10px] font-mono-meta text-stone-400 dark:text-stone-500">
+                    {project.category}
+                  </span>
                 </div>
-                <div className="flex items-center gap-3 text-xs font-mono-meta text-stone-400 dark:text-stone-500">
-                  <span>{project.year}</span>
-                  {project.demo && (
-                    <a
-                      href={project.demo}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-stone-700 dark:text-stone-300 hover:underline flex items-center gap-0.5"
-                    >
-                      <span>demo</span>
-                      <ArrowUpRight className="w-3 h-3" />
-                    </a>
-                  )}
-                  {project.github && (
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-stone-700 dark:text-stone-300 hover:underline flex items-center gap-0.5"
-                    >
-                      <span>source</span>
-                      <ArrowUpRight className="w-3 h-3" />
-                    </a>
-                  )}
-                </div>
+                <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 leading-relaxed font-sans">
+                  {project.tagline}
+                </p>
               </div>
 
-              <p className="text-xs text-stone-600 dark:text-stone-400 leading-relaxed font-sans">
-                {project.description}
-              </p>
-
-              <div className="flex flex-wrap gap-1.5 pt-1">
-                {project.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="text-[10px] font-mono-meta px-1.5 py-0.5 rounded bg-stone-100 dark:bg-stone-800/60 text-stone-600 dark:text-stone-400"
+              <div className="flex items-center gap-3 text-xs font-mono-meta text-stone-400 dark:text-stone-500 shrink-0 self-start sm:self-auto pt-1 sm:pt-0">
+                <span>{project.year}</span>
+                {project.demo && (
+                  <a
+                    href={project.demo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-stone-800 dark:text-stone-200 hover:underline flex items-center gap-0.5"
                   >
-                    {tag}
-                  </span>
-                ))}
+                    <span>demo</span>
+                    <ArrowUpRight className="w-3 h-3" />
+                  </a>
+                )}
+                {project.github && (
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-stone-800 dark:text-stone-200 hover:underline flex items-center gap-0.5"
+                  >
+                    <span>code</span>
+                    <ArrowUpRight className="w-3 h-3" />
+                  </a>
+                )}
               </div>
             </article>
           ))}
         </div>
       </section>
 
-      {/* Writing / Blog */}
-      <section className="space-y-6">
-        <div className="flex items-center justify-between pb-2 border-b border-stone-200 dark:border-stone-800">
-          <h2 className="font-serif-title text-xl text-stone-900 dark:text-stone-100">
-            Writing
+      {/* Writing / Essays - Clean Literary Index */}
+      <section className="space-y-6 pt-4 border-t border-stone-200/80 dark:border-stone-800/80">
+        <div className="flex items-baseline justify-between">
+          <h2 className="font-mono-meta text-xs uppercase tracking-wider text-stone-400 dark:text-stone-500">
+            Essays & Writings
           </h2>
           <Link
             href="/writing"
-            className="text-xs font-mono-meta text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100 flex items-center gap-1"
+            className="text-xs font-mono-meta text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100 flex items-center gap-1 group"
           >
             <span>All essays ({posts.length})</span>
-            <ArrowRight className="w-3 h-3" />
+            <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
           </Link>
         </div>
 
-        <div className="divide-y divide-stone-200/80 dark:divide-stone-800/80">
+        <div className="divide-y divide-stone-200/60 dark:divide-stone-800/60">
           {recentPosts.map((post) => (
             <Link
               key={post.slug}
               href={`/writing/${post.slug}`}
-              className="group block py-3.5 transition-colors"
+              className="group block py-4.5 transition-colors"
             >
               <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 mb-1">
-                <h3 className="font-serif-title text-base sm:text-lg text-stone-900 dark:text-stone-100 group-hover:underline underline-offset-4 decoration-stone-400">
+                <h3 className="font-serif-title text-lg sm:text-xl text-stone-900 dark:text-stone-100 group-hover:text-stone-600 dark:group-hover:text-stone-300 transition-colors">
                   {post.title}
                 </h3>
-                <div className="text-[11px] font-mono-meta text-stone-400 dark:text-stone-500 shrink-0">
-                  {post.date} &bull; {post.readingTime}
-                </div>
+                <span className="text-[11px] font-mono-meta text-stone-400 dark:text-stone-500 shrink-0">
+                  {post.date}
+                </span>
               </div>
-              <p className="text-xs text-stone-600 dark:text-stone-400 line-clamp-2 leading-relaxed">
+              <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 line-clamp-2 leading-relaxed font-sans">
                 {post.summary}
               </p>
             </Link>
@@ -206,56 +211,51 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Field Notes & Thoughts */}
-      <section className="space-y-6">
-        <div className="flex items-center justify-between pb-2 border-b border-stone-200 dark:border-stone-800">
-          <h2 className="font-serif-title text-xl text-stone-900 dark:text-stone-100">
-            Field Notes
+      {/* Field Notes - Clean Stream */}
+      <section className="space-y-6 pt-4 border-t border-stone-200/80 dark:border-stone-800/80">
+        <div className="flex items-baseline justify-between">
+          <h2 className="font-mono-meta text-xs uppercase tracking-wider text-stone-400 dark:text-stone-500">
+            Field Notes & Garden
           </h2>
           <Link
             href="/notes"
-            className="text-xs font-mono-meta text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100 flex items-center gap-1"
+            className="text-xs font-mono-meta text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100 flex items-center gap-1 group"
           >
-            <span>Garden ({notes.length})</span>
-            <ArrowRight className="w-3 h-3" />
+            <span>Digital Garden ({notes.length})</span>
+            <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           {recentNotes.map((note) => (
-            <div
-              key={note.id}
-              className="p-3 rounded border border-stone-200 dark:border-stone-800/80 bg-stone-50/50 dark:bg-stone-900/30 flex flex-col justify-between"
-            >
-              <div className="space-y-1.5">
-                <div className="text-[10px] font-mono-meta text-stone-400 dark:text-stone-500 flex justify-between">
-                  <span>{note.category}</span>
-                  <span>{note.date}</span>
-                </div>
-                <h4 className="text-xs font-medium text-stone-900 dark:text-stone-100 font-sans">
-                  {note.title}
-                </h4>
-                <p className="text-[11px] text-stone-600 dark:text-stone-400 line-clamp-3 leading-normal">
-                  {note.content}
-                </p>
+            <div key={note.id} className="space-y-2">
+              <div className="text-[10px] font-mono-meta text-stone-400 dark:text-stone-500 flex justify-between">
+                <span>{note.category}</span>
+                <span>{note.date}</span>
               </div>
+              <h4 className="text-sm font-medium text-stone-900 dark:text-stone-100 font-sans">
+                {note.title}
+              </h4>
+              <p className="text-xs text-stone-600 dark:text-stone-400 leading-relaxed line-clamp-4">
+                {note.content}
+              </p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Visual Archive Preview */}
-      <section className="space-y-6">
-        <div className="flex items-center justify-between pb-2 border-b border-stone-200 dark:border-stone-800">
-          <h2 className="font-serif-title text-xl text-stone-900 dark:text-stone-100">
+      {/* Visual Archive Preview - Editorial Gallery Strip */}
+      <section className="space-y-6 pt-4 border-t border-stone-200/80 dark:border-stone-800/80">
+        <div className="flex items-baseline justify-between">
+          <h2 className="font-mono-meta text-xs uppercase tracking-wider text-stone-400 dark:text-stone-500">
             Visual Archive
           </h2>
           <Link
             href="/visuals"
-            className="text-xs font-mono-meta text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100 flex items-center gap-1"
+            className="text-xs font-mono-meta text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100 flex items-center gap-1 group"
           >
-            <span>View gallery & upload</span>
-            <ArrowRight className="w-3 h-3" />
+            <span>Full Gallery & Upload</span>
+            <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
           </Link>
         </div>
 
@@ -264,14 +264,15 @@ export default function Home() {
             <Link
               key={photo.id}
               href="/visuals"
-              className="group block aspect-[4/3] rounded overflow-hidden bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-stone-800"
+              className="group block aspect-[4/3] overflow-hidden bg-stone-100 dark:bg-stone-900 relative"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={photo.url}
                 alt={photo.title}
-                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
               />
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
             </Link>
           ))}
         </div>

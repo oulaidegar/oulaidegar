@@ -14,36 +14,36 @@ export default function WritingPage() {
     : posts;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-12">
       {/* Header */}
-      <header className="space-y-2 pb-6 border-b border-stone-200 dark:border-stone-800">
-        <h1 className="font-serif-title text-3xl text-stone-900 dark:text-stone-100">
+      <header className="space-y-4 pb-6 border-b border-stone-200/80 dark:border-stone-800/80">
+        <h1 className="font-serif-title text-3xl sm:text-4xl text-stone-900 dark:text-stone-100 font-normal">
           Essays & Writings
         </h1>
-        <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 font-sans">
-          Long-form thoughts on cultural embeddings, archival power, digital minimalism, and the philosophies undergirding computational systems.
+        <p className="text-sm text-stone-600 dark:text-stone-400 font-sans max-w-2xl leading-relaxed">
+          Essays on democratic technology, artificial intelligence ethics, cultural embeddings, and the philosophies undergirding public digital infrastructure.
         </p>
 
         {/* Tag Filters */}
-        <div className="flex flex-wrap items-center gap-1.5 pt-3 text-xs font-mono-meta">
+        <div className="flex flex-wrap items-center gap-2 pt-2 text-xs font-mono-meta">
           <button
             onClick={() => setSelectedTag(null)}
-            className={`px-2 py-0.5 rounded text-[11px] transition-colors ${
+            className={`cursor-pointer transition-colors ${
               selectedTag === null
-                ? "bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 font-semibold"
-                : "bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 hover:text-stone-900"
+                ? "text-stone-950 dark:text-white font-semibold underline underline-offset-4"
+                : "text-stone-500 hover:text-stone-900 dark:text-stone-400"
             }`}
           >
-            all
+            all ({posts.length})
           </button>
           {allTags.map((tag) => (
             <button
               key={tag}
               onClick={() => setSelectedTag(tag === selectedTag ? null : tag)}
-              className={`px-2 py-0.5 rounded text-[11px] transition-colors ${
+              className={`cursor-pointer transition-colors ${
                 selectedTag === tag
-                  ? "bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 font-semibold"
-                  : "bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 hover:text-stone-900"
+                  ? "text-stone-950 dark:text-white font-semibold underline underline-offset-4"
+                  : "text-stone-500 hover:text-stone-900 dark:text-stone-400"
               }`}
             >
               #{tag}
@@ -53,34 +53,29 @@ export default function WritingPage() {
       </header>
 
       {/* Posts List */}
-      <div className="divide-y divide-stone-200/80 dark:divide-stone-800/80">
+      <div className="divide-y divide-stone-200/60 dark:divide-stone-800/60">
         {filteredPosts.map((post) => (
           <Link
             key={post.slug}
             href={`/writing/${post.slug}`}
-            className="group block py-5 transition-colors"
+            className="group block py-6 transition-colors"
           >
-            <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 mb-1.5">
-              <h2 className="font-serif-title text-xl text-stone-900 dark:text-stone-100 group-hover:underline underline-offset-4 decoration-stone-400">
+            <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 mb-2">
+              <h2 className="font-serif-title text-xl sm:text-2xl text-stone-900 dark:text-stone-100 group-hover:text-stone-600 dark:group-hover:text-stone-300 transition-colors font-normal">
                 {post.title}
               </h2>
-              <div className="text-[11px] font-mono-meta text-stone-400 dark:text-stone-500 shrink-0">
+              <div className="text-xs font-mono-meta text-stone-400 dark:text-stone-500 shrink-0">
                 {post.date} &bull; {post.readingTime}
               </div>
             </div>
 
-            <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 leading-relaxed font-sans mb-3">
+            <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed font-sans max-w-2xl mb-3">
               {post.summary}
             </p>
 
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap gap-2 text-[11px] font-mono-meta text-stone-400 dark:text-stone-500">
               {post.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="text-[10px] font-mono-meta px-1.5 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400"
-                >
-                  #{tag}
-                </span>
+                <span key={tag}>#{tag}</span>
               ))}
             </div>
           </Link>

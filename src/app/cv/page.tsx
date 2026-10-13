@@ -9,21 +9,21 @@ export default function CVPage() {
   };
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-12">
       {/* Top Action Bar (hidden in print) */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-stone-200 dark:border-stone-800 no-print">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-6 border-b border-stone-200/80 dark:border-stone-800/80 no-print">
         <div>
-          <h1 className="font-serif-title text-3xl text-stone-900 dark:text-stone-100">
+          <h1 className="font-serif-title text-3xl sm:text-4xl text-stone-900 dark:text-stone-100 font-normal">
             Curriculum Vitae
           </h1>
-          <p className="text-xs text-stone-500 font-mono-meta mt-0.5">
-            Updated Autumn 2025 &bull; Academic & Practice Track
+          <p className="text-xs text-stone-500 font-mono-meta mt-1">
+            Academic, Civic & Creative Technology Track &bull; Updated 2025
           </p>
         </div>
 
         <button
           onClick={handlePrint}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-mono-meta border border-stone-300 dark:border-stone-700 hover:border-stone-900 dark:hover:border-stone-200 bg-white dark:bg-stone-900 text-stone-800 dark:text-stone-200 transition-colors cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-sm text-xs font-mono-meta border border-stone-300 dark:border-stone-700 hover:border-stone-900 dark:hover:border-stone-200 bg-white dark:bg-stone-900 text-stone-800 dark:text-stone-200 transition-colors cursor-pointer self-start sm:self-auto"
         >
           <Printer className="w-3.5 h-3.5" />
           <span>Print / Export PDF</span>
@@ -31,12 +31,12 @@ export default function CVPage() {
       </div>
 
       {/* CV Document Container */}
-      <div className="space-y-8 font-sans text-stone-800 dark:text-stone-200">
+      <div className="space-y-12 font-sans text-stone-800 dark:text-stone-200">
         {/* Header Block */}
-        <header className="space-y-3 pb-6 border-b border-stone-300 dark:border-stone-800">
+        <header className="space-y-4 pb-8 border-b border-stone-200/80 dark:border-stone-800/80">
           <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
             <div>
-              <h2 className="font-serif-title text-2xl sm:text-3xl font-medium text-stone-900 dark:text-stone-100">
+              <h2 className="font-serif-title text-3xl sm:text-4xl font-normal text-stone-900 dark:text-stone-100">
                 {cvData.name}
               </h2>
               <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 font-mono-meta mt-1">
@@ -50,22 +50,22 @@ export default function CVPage() {
             </div>
           </div>
 
-          <p className="text-xs sm:text-sm text-stone-700 dark:text-stone-300 leading-relaxed font-sans pt-2">
+          <p className="text-sm sm:text-base text-stone-700 dark:text-stone-300 leading-relaxed font-sans pt-2 max-w-2xl">
             {cvData.summary}
           </p>
         </header>
 
         {/* Education Section */}
-        <section className="space-y-4">
-          <h3 className="text-xs font-mono-meta uppercase tracking-wider text-stone-500 dark:text-stone-400 font-semibold border-b border-stone-200 dark:border-stone-800 pb-1">
+        <section className="space-y-6">
+          <h3 className="text-xs font-mono-meta uppercase tracking-wider text-stone-400 dark:text-stone-500 font-semibold border-b border-stone-200/60 dark:border-stone-800/60 pb-2">
             Education
           </h3>
 
-          <div className="space-y-5">
+          <div className="space-y-8">
             {cvData.education.map((edu, idx) => (
-              <div key={idx} className="space-y-1.5">
+              <div key={idx} className="space-y-2">
                 <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-0.5">
-                  <h4 className="font-semibold text-sm text-stone-900 dark:text-stone-100">
+                  <h4 className="font-serif-title text-xl text-stone-900 dark:text-stone-100 font-normal">
                     {edu.degree}
                   </h4>
                   <span className="text-xs font-mono-meta text-stone-400 dark:text-stone-500 shrink-0">
@@ -78,15 +78,15 @@ export default function CVPage() {
                 </div>
 
                 {edu.thesisTopic && (
-                  <div className="p-2.5 rounded bg-stone-100/80 dark:bg-stone-900/50 border border-stone-200/80 dark:border-stone-800 text-xs text-stone-800 dark:text-stone-200 my-1.5 font-sans leading-relaxed">
-                    <span className="font-semibold font-mono-meta text-[11px] uppercase tracking-wide text-stone-600 dark:text-stone-400 block mb-0.5">
+                  <div className="p-3.5 rounded-sm bg-stone-100/60 dark:bg-stone-900/40 border border-stone-200/60 dark:border-stone-800/60 text-xs text-stone-800 dark:text-stone-200 my-2 font-sans leading-relaxed">
+                    <span className="font-semibold font-mono-meta text-[11px] uppercase tracking-wide text-stone-500 dark:text-stone-400 block mb-1">
                       Master&apos;s Thesis Topic:
                     </span>
                     {edu.thesisTopic}
                   </div>
                 )}
 
-                <ul className="text-xs text-stone-600 dark:text-stone-400 space-y-1 pl-4 list-disc marker:text-stone-400">
+                <ul className="text-xs text-stone-600 dark:text-stone-400 space-y-1 pl-4 list-disc marker:text-stone-400 max-w-2xl">
                   {edu.details.map((detail, dIdx) => (
                     <li key={dIdx}>{detail}</li>
                   ))}
@@ -97,16 +97,16 @@ export default function CVPage() {
         </section>
 
         {/* Experience Section */}
-        <section className="space-y-4">
-          <h3 className="text-xs font-mono-meta uppercase tracking-wider text-stone-500 dark:text-stone-400 font-semibold border-b border-stone-200 dark:border-stone-800 pb-1">
+        <section className="space-y-6">
+          <h3 className="text-xs font-mono-meta uppercase tracking-wider text-stone-400 dark:text-stone-500 font-semibold border-b border-stone-200/60 dark:border-stone-800/60 pb-2">
             Research & Experience
           </h3>
 
-          <div className="space-y-5">
+          <div className="space-y-8">
             {cvData.experience.map((exp, idx) => (
-              <div key={idx} className="space-y-1.5">
+              <div key={idx} className="space-y-2">
                 <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-0.5">
-                  <h4 className="font-semibold text-sm text-stone-900 dark:text-stone-100">
+                  <h4 className="font-serif-title text-xl text-stone-900 dark:text-stone-100 font-normal">
                     {exp.role}
                   </h4>
                   <span className="text-xs font-mono-meta text-stone-400 dark:text-stone-500 shrink-0">
@@ -118,7 +118,7 @@ export default function CVPage() {
                   {exp.organization} &bull; {exp.location}
                 </div>
 
-                <ul className="text-xs text-stone-600 dark:text-stone-400 space-y-1 pl-4 list-disc marker:text-stone-400">
+                <ul className="text-xs text-stone-600 dark:text-stone-400 space-y-1 pl-4 list-disc marker:text-stone-400 max-w-2xl">
                   {exp.highlights.map((h, hIdx) => (
                     <li key={hIdx}>{h}</li>
                   ))}
@@ -129,29 +129,29 @@ export default function CVPage() {
         </section>
 
         {/* Publications & Talks */}
-        <section className="space-y-4">
-          <h3 className="text-xs font-mono-meta uppercase tracking-wider text-stone-500 dark:text-stone-400 font-semibold border-b border-stone-200 dark:border-stone-800 pb-1">
+        <section className="space-y-6">
+          <h3 className="text-xs font-mono-meta uppercase tracking-wider text-stone-400 dark:text-stone-500 font-semibold border-b border-stone-200/60 dark:border-stone-800/60 pb-2">
             Publications & Talks
           </h3>
 
-          <div className="space-y-3">
+          <div className="space-y-4">
             {cvData.publications.map((pub, idx) => (
-              <div key={idx} className="text-xs space-y-0.5">
-                <div className="font-medium text-stone-900 dark:text-stone-100">
+              <div key={idx} className="space-y-0.5">
+                <div className="font-serif-title text-base sm:text-lg text-stone-900 dark:text-stone-100">
                   &ldquo;{pub.title}&rdquo;
                 </div>
-                <div className="text-stone-500 dark:text-stone-400 font-mono-meta text-[11px]">
+                <div className="text-stone-500 dark:text-stone-400 font-mono-meta text-xs">
                   {pub.venue} &bull; {pub.year} ({pub.type})
                 </div>
               </div>
             ))}
 
             {cvData.talks.map((talk, idx) => (
-              <div key={idx} className="text-xs space-y-0.5 pt-1">
-                <div className="font-medium text-stone-900 dark:text-stone-100">
+              <div key={idx} className="space-y-0.5 pt-2">
+                <div className="font-serif-title text-base sm:text-lg text-stone-900 dark:text-stone-100">
                   {talk.title}
                 </div>
-                <div className="text-stone-500 dark:text-stone-400 font-mono-meta text-[11px]">
+                <div className="text-stone-500 dark:text-stone-400 font-mono-meta text-xs">
                   {talk.event} &bull; {talk.location} &bull; {talk.year}
                 </div>
               </div>
@@ -159,63 +159,63 @@ export default function CVPage() {
           </div>
         </section>
 
-        {/* Skills & Competencies */}
-        <section className="space-y-3">
-          <h3 className="text-xs font-mono-meta uppercase tracking-wider text-stone-500 dark:text-stone-400 font-semibold border-b border-stone-200 dark:border-stone-800 pb-1">
+        {/* Competencies & Skills */}
+        <section className="space-y-6">
+          <h3 className="text-xs font-mono-meta uppercase tracking-wider text-stone-400 dark:text-stone-500 font-semibold border-b border-stone-200/60 dark:border-stone-800/60 pb-2">
             Competencies & Skills
           </h3>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-            <div>
-              <span className="font-medium text-stone-900 dark:text-stone-100 block mb-1">
-                Democratic & Civic AI:
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-xs">
+            <div className="space-y-1">
+              <span className="font-mono-meta uppercase text-[10px] text-stone-400 tracking-wider block">
+                Democratic & Civic AI
               </span>
-              <p className="text-stone-600 dark:text-stone-400 font-mono-meta text-[11px] leading-relaxed">
+              <p className="text-stone-800 dark:text-stone-200 font-sans leading-relaxed">
                 {cvData.skills.democraticCivicAI.join(", ")}
               </p>
             </div>
 
-            <div>
-              <span className="font-medium text-stone-900 dark:text-stone-100 block mb-1">
-                AI Ethics & Algorithmic Auditing:
+            <div className="space-y-1">
+              <span className="font-mono-meta uppercase text-[10px] text-stone-400 tracking-wider block">
+                AI Ethics & Auditing
               </span>
-              <p className="text-stone-600 dark:text-stone-400 font-mono-meta text-[11px] leading-relaxed">
+              <p className="text-stone-800 dark:text-stone-200 font-sans leading-relaxed">
                 {cvData.skills.aiEthicsAuditing.join(", ")}
               </p>
             </div>
 
-            <div>
-              <span className="font-medium text-stone-900 dark:text-stone-100 block mb-1">
-                Creative Technology & Speculative UI:
+            <div className="space-y-1">
+              <span className="font-mono-meta uppercase text-[10px] text-stone-400 tracking-wider block">
+                Creative Technology & Speculative UI
               </span>
-              <p className="text-stone-600 dark:text-stone-400 font-mono-meta text-[11px] leading-relaxed">
+              <p className="text-stone-800 dark:text-stone-200 font-sans leading-relaxed">
                 {cvData.skills.creativeTechnology.join(", ")}
               </p>
             </div>
 
-            <div>
-              <span className="font-medium text-stone-900 dark:text-stone-100 block mb-1">
-                Cultural Data & Standards:
+            <div className="space-y-1">
+              <span className="font-mono-meta uppercase text-[10px] text-stone-400 tracking-wider block">
+                Cultural Data & Standards
               </span>
-              <p className="text-stone-600 dark:text-stone-400 font-mono-meta text-[11px] leading-relaxed">
+              <p className="text-stone-800 dark:text-stone-200 font-sans leading-relaxed">
                 {cvData.skills.culturalDataStandards.join(", ")}
               </p>
             </div>
 
-            <div>
-              <span className="font-medium text-stone-900 dark:text-stone-100 block mb-1">
-                Engineering Stack:
+            <div className="space-y-1">
+              <span className="font-mono-meta uppercase text-[10px] text-stone-400 tracking-wider block">
+                Engineering Stack
               </span>
-              <p className="text-stone-600 dark:text-stone-400 font-mono-meta text-[11px] leading-relaxed">
+              <p className="text-stone-800 dark:text-stone-200 font-mono-meta text-[11px] leading-relaxed">
                 {cvData.skills.engineeringStack.join(", ")}
               </p>
             </div>
 
-            <div>
-              <span className="font-medium text-stone-900 dark:text-stone-100 block mb-1">
-                Languages:
+            <div className="space-y-1">
+              <span className="font-mono-meta uppercase text-[10px] text-stone-400 tracking-wider block">
+                Languages
               </span>
-              <p className="text-stone-600 dark:text-stone-400 font-mono-meta text-[11px] leading-relaxed">
+              <p className="text-stone-800 dark:text-stone-200 font-sans leading-relaxed">
                 {cvData.skills.languages.join(", ")}
               </p>
             </div>

@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+:root {
+  --background: #faf8f5;
+  --foreground: #1c1917;
+  --muted: #78716c;
+  --muted-light: #f2ede4;
+  --border: #e7e2d9;
+  --card-bg: #ffffff;
+  --accent: #1c1917;
+  --accent-soft: #ede6da;
+}
+
+.dark {
+  --background: #11100f;
+  --foreground: #f4efe6;
+  --muted: #9c9489;
+  --muted-light: #1c1a18;
+  --border: #292623;
+  --card-bg: #181615;
+  --accent: #f4efe6;
+  --accent-soft: #262320;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-serif-title {
+  font-family: "Newsreader", "Charter", "Bitstream Charter", "Sitka Text", "Cambria", Georgia, serif;
+  font-feature-settings: "cv01", "cv02", "dlig", "ss01";
+}
+
+.font-mono-meta {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+/* Subtle line link decoration */
+.editorial-link {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--border);
+  transition: all 0.2s ease;
+}
+.editorial-link:hover {
+  text-decoration-color: var(--foreground);
+}
+
+/* Print styling for CV */
+@media print {
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+  header, footer, .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  main {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  a {
+    text-decoration: none !important;
+    color: inherit !important;
+  }
+}

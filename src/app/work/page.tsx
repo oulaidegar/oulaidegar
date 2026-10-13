@@ -21,26 +21,26 @@ export default function WorkPage() {
       : projects.filter((p) => p.category === activeCategory);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-12">
       {/* Header */}
-      <header className="space-y-2 pb-6 border-b border-stone-200 dark:border-stone-800">
-        <h1 className="font-serif-title text-3xl text-stone-900 dark:text-stone-100">
+      <header className="space-y-4 pb-6 border-b border-stone-200/80 dark:border-stone-800/80">
+        <h1 className="font-serif-title text-3xl sm:text-4xl text-stone-900 dark:text-stone-100 font-normal">
           Selected Works & Systems
         </h1>
-        <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 font-sans">
-          Creative technology prototypes, AI ethics evaluation tools, open civic platforms for democratic deliberation, and cultural data systems.
+        <p className="text-sm text-stone-600 dark:text-stone-400 font-sans max-w-2xl leading-relaxed">
+          Open-source software, democratic deliberation tools, algorithmic auditing frameworks, and speculative interfaces built at the intersection of cultural data and machine learning.
         </p>
 
         {/* Filter Pills */}
-        <div className="flex flex-wrap items-center gap-1.5 pt-4 text-xs font-mono-meta">
+        <div className="flex flex-wrap items-center gap-1.5 pt-2 text-xs font-mono-meta">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`px-2.5 py-1 rounded transition-colors ${
+              className={`px-2.5 py-1 rounded-sm transition-colors cursor-pointer ${
                 activeCategory === cat
-                  ? "bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 font-semibold"
-                  : "bg-stone-100 dark:bg-stone-800/80 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
+                  ? "bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 font-medium"
+                  : "bg-stone-100 dark:bg-stone-800/60 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
               }`}
             >
               {cat}
@@ -49,38 +49,33 @@ export default function WorkPage() {
         </div>
       </header>
 
-      {/* Projects List */}
-      <div className="space-y-6">
+      {/* Projects Editorial List */}
+      <div className="space-y-10">
         {filtered.map((project) => (
           <article
             key={project.id}
-            className="p-5 rounded-md border border-stone-200 dark:border-stone-800/80 bg-[#faf9f6] dark:bg-[#121110] space-y-3 transition-colors hover:border-stone-400 dark:hover:border-stone-600"
+            className="group space-y-3 pb-8 border-b border-stone-200/60 dark:border-stone-800/60 last:border-b-0"
           >
-            <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
-              <div>
-                <div className="flex items-center gap-2">
-                  <h2 className="font-serif-title text-xl text-stone-900 dark:text-stone-100">
-                    {project.title}
-                  </h2>
-                  <span className="text-[10px] font-mono-meta px-1.5 py-0.5 rounded bg-stone-200/80 dark:bg-stone-800 text-stone-700 dark:text-stone-300">
-                    {project.category}
-                  </span>
-                </div>
-                <p className="text-xs text-stone-500 dark:text-stone-400 font-mono-meta mt-0.5">
-                  {project.tagline}
-                </p>
+            <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
+              <div className="flex items-baseline gap-3">
+                <h2 className="font-serif-title text-xl sm:text-2xl text-stone-900 dark:text-stone-100 font-normal group-hover:text-stone-600 dark:group-hover:text-stone-300 transition-colors">
+                  {project.title}
+                </h2>
+                <span className="text-[10px] font-mono-meta text-stone-400 dark:text-stone-500">
+                  {project.category}
+                </span>
               </div>
 
-              <div className="flex items-center gap-3 text-xs font-mono-meta text-stone-500 shrink-0">
+              <div className="flex items-center gap-4 text-xs font-mono-meta text-stone-500 shrink-0 pt-1 sm:pt-0">
                 <span>{project.year}</span>
                 {project.demo && (
                   <a
                     href={project.demo}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-stone-800 dark:text-stone-200 hover:underline flex items-center gap-0.5"
+                    className="text-stone-900 dark:text-stone-100 hover:underline flex items-center gap-0.5 font-medium"
                   >
-                    <span>demo</span>
+                    <span>live demo</span>
                     <ArrowUpRight className="w-3 h-3" />
                   </a>
                 )}
@@ -89,42 +84,42 @@ export default function WorkPage() {
                     href={project.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-stone-800 dark:text-stone-200 hover:underline flex items-center gap-0.5"
+                    className="text-stone-900 dark:text-stone-100 hover:underline flex items-center gap-0.5 font-medium"
                   >
-                    <span>code</span>
+                    <span>source</span>
                     <ArrowUpRight className="w-3 h-3" />
                   </a>
                 )}
               </div>
             </div>
 
-            <p className="text-xs sm:text-sm text-stone-700 dark:text-stone-300 leading-relaxed font-sans">
+            <p className="text-xs font-mono-meta text-stone-500 dark:text-stone-400">
+              {project.tagline}
+            </p>
+
+            <p className="text-sm text-stone-700 dark:text-stone-300 leading-relaxed font-sans max-w-2xl">
               {project.description}
             </p>
 
             {project.highlights && project.highlights.length > 0 && (
-              <ul className="text-xs text-stone-600 dark:text-stone-400 space-y-1 pl-4 list-disc marker:text-stone-400">
+              <ul className="text-xs text-stone-600 dark:text-stone-400 space-y-1 pl-4 list-disc marker:text-stone-400 max-w-2xl">
                 {project.highlights.map((h, i) => (
                   <li key={i}>{h}</li>
                 ))}
               </ul>
             )}
 
-            <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-stone-100 dark:border-stone-800/80">
-              <div className="flex flex-wrap gap-1.5">
-                {project.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="text-[10px] font-mono-meta px-1.5 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 pt-1 text-[11px] font-mono-meta text-stone-400 dark:text-stone-500">
+              <span>Stack:</span>
+              {project.tags.map((tag, i) => (
+                <span key={tag} className="text-stone-600 dark:text-stone-400">
+                  {tag}
+                  {i < project.tags.length - 1 ? "," : ""}
+                </span>
+              ))}
               {project.metrics && (
-                <span className="text-[11px] font-mono-meta text-emerald-700 dark:text-emerald-400">
-                  {project.metrics}
+                <span className="ml-auto text-emerald-700 dark:text-emerald-400 text-[10px]">
+                  &bull; {project.metrics}
                 </span>
               )}
             </div>
