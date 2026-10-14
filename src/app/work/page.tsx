@@ -32,12 +32,12 @@ export default function WorkPage() {
         </p>
 
         {/* Filter Pills */}
-        <div className="flex flex-wrap items-center gap-1.5 pt-2 text-xs font-mono-meta">
+        <div className="flex items-center gap-1.5 pt-2 text-xs font-mono-meta overflow-x-auto pb-1.5 -mx-1 px-1 sm:mx-0 sm:px-0 sm:flex-wrap scrollbar-none">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`px-2.5 py-1 rounded-sm transition-colors cursor-pointer ${
+              className={`px-2.5 py-1.5 rounded-sm transition-colors cursor-pointer shrink-0 sm:shrink ${
                 activeCategory === cat
                   ? "bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 font-medium"
                   : "bg-stone-100 dark:bg-stone-800/60 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"

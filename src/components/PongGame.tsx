@@ -187,6 +187,22 @@ export default function PongGame() {
     );
   };
 
+  const handleTouchStart = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current;
+    if (!canvas || e.touches.length === 0) return;
+    const rect = canvas.getBoundingClientRect();
+    const relativeY = e.touches[0].clientY - rect.top;
+    const scaleY = stateRef.current.height / rect.height;
+    const targetY = relativeY * scaleY - stateRef.current.paddleHeight / 2;
+    stateRef.current.player1Y = Math.max(
+      10,
+      Math.min(stateRef.current.height - stateRef.current.paddleHeight - 10, targetY)
+    );
+    if (!isPlaying && !winnerMessage) {
+      setIsPlaying(true);
+    }
+  };
+
   const handleTouchMove = (e: React.TouchEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
     if (!canvas || e.touches.length === 0) return;
@@ -514,36 +530,36 @@ export default function PongGame() {
       {/* ============================================================ */}
       {/* Game Dashboard & Scoreboard                                  */}
       {/* ============================================================ */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-sm border border-stone-200/80 dark:border-stone-800/80 bg-white/50 dark:bg-stone-900/40 text-xs font-mono-meta">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-3.5 sm:p-4 rounded-sm border border-stone-200/80 dark:border-stone-800/80 bg-white/50 dark:bg-stone-900/40 text-xs font-mono-meta">
         {/* Score */}
-        <div className="flex items-center gap-6">
+        <div className="flex items-center justify-between sm:justify-start gap-3 sm:gap-6">
           <div className="space-y-0.5">
             <span className="text-[10px] text-stone-400 uppercase tracking-wider">
-              {gameMode === "two-player" ? "Player 1" : "You"}
+              {gameMode === "two-player" ? "P1" : "You"}
             </span>
-            <div className="font-serif-title text-2xl text-stone-900 dark:text-stone-100">
+            <div className="font-serif-title text-xl sm:text-2xl text-stone-900 dark:text-stone-100">
               {playerScore}
             </div>
           </div>
 
-          <span className="text-stone-300 dark:text-stone-700 text-lg font-light">&bull;</span>
+          <span className="text-stone-300 dark:text-stone-700 text-base font-light">&bull;</span>
 
           <div className="space-y-0.5">
             <span className="text-[10px] text-stone-400 uppercase tracking-wider">
               {gameMode === "solitaire"
                 ? "Wall"
                 : gameMode === "two-player"
-                ? "Player 2"
+                ? "P2"
                 : "System"}
             </span>
-            <div className="font-serif-title text-2xl text-stone-900 dark:text-stone-100">
+            <div className="font-serif-title text-xl sm:text-2xl text-stone-900 dark:text-stone-100">
               {gameMode === "solitaire" ? "—" : aiScore}
             </div>
           </div>
 
-          <div className="h-8 border-l border-stone-200 dark:border-stone-800 pl-6 space-y-0.5">
+          <div className="h-7 border-l border-stone-200 dark:border-stone-800 pl-3 sm:pl-6 space-y-0.5">
             <span className="text-[10px] text-stone-400 uppercase tracking-wider">Rally</span>
-            <div className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
+            <div className="text-xs sm:text-sm font-semibold text-emerald-600 dark:text-emerald-400">
               {currentRally}
             </div>
           </div>
@@ -553,17 +569,17 @@ export default function PongGame() {
               <Trophy className="w-3 h-3 text-amber-500" />
               <span>Record</span>
             </span>
-            <div className="text-sm text-stone-700 dark:text-stone-300 font-semibold">
+            <div className="text-xs sm:text-sm text-stone-700 dark:text-stone-300 font-semibold">
               {bestRally}
             </div>
           </div>
         </div>
 
         {/* Action Controls */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between sm:justify-start gap-2 w-full sm:w-auto pt-2.5 sm:pt-0 border-t sm:border-t-0 border-stone-200/60 dark:border-stone-800/60">
           <button
             onClick={() => setIsPlaying((p) => !p)}
-            className="px-3 py-1.5 rounded-sm bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 font-medium hover:opacity-90 transition-opacity flex items-center gap-1.5 cursor-pointer"
+            className="flex-1 sm:flex-none justify-center px-4 py-2 sm:px-3 sm:py-1.5 rounded-sm bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 font-medium hover:opacity-90 transition-opacity flex items-center gap-1.5 cursor-pointer"
           >
             {isPlaying ? (
               <>
@@ -581,7 +597,7 @@ export default function PongGame() {
           <button
             onClick={handleRestart}
             title="Restart Match"
-            className="p-1.5 rounded-sm border border-stone-200 dark:border-stone-800 text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 cursor-pointer"
+            className="w-9 h-9 sm:w-auto sm:h-auto p-2 sm:p-1.5 flex items-center justify-center rounded-sm border border-stone-200 dark:border-stone-800 text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 cursor-pointer"
           >
             <RotateCcw className="w-4 h-4" />
           </button>
@@ -589,7 +605,7 @@ export default function PongGame() {
           <button
             onClick={() => setSoundEnabled((s) => !s)}
             title={soundEnabled ? "Mute audio" : "Enable audio"}
-            className="p-1.5 rounded-sm border border-stone-200 dark:border-stone-800 text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 cursor-pointer"
+            className="w-9 h-9 sm:w-auto sm:h-auto p-2 sm:p-1.5 flex items-center justify-center rounded-sm border border-stone-200 dark:border-stone-800 text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 cursor-pointer"
           >
             {soundEnabled ? (
               <Volume2 className="w-4 h-4" />
@@ -603,18 +619,19 @@ export default function PongGame() {
       {/* ============================================================ */}
       {/* Pong Canvas                                                 */}
       {/* ============================================================ */}
-      <div className="relative aspect-[5/3] w-full rounded-sm overflow-hidden border border-stone-800 shadow-2xl bg-[#141312] cursor-none select-none">
+      <div className="relative aspect-[5/3] w-full rounded-sm overflow-hidden border border-stone-800 shadow-2xl bg-[#141312] cursor-none select-none touch-none">
         <canvas
           ref={canvasRef}
           width={800}
           height={480}
           onMouseMove={handleMouseMove}
+          onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onClick={() => {
             if (!isPlaying && !winnerMessage) setIsPlaying(true);
             if (winnerMessage) handleRestart();
           }}
-          className="w-full h-full block"
+          className="w-full h-full block touch-none"
         />
       </div>
 

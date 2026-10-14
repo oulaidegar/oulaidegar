@@ -33,14 +33,14 @@ export default function ThemeToggle() {
   };
 
   if (!mounted) {
-    return <div className="w-8 h-8" aria-hidden="true" />;
+    return <div className="w-9 h-9 sm:w-7 sm:h-7" aria-hidden="true" />;
   }
 
   return (
     <button
       onClick={toggle}
       aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
-      className="p-1.5 text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100 rounded-md transition-colors duration-150 focus:outline-none focus:ring-1 focus:ring-stone-400"
+      className="w-9 h-9 sm:w-auto sm:h-auto sm:p-1.5 flex items-center justify-center text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100 rounded-md transition-colors duration-150 focus:outline-none focus:ring-1 focus:ring-stone-400 cursor-pointer"
     >
       {isDark ? (
         <Sun className="w-4 h-4 stroke-[1.75]" />

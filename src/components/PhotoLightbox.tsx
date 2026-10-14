@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Photo } from "@/data/photos";
 import { X, ChevronLeft, ChevronRight, Camera } from "lucide-react";
 import Image from "next/image";
@@ -22,6 +22,8 @@ export default function PhotoLightbox({
   hasPrev,
   hasNext,
 }: PhotoLightboxProps) {
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+
   useEffect(() => {
     if (!photo) return;
 
@@ -39,6 +41,22 @@ export default function PhotoLightbox({
       document.body.style.overflow = "auto";
     };
   }, [photo, onClose, onPrev, onNext, hasPrev, hasNext]);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = touchStartX - touchEndX;
+    if (diff > 45 && hasNext) {
+      onNext();
+    } else if (diff < -45 && hasPrev) {
+      onPrev();
+    }
+    setTouchStartX(null);
+  };
 
   if (!photo) return null;
 
@@ -58,22 +76,24 @@ export default function PhotoLightbox({
         <button
           onClick={onClose}
           aria-label="Close lightbox"
-          className="p-1.5 rounded-full hover:bg-stone-800 text-stone-300 hover:text-white transition-colors"
+          className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-stone-800 text-stone-300 hover:text-white transition-colors cursor-pointer"
         >
           <X className="w-5 h-5" />
         </button>
       </div>
 
-      {/* Main Image Area */}
+      {/* Main Image Area with swipe listener */}
       <div
-        className="relative flex-1 flex items-center justify-center my-2 max-w-5xl mx-auto w-full"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        className="relative flex-1 flex items-center justify-center my-2 max-w-5xl mx-auto w-full select-none"
         onClick={(e) => e.stopPropagation()}
       >
         {hasPrev && (
           <button
             onClick={onPrev}
             aria-label="Previous photo"
-            className="absolute left-2 z-10 p-2 rounded-full bg-stone-900/80 text-stone-300 hover:text-white hover:bg-stone-800 transition-colors"
+            className="absolute left-2 z-10 w-11 h-11 flex items-center justify-center rounded-full bg-stone-900/80 text-stone-300 hover:text-white hover:bg-stone-800 transition-colors cursor-pointer"
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
@@ -93,7 +113,7 @@ export default function PhotoLightbox({
           <button
             onClick={onNext}
             aria-label="Next photo"
-            className="absolute right-2 z-10 p-2 rounded-full bg-stone-900/80 text-stone-300 hover:text-white hover:bg-stone-800 transition-colors"
+            className="absolute right-2 z-10 w-11 h-11 flex items-center justify-center rounded-full bg-stone-900/80 text-stone-300 hover:text-white hover:bg-stone-800 transition-colors cursor-pointer"
           >
             <ChevronRight className="w-6 h-6" />
           </button>

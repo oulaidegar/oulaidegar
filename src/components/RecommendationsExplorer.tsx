@@ -178,45 +178,47 @@ export default function RecommendationsExplorer() {
             )}
           </div>
 
-          {/* Serendipity Random Button */}
-          <button
-            onClick={handlePickRandom}
-            title="Pick a random recommendation"
-            className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-sm border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 text-stone-700 dark:text-stone-300 hover:text-stone-950 dark:hover:text-stone-100 text-xs font-mono-meta cursor-pointer transition-colors shrink-0"
-          >
-            <Shuffle className="w-3.5 h-3.5 text-stone-500" />
-            <span className="hidden sm:inline">Surprise Me</span>
-          </button>
+          {/* Actions: Surprise Me + View Mode Toggle */}
+          <div className="flex items-center justify-between sm:justify-start gap-2">
+            <button
+              onClick={handlePickRandom}
+              title="Pick a random recommendation"
+              className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-sm border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 text-stone-700 dark:text-stone-300 hover:text-stone-950 dark:hover:text-stone-100 text-xs font-mono-meta cursor-pointer transition-colors shrink-0"
+            >
+              <Shuffle className="w-3.5 h-3.5 text-stone-500" />
+              <span>Surprise Me</span>
+            </button>
 
-          {/* View Mode Toggle */}
-          <div className="inline-flex items-center p-0.5 rounded-sm border border-stone-200 dark:border-stone-800 bg-stone-100/70 dark:bg-stone-900/70 text-stone-500 shrink-0">
-            <button
-              onClick={() => setViewMode("cards")}
-              className={`p-1.5 rounded-xs transition-colors cursor-pointer ${
-                viewMode === "cards"
-                  ? "bg-white dark:bg-stone-800 text-stone-950 dark:text-white shadow-2xs"
-                  : "hover:text-stone-900 dark:hover:text-stone-300"
-              }`}
-              title="Cards view"
-            >
-              <Grid className="w-3.5 h-3.5" />
-            </button>
-            <button
-              onClick={() => setViewMode("index")}
-              className={`p-1.5 rounded-xs transition-colors cursor-pointer ${
-                viewMode === "index"
-                  ? "bg-white dark:bg-stone-800 text-stone-950 dark:text-white shadow-2xs"
-                  : "hover:text-stone-900 dark:hover:text-stone-300"
-              }`}
-              title="Index / Canon view"
-            >
-              <List className="w-3.5 h-3.5" />
-            </button>
+            {/* View Mode Toggle */}
+            <div className="inline-flex items-center p-0.5 rounded-sm border border-stone-200 dark:border-stone-800 bg-stone-100/70 dark:bg-stone-900/70 text-stone-500 shrink-0">
+              <button
+                onClick={() => setViewMode("cards")}
+                className={`p-1.5 rounded-xs transition-colors cursor-pointer ${
+                  viewMode === "cards"
+                    ? "bg-white dark:bg-stone-800 text-stone-950 dark:text-white shadow-2xs"
+                    : "hover:text-stone-900 dark:hover:text-stone-300"
+                }`}
+                title="Cards view"
+              >
+                <Grid className="w-3.5 h-3.5" />
+              </button>
+              <button
+                onClick={() => setViewMode("index")}
+                className={`p-1.5 rounded-xs transition-colors cursor-pointer ${
+                  viewMode === "index"
+                    ? "bg-white dark:bg-stone-800 text-stone-950 dark:text-white shadow-2xs"
+                    : "hover:text-stone-900 dark:hover:text-stone-300"
+                }`}
+                title="Index / Canon view"
+              >
+                <List className="w-3.5 h-3.5" />
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Category Pills */}
-        <div className="flex flex-wrap items-center gap-1.5 pt-1">
+        {/* Category Pills - Smooth horizontal swipe on mobile, wrap on desktop */}
+        <div className="flex items-center gap-1.5 pt-1 overflow-x-auto pb-1.5 -mx-1 px-1 sm:mx-0 sm:px-0 sm:flex-wrap scrollbar-none">
           {CATEGORIES.map((cat) => {
             const count = categoryCounts[cat.id] || 0;
             const isActive = activeCategory === cat.id;
@@ -227,7 +229,7 @@ export default function RecommendationsExplorer() {
                   setActiveCategory(cat.id);
                   setSelectedTag(null);
                 }}
-                className={`text-xs font-mono-meta px-2.5 py-1 rounded-sm transition-colors cursor-pointer flex items-center gap-1.5 ${
+                className={`text-xs font-mono-meta px-2.5 py-1.5 rounded-sm transition-colors cursor-pointer flex items-center gap-1.5 shrink-0 sm:shrink ${
                   isActive
                     ? "bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 font-medium"
                     : "bg-stone-100/70 dark:bg-stone-900/60 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/50 dark:hover:bg-stone-800/60"
@@ -545,7 +547,7 @@ export default function RecommendationsExplorer() {
               </div>
               <button
                 onClick={() => setActiveVideo(null)}
-                className="p-1 rounded text-stone-400 hover:text-white cursor-pointer"
+                className="w-10 h-10 -mr-2 flex items-center justify-center rounded-full text-stone-400 hover:text-white cursor-pointer"
                 title="Close (Esc)"
               >
                 <X className="w-5 h-5" />
@@ -564,13 +566,13 @@ export default function RecommendationsExplorer() {
             </div>
 
             {/* Footer */}
-            <div className="flex items-center justify-between text-xs font-mono-meta text-stone-400 pt-1">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs font-mono-meta text-stone-400 pt-1 gap-1">
               <span>Playing in privacy-enhanced mode (youtube-nocookie)</span>
               <a
                 href={`https://www.youtube.com/watch?v=${activeVideo.youtubeId}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-white flex items-center gap-1"
+                className="hover:text-white flex items-center gap-1 self-start sm:self-auto"
               >
                 <span>Open on YouTube</span>
                 <ExternalLink className="w-3 h-3" />

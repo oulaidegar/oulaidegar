@@ -68,11 +68,11 @@ export default function Header() {
         </nav>
 
         {/* Mobile controls */}
-        <div className="flex sm:hidden items-center gap-1">
+        <div className="flex sm:hidden items-center gap-1.5">
           <Link
             href="/play"
             title="Play Monastic Pong"
-            className="p-1.5 text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100"
+            className="w-9 h-9 flex items-center justify-center rounded-md text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100"
           >
             <Gamepad2 className="w-4 h-4" />
           </Link>
@@ -80,16 +80,16 @@ export default function Header() {
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle menu"
-            className="p-1.5 text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100"
+            className="w-9 h-9 flex items-center justify-center rounded-md text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100 cursor-pointer"
           >
-            {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
       </div>
 
       {/* Mobile dropdown */}
       {mobileMenuOpen && (
-        <div className="sm:hidden border-b border-stone-200 dark:border-stone-800 px-5 py-3 space-y-1 bg-[#faf9f6] dark:bg-[#0f0e0d]">
+        <div className="sm:hidden border-b border-stone-200/80 dark:border-stone-800/80 px-5 py-3 space-y-1 bg-[#faf9f6]/95 dark:bg-[#0f0e0d]/95 backdrop-blur-md animate-in slide-in-from-top-2 duration-150">
           {siteConfig.navLinks.map((link) => {
             const active = isActive(link.href);
             return (
@@ -97,16 +97,24 @@ export default function Header() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block px-3 py-1.5 rounded text-sm font-mono-meta transition-colors ${
+                className={`block px-3 py-2 rounded text-sm font-mono-meta transition-colors ${
                   active
-                    ? "text-stone-900 dark:text-stone-100 font-semibold bg-stone-200/50 dark:bg-stone-800/50"
-                    : "text-stone-500 dark:text-stone-400"
+                    ? "text-stone-950 dark:text-white font-semibold bg-stone-200/60 dark:bg-stone-800/70"
+                    : "text-stone-600 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100"
                 }`}
               >
                 {link.name}
               </Link>
             );
           })}
+          <Link
+            href="/play"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center gap-2 px-3 py-2 rounded text-sm font-mono-meta text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 transition-colors"
+          >
+            <Gamepad2 className="w-4 h-4" />
+            <span>Play Monastic Pong</span>
+          </Link>
         </div>
       )}
     </header>

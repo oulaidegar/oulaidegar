@@ -371,21 +371,21 @@ export default function PhotoGallery() {
 
                       {/* Admin controls */}
                       {adminSecret && photo._id && (
-                        <div className="absolute top-2 right-2 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="absolute top-2 right-2 flex items-center gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
                               setMovingPhotoId(movingPhotoId === photo._id ? null : photo._id!);
                             }}
                             title="Move to folder"
-                            className="p-1 rounded-xs bg-black/70 text-stone-200 hover:text-white hover:bg-black/90 cursor-pointer"
+                            className="p-1.5 sm:p-1 rounded-xs bg-black/75 text-stone-200 hover:text-white hover:bg-black/90 cursor-pointer"
                           >
                             <FolderIcon className="w-3.5 h-3.5" />
                           </button>
                           <button
                             onClick={(e) => handleDeletePhoto(photo._id!, photo.title, e)}
                             title="Delete"
-                            className="p-1 rounded-xs bg-black/70 text-stone-200 hover:text-red-400 hover:bg-black/90 cursor-pointer"
+                            className="p-1.5 sm:p-1 rounded-xs bg-black/75 text-stone-200 hover:text-red-400 hover:bg-black/90 cursor-pointer"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -586,7 +586,7 @@ export default function PhotoGallery() {
                                 handleMovePhoto(photo._id!, undefined);
                               }}
                               title="Remove from folder"
-                              className="absolute top-1.5 right-1.5 p-1 rounded-xs bg-black/70 text-stone-200 hover:text-white opacity-0 group-hover:opacity-100 transition-opacity text-[10px]"
+                              className="absolute top-1.5 right-1.5 px-2 py-1 rounded-xs bg-black/75 text-stone-200 hover:text-white opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity text-[10px]"
                             >
                               unassign
                             </button>

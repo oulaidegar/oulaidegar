@@ -1,8 +1,18 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./compiled.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ConvexClientProvider from "@/components/ConvexClientProvider";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#faf8f5" },
+    { media: "(prefers-color-scheme: dark)", color: "#11100f" },
+  ],
+};
 
 export const metadata: Metadata = {
   title: {

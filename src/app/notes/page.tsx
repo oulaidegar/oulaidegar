@@ -50,12 +50,12 @@ export default function NotesPage() {
             />
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 text-xs font-mono-meta">
+          <div className="flex items-center gap-2 text-xs font-mono-meta overflow-x-auto pb-1 -mx-1 px-1 sm:mx-0 sm:px-0 sm:flex-wrap scrollbar-none">
             {noteCategories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setSelectedCat(cat)}
-                className={`cursor-pointer transition-colors ${
+                className={`cursor-pointer transition-colors shrink-0 sm:shrink py-0.5 ${
                   selectedCat === cat
                     ? "text-stone-950 dark:text-white font-semibold underline underline-offset-4"
                     : "text-stone-500 hover:text-stone-900 dark:text-stone-400"
