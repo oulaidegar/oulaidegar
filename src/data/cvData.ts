@@ -15,7 +15,7 @@ export const cvData = {
   email: "oulaidegar@gmail.com",
   website: "https://oulaidegar.com",
   github: "https://github.com",
-  location: "Paris / Remote",
+  location: "Beirut / Remote",
 
   summary:
     "Creative technologist and researcher working at the intersection of artificial intelligence, digital humanities, journalism, and democratic systems. With a background in literary and cultural analysis, AI integration, and multimedia production, I combine technical development with critical inquiry into how technologies shape human agency, public knowledge, and institutional power. My work spans AI-assisted civic infrastructure, privacy-first applications, newsroom automation, and independent research into algorithmic accountability, digital sovereignty, and the political economy of AI. I am particularly interested in building public-interest technologies that address information inequality and the infrastructural challenges facing the Middle East.",

@@ -44,7 +44,7 @@ export const siteConfig: SiteConfig = {
   spotify:
     "https://open.spotify.com/show/5XDjy78JWpnpbEgSOln3Qj",
 
-  location: "Paris / Remote",
+  location: "Beirut / Remote",
 
   status:
     "Building independent tools & civic infrastructure · Researching AI governance and digital rights",
