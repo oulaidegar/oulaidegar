@@ -19,6 +19,38 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    id: "matlaa",
+    title: "MATLAA | مَطْلَع",
+    tagline:
+      "Public-interest technology and intelligence directory for the Middle East",
+    description:
+      "MATLAA (مَطْلَع) is an open-access public-interest technology directory and knowledge graph cataloging digital tools, open datasets, satellite observation platforms, and civic intelligence initiatives across the Middle East and North Africa. Built to serve investigative journalists, human rights researchers, activists, and humanitarian responders working under conditions of conflict, crisis, or state surveillance, the platform indexes resources across environmental hazard tracking, satellite damage assessment, conflict monitoring, and open-source investigation (OSINT). Each tool undergoes structured evaluation covering security posture, privacy safeguards, censorship resilience, Arabic localization quality, and maintenance health, alongside documented threat models and identified regional data gaps.",
+    year: "October 2026",
+    category: "Democracy & Civic AI",
+    tags: [
+      "Public Interest Tech",
+      "Civic Intelligence",
+      "Crisis Mapping",
+      "Open Data",
+      "OSINT",
+      "Threat Modeling",
+      "Digital Rights",
+      "MENA",
+      "TypeScript",
+      "React",
+    ],
+    demo: "https://matlaa.org/",
+    featured: true,
+    metrics: "48 audited tools & datasets · 12 country dossiers",
+    highlights: [
+      "Audited and cataloged open-source tools, datasets, and platforms across conflict monitoring, satellite damage assessment, environmental hazards, and humanitarian response.",
+      "Developed structured threat-model assessments for each tool, scoring security posture, privacy risks, censorship resilience, and offline viability.",
+      "Mapped civic technology tools and documented intelligence gaps across 12 countries, including Lebanon, Palestine, Syria, Sudan, and Yemen.",
+      "Designed bilingual (Arabic / English) exploratory interfaces with granular filtering by target audience, deployment platform, and verification status.",
+      "Independently designed, researched, and deployed the platform as a public-good resource for investigative journalists, researchers, and civil society.",
+    ],
+  },
+  {
     id: "lebanese-official-gazette",
     title: "Rebuilding the Lebanese Official Gazette",
     tagline:

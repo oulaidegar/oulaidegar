@@ -133,6 +133,23 @@ export const cvData = {
 
   projects: [
     {
+      title: "MATLAA | مَطْلَع",
+      type: "Public-Interest Tech Directory & Knowledge Graph",
+      period: "October 2026",
+      link: "https://matlaa.org/",
+      description:
+        "An open-access directory and intelligence knowledge graph cataloging digital tools, crisis datasets, and satellite monitoring platforms for journalists, researchers, and civil society across 12 MENA countries. Features structured threat assessments evaluating security posture, privacy risks, censorship resilience, and Arabic localization.",
+      technologies: [
+        "React",
+        "TypeScript",
+        "Tailwind CSS",
+        "Civic Tech",
+        "Threat Modeling",
+        "OSINT",
+        "MENA Data",
+      ],
+    },
+    {
       title: "Lebanese Official Gazette Reconstruction",
       type: "Civic Technology & AI Research",
       period: "2026",

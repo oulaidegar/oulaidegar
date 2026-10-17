@@ -9,7 +9,7 @@ import { ArrowUpRight, ArrowRight, FileText } from "lucide-react";
 import { SubstackIcon, SpotifyIcon } from "@/components/Icons";
 
 export default function Home() {
-  const featuredProjects = projects.filter((p) => p.featured).slice(0, 4);
+  const featuredProjects = projects.filter((p) => p.featured).slice(0, 6);
   const recentPosts = posts.slice(0, 3);
   const recentNotes = notes.slice(0, 3);
   const previewPhotos = initialPhotos.slice(0, 3);
