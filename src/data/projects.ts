@@ -8,7 +8,8 @@ export interface Project {
     | "Democracy & Civic AI"
     | "AI Ethics & Audits"
     | "Creative Tech & Interfaces"
-    | "Cultural Data";
+    | "Cultural Data"
+    | "Community & Ecosystem";
   tags: string[];
   github?: string;
   demo?: string;
@@ -20,6 +21,39 @@ export interface Project {
 }
 
 export const projects: Project[] = [
+  {
+    id: "techinmena",
+    status: "Live",
+    title: "Tech in MENA",
+    tagline:
+      "Find your next tech event across the Middle East and North Africa in under 15 seconds",
+    description:
+      "Tech in MENA is an open directory of technology events across the Middle East and North Africa, built as a regional public utility. It aggregates and curates meetups, workshops, hackathons, talks and conferences in Beirut, Cairo, Amman, Dubai, Riyadh, Tunis, Casablanca and neighboring hubs, putting grassroots meetups, student clubs and civic tech collectives alongside large commercial summits. Every listing links straight to the organizer: no accounts, no ticketing fees, no ad trackers. Each city and category is also published as a standard iCalendar feed, so anyone can subscribe from their own calendar or build on the data.",
+    year: "2026",
+    category: "Community & Ecosystem",
+    tags: [
+      "Public Utility",
+      "Tech Ecosystem",
+      "Events",
+      "iCalendar Feeds",
+      "Accessibility",
+      "Privacy-by-Design",
+      "Multilingual",
+      "MENA",
+    ],
+    demo: "https://techinmena.org/",
+    featured: true,
+    metrics: "Public iCalendar feeds by city and category",
+    highlights: [
+      "Designed around a single test: anyone should find a relevant event in less than 15 seconds.",
+      "Lists meetups, workshops, hackathons, talks, summits and more, filterable by city, date, topic, price and format.",
+      "Links every event directly to its organizer, with no intermediary ticketing, captive accounts or registration walls.",
+      "Publishes standards-compliant iCalendar (RFC 5545) feeds per city and category for Apple Calendar, Google Calendar and Outlook.",
+      "Handles regional detail properly: IANA timezones, local currencies, and English, Arabic and French.",
+      "Built without trackers or advertising scripts; outbound clicks are counted anonymously to show organizers their reach.",
+      "Accepts free event submissions from organizers, reviewed within 24 hours.",
+    ],
+  },
   {
     id: "matlaa",
     status: "Live",

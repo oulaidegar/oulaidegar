@@ -12,6 +12,7 @@ export function GET() {
       projects: `${base}/api/projects`,
       notes: `${base}/api/notes`,
       thesis: `${base}/api/thesis`,
+      gazette: `${base}/api/gazette`,
       cv: `${base}/api/cv`,
     },
   });

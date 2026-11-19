@@ -70,6 +70,7 @@ export const siteConfig: SiteConfig = {
     "I'm a French-Lebanese creative technologist and researcher. I build civic tools for the Middle East and study who actually holds power when AI makes building easier.",
 
   now: [
+    "Launching Tech in MENA, a directory of tech events across the region",
     "Running MATLAA, a public-interest tech directory for MENA",
     "Building Manaratan, impact monitoring for civil society",
     "Mapping AI governance across the region for the MENA AI Observatory",

@@ -133,6 +133,22 @@ export const cvData = {
 
   projects: [
     {
+      title: "Tech in MENA",
+      type: "Regional Tech Events Directory",
+      period: "2026",
+      link: "https://techinmena.org/",
+      description:
+        "An open, account-free directory of technology events across the Middle East and North Africa, built as a regional public utility. Curates meetups, workshops, hackathons and conferences across major hubs, links every listing directly to its organizer, and publishes iCalendar feeds per city and category. No trackers, ticketing fees or registration walls; English, Arabic and French.",
+      technologies: [
+        "Public Utility",
+        "iCalendar (RFC 5545)",
+        "Accessibility (WCAG 2.2 AA)",
+        "Privacy-by-Design",
+        "Multilingual",
+        "MENA",
+      ],
+    },
+    {
       title: "MATLAA | مَطْلَع",
       type: "Public-Interest Tech Directory & Knowledge Graph",
       period: "October 2026",

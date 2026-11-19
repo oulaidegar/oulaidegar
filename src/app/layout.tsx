@@ -47,6 +47,15 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://oulaidegar.com"),
+  openGraph: {
+    siteName: "oulaidegar",
+    type: "website",
+    locale: "en_GB",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
   title: {
     template: "%s | oulaidegar",
     default: "oulaidegar — Civic technology, AI & power",

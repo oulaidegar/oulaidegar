@@ -10,6 +10,7 @@ const endpoints = [
   { path: "/api", what: "Index of everything below" },
   { path: "/api/projects", what: "Every project, its status, links and details" },
   { path: "/api/notes", what: "All notes, full text" },
+  { path: "/api/gazette", what: "All 816 Gazette issues: year, number, pages, processing state" },
   { path: "/api/thesis", what: "Thesis abstract, questions, method, datasets, readings" },
   { path: "/api/cv", what: "Curriculum vitae" },
 ];

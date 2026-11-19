@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { thesisData } from "@/data/thesis";
 import { ArrowUpRight } from "lucide-react";
+import GazetteArchive from "@/components/GazetteArchive";
 
 export const metadata: Metadata = {
   title: "Thesis: 402 Payment Required",
@@ -54,6 +55,14 @@ export default function ThesisPage() {
           semantic search, so an economic dependency became a linguistic one.
         </p>
       </aside>
+
+      {/* The archive, issue by issue */}
+      <section className="space-y-4">
+        <h2 className="font-mono-meta text-xs uppercase tracking-wider text-stone-400 dark:text-stone-500">
+          The Archive
+        </h2>
+        <GazetteArchive />
+      </section>
 
       {/* Abstract */}
       <section className="space-y-3">

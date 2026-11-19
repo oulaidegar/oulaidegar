@@ -6,6 +6,7 @@ import { thesisData } from "@/data/thesis";
 import { ArrowUpRight, ArrowRight } from "lucide-react";
 import { SubstackIcon } from "@/components/Icons";
 import StatusMark from "@/components/StatusMark";
+import GazetteArchive from "@/components/GazetteArchive";
 
 const lastUpdated = new Date().toLocaleDateString("en-GB", {
   day: "numeric",
@@ -175,6 +176,10 @@ export default function Home() {
             thesis is about what that moment shows: building is easier than ever, but the
             infrastructure underneath still belongs to someone else.
           </p>
+        </div>
+
+        <div className="pt-4">
+          <GazetteArchive />
         </div>
 
         <Link
