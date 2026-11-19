@@ -13,6 +13,8 @@ export interface Project {
   github?: string;
   demo?: string;
   featured?: boolean;
+  /** Honest public state of the project. */
+  status: "Live" | "Prototype" | "In development";
   metrics?: string;
   highlights?: string[];
 }
@@ -20,6 +22,7 @@ export interface Project {
 export const projects: Project[] = [
   {
     id: "matlaa",
+    status: "Live",
     title: "MATLAA | مَطْلَع",
     tagline:
       "Public-interest technology and intelligence directory for the Middle East",
@@ -52,6 +55,7 @@ export const projects: Project[] = [
   },
   {
     id: "lebanese-official-gazette",
+    status: "Prototype",
     title: "Rebuilding the Lebanese Official Gazette",
     tagline:
       "Reclaiming public access to Lebanon's legal and institutional memory",
@@ -84,6 +88,7 @@ export const projects: Project[] = [
 
   {
     id: "dotfocus",
+    status: "Live",
     title: "DotFocus",
     tagline:
       "A privacy-first approach to training attention in an age of distraction",
@@ -116,6 +121,7 @@ export const projects: Project[] = [
 
   {
     id: "manaratan",
+    status: "In development",
     title: "Manaratan",
     tagline:
       "Connecting civil society's digital presence to its real-world impact",
@@ -148,6 +154,7 @@ export const projects: Project[] = [
 
   {
     id: "mena-ai-observatory",
+    status: "In development",
     title: "MENA AI Observatory",
     tagline:
       "Mapping the technologies, policies, people, and money shaping the digital future of the Middle East and North Africa",

@@ -1,8 +1,40 @@
 import type { Metadata, Viewport } from "next";
+import { Newsreader, IBM_Plex_Sans, IBM_Plex_Mono, IBM_Plex_Sans_Arabic } from "next/font/google";
 import "./compiled.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ConvexClientProvider from "@/components/ConvexClientProvider";
+
+const newsreader = Newsreader({
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  variable: "--font-newsreader",
+  display: "swap",
+});
+
+const plexSans = IBM_Plex_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-plex-sans",
+  display: "swap",
+});
+
+const plexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-plex-mono",
+  display: "swap",
+});
+
+const plexArabic = IBM_Plex_Sans_Arabic({
+  subsets: ["arabic"],
+  weight: ["400", "500"],
+  variable: "--font-plex-arabic",
+  display: "swap",
+});
+
+// Applies the saved (or OS) theme before first paint, so there is no flash.
+const themeScript = `(function(){try{var t=localStorage.getItem("theme");if(t==="dark"||(!t&&matchMedia("(prefers-color-scheme: dark)").matches))document.documentElement.classList.add("dark")}catch(e){}})()`;
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -17,17 +49,18 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: {
     template: "%s | oulaidegar",
-    default: "oulaidegar — Cultural Data, AI & Engineering",
+    default: "oulaidegar — Civic technology, AI & power",
   },
   description:
-    "Personal site, projects, thesis research in Cultural Data & AI, writings, notes, and visual archive by oulaidegar.",
+    "Creative technologist and researcher building civic tools for the Middle East and studying who holds power when AI makes building easier.",
   authors: [{ name: "oulaidegar" }],
   keywords: [
-    "Cultural Data",
-    "Artificial Intelligence",
-    "Digital Humanities",
-    "Machine Learning",
-    "Research",
+    "Civic Technology",
+    "AI Governance",
+    "Digital Rights",
+    "MENA",
+    "Lebanon",
+    "Lebanese Official Gazette",
     "oulaidegar",
   ],
   icons: {
@@ -47,10 +80,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${newsreader.variable} ${plexSans.variable} ${plexMono.variable} ${plexArabic.variable}`}
+    >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body
         suppressHydrationWarning
-        className="min-h-screen flex flex-col selection:bg-stone-200 selection:text-stone-900 dark:selection:bg-stone-800 dark:selection:text-stone-100"
+        className="min-h-screen flex flex-col selection:bg-accent-soft selection:text-accent"
       >
         <ConvexClientProvider>
           <Header />

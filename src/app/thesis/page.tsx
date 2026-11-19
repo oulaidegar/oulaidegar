@@ -3,37 +3,57 @@ import { thesisData } from "@/data/thesis";
 import { ArrowUpRight } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Thesis: Cultural Data & AI",
+  title: "Thesis: 402 Payment Required",
   description:
-    "Master's thesis research exploring generative AI, multimodal embeddings, and the algorithmic curation of cultural heritage collections.",
+    "MA thesis (University of Amsterdam) on agency, dependency and AI, through a practice-based reconstruction of the Lebanese Official Gazette.",
 };
 
 export default function ThesisPage() {
   return (
     <article className="space-y-14">
       {/* Editorial Header */}
-      <header className="space-y-4 pb-8 border-b border-stone-200/80 dark:border-stone-800/80">
-        <div className="flex flex-wrap items-center gap-2 text-xs font-mono-meta text-stone-500 dark:text-stone-400">
-          <span>{thesisData.degree}</span>
-          <span>&bull;</span>
-          <span>{thesisData.field}</span>
-          <span>&bull;</span>
+      <header className="space-y-4">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 label text-stone-500 dark:text-stone-400">
+          <span>MA Thesis</span>
+          <span>&middot;</span>
+          <span>{thesisData.institution}</span>
+          <span>&middot;</span>
           <span>{thesisData.expectedYear}</span>
         </div>
 
-        <h1 className="font-serif-title text-3xl sm:text-4xl lg:text-5xl text-stone-900 dark:text-stone-100 leading-tight font-normal">
-          {thesisData.workingTitle}
+        <h1 className="font-serif-title text-4xl sm:text-5xl lg:text-6xl text-stone-900 dark:text-stone-100 leading-[1.05] font-normal tracking-tight">
+          <span className="font-mono-meta text-accent tracking-tight">402</span> Payment Required
         </h1>
+        <p className="font-serif-title text-xl sm:text-2xl text-stone-700 dark:text-stone-300 leading-snug">
+          Agency, Dependency, and the Lebanese Official Gazette
+        </p>
+        <div className="rule-double" />
 
         <p className="font-serif-title italic text-lg sm:text-xl text-stone-600 dark:text-stone-300 leading-relaxed max-w-2xl">
           {thesisData.subtitle}
         </p>
 
-        <div className="flex items-center gap-2 text-xs font-mono-meta text-emerald-700 dark:text-emerald-400 pt-1">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse" />
-          <span>Status: {thesisData.status} ({thesisData.institution})</span>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono-meta text-xs text-stone-500 dark:text-stone-400 pt-1">
+          <span className="inline-flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+            {thesisData.status}
+          </span>
+          <span>{thesisData.degree}</span>
         </div>
       </header>
+
+      {/* Key finding */}
+      <aside className="border-l-2 border-accent pl-5 sm:pl-6 py-1 space-y-2 max-w-2xl">
+        <div className="label text-accent">Key finding</div>
+        <p className="font-serif-title text-xl sm:text-2xl text-stone-900 dark:text-stone-100 leading-snug">
+          Democratizing the capacity to build software is not the same as democratizing the
+          infrastructures on which societies depend.
+        </p>
+        <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed">
+          The clearest moment: a commercial API&apos;s billing threshold switched off Arabic
+          semantic search, so an economic dependency became a linguistic one.
+        </p>
+      </aside>
 
       {/* Abstract */}
       <section className="space-y-3">
@@ -103,7 +123,7 @@ export default function ThesisPage() {
                 {method.description}
               </p>
               <div className="flex flex-wrap gap-1 text-[11px] font-mono-meta text-stone-400 dark:text-stone-500 pt-1">
-                {method.tools.join(" &bull; ")}
+                {method.tools.join(" · ")}
               </div>
             </div>
           ))}
@@ -129,6 +149,41 @@ export default function ThesisPage() {
               <div className="font-mono-meta text-xs text-stone-400 shrink-0">
                 {data.size}
               </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Theoretical framework */}
+      <section className="space-y-4 pt-6 border-t border-stone-200/60 dark:border-stone-800/60">
+        <h2 className="font-mono-meta text-xs uppercase tracking-wider text-stone-400 dark:text-stone-500">
+          Theoretical Framework
+        </h2>
+        <ul className="space-y-2 text-sm text-stone-700 dark:text-stone-300 max-w-2xl">
+          {thesisData.theoreticalFramework.map((t) => (
+            <li key={t} className="flex gap-3">
+              <span className="text-accent select-none">&middot;</span>
+              <span className="leading-relaxed">{t}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* Key readings */}
+      <section className="space-y-4 pt-6 border-t border-stone-200/60 dark:border-stone-800/60">
+        <h2 className="font-mono-meta text-xs uppercase tracking-wider text-stone-400 dark:text-stone-500">
+          Key Readings
+        </h2>
+        <div className="space-y-5 max-w-2xl">
+          {thesisData.keyReadings.map((r) => (
+            <div key={r.title} className="space-y-1">
+              <div className="font-serif-title text-lg text-stone-900 dark:text-stone-100 leading-snug">
+                {r.title}
+              </div>
+              <div className="font-mono-meta text-[11px] text-stone-500 dark:text-stone-400">
+                {r.author} &middot; {r.year}
+              </div>
+              <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed">{r.note}</p>
             </div>
           ))}
         </div>
@@ -163,7 +218,7 @@ export default function ThesisPage() {
                   rel="noopener noreferrer"
                   className="text-xs font-mono-meta text-stone-800 dark:text-stone-200 hover:underline flex items-center gap-1 shrink-0"
                 >
-                  <span>view code</span>
+                  <span>Open</span>
                   <ArrowUpRight className="w-3 h-3" />
                 </a>
               )}

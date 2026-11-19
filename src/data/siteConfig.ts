@@ -16,7 +16,14 @@ export interface SiteConfig {
   location: string;
   status: string;
   focusAreas: string[];
+  /** One-line thesis of the whole site, shown as the homepage hero. */
+  headline: string;
+  /** Short plain-language intro shown under the headline. */
+  intro: string;
+  /** What you are working on right now. Update freely. */
+  now: string[];
   navLinks: { name: string; href: string }[];
+  secondaryLinks: { name: string; href: string }[];
 }
 
 export const siteConfig: SiteConfig = {
@@ -56,15 +63,28 @@ export const siteConfig: SiteConfig = {
     "Creative Technology, Media & Journalism",
   ],
 
+  headline:
+    "Democratizing the capacity to build software is not the same as democratizing the infrastructures societies depend on.",
+
+  intro:
+    "I'm a French-Lebanese creative technologist and researcher. I build civic tools for the Middle East and study who actually holds power when AI makes building easier.",
+
+  now: [
+    "Running MATLAA, a public-interest tech directory for MENA",
+    "Building Manaratan, impact monitoring for civil society",
+    "Mapping AI governance across the region for the MENA AI Observatory",
+  ],
+
   navLinks: [
-    { name: "About", href: "/" },
-    { name: "Thesis", href: "/thesis" },
     { name: "Built", href: "/work" },
-    { name: "Writing", href: "/writing" },
+    { name: "Thesis", href: "/thesis" },
     { name: "Notes", href: "/notes" },
-    { name: "Visuals", href: "/visuals" },
-    { name: "Recs", href: "/recommendations" },
     { name: "CV", href: "/cv" },
+  ],
+
+  secondaryLinks: [
+    { name: "Visuals", href: "/visuals" },
+    { name: "Recommendations", href: "/recommendations" },
   ],
 };
 

@@ -1,332 +1,222 @@
 import Link from "next/link";
 import { siteConfig } from "@/data/siteConfig";
 import { projects } from "@/data/projects";
-import { posts } from "@/data/posts";
 import { notes } from "@/data/notes";
-import { initialPhotos } from "@/data/photos";
-import { recommendations } from "@/data/recommendations";
-import { ArrowUpRight, ArrowRight, FileText } from "lucide-react";
-import { SubstackIcon, SpotifyIcon } from "@/components/Icons";
+import { thesisData } from "@/data/thesis";
+import { ArrowUpRight, ArrowRight } from "lucide-react";
+import { SubstackIcon } from "@/components/Icons";
+import StatusMark from "@/components/StatusMark";
+
+const lastUpdated = new Date().toLocaleDateString("en-GB", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+
+function excerpt(text: string, max = 280) {
+  const firstPara = text.split("\n\n")[0];
+  return firstPara.length > max ? firstPara.slice(0, max).trimEnd() + "…" : firstPara;
+}
 
 export default function Home() {
-  const featuredProjects = projects.filter((p) => p.featured).slice(0, 6);
-  const recentPosts = posts.slice(0, 3);
-  const recentNotes = notes.slice(0, 3);
-  const previewPhotos = initialPhotos.slice(0, 3);
-  const featuredRecs = recommendations.filter((r) => r.featured).slice(0, 3);
+  const entries = projects.filter((p) => p.featured);
+  const latestNote = notes[0];
 
   return (
     <div className="space-y-20 sm:space-y-24">
-      {/* Editorial Hero */}
-      <section className="space-y-6 pt-4 sm:pt-8">
-        <div className="space-y-3">
-          <div className="flex items-center gap-2.5 text-xs font-mono-meta text-stone-500 dark:text-stone-400">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span>{siteConfig.location}</span>
-            <span>&bull;</span>
-            <span>{siteConfig.role}</span>
-          </div>
-
-          <h1 className="font-serif-title text-4xl sm:text-5xl lg:text-6xl text-stone-900 dark:text-stone-100 font-normal tracking-tight leading-[1.08]">
-            {siteConfig.name}
-          </h1>
+      {/* Masthead */}
+      <section className="pt-2 sm:pt-6">
+        <div className="flex items-baseline justify-between label text-stone-500 dark:text-stone-400">
+          <span>{siteConfig.location}</span>
+          <span className="hidden sm:inline">Last updated {lastUpdated}</span>
         </div>
 
-        <p className="text-lg sm:text-xl text-stone-800 dark:text-stone-200 font-serif-title italic leading-relaxed max-w-2xl border-l-2 border-stone-300 dark:border-stone-700 pl-4 py-0.5">
-          &ldquo;{siteConfig.statement}&rdquo;
-        </p>
+        <h1 className="font-serif-title text-5xl sm:text-7xl text-stone-900 dark:text-stone-100 font-normal tracking-tight leading-none mt-4 mb-4">
+          {siteConfig.name}
+        </h1>
 
-        <p className="text-sm sm:text-base text-stone-600 dark:text-stone-400 leading-relaxed font-sans max-w-2xl">
-          {siteConfig.bio}
-        </p>
+        <div className="rule-double" />
 
-        {/* Focus Areas as subtle text tags */}
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs font-mono-meta text-stone-500 dark:text-stone-400 pt-1">
-          <span className="text-stone-400 dark:text-stone-600">Focus:</span>
-          {siteConfig.focusAreas.map((area, i) => (
-            <span key={area} className="flex items-center gap-2">
-              <span className="hover:text-stone-900 dark:hover:text-stone-200 transition-colors">
-                {area}
-              </span>
-              {i < siteConfig.focusAreas.length - 1 && (
-                <span className="text-stone-300 dark:text-stone-700">&bull;</span>
-              )}
-            </span>
-          ))}
+        <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 mt-2 label text-stone-500 dark:text-stone-400">
+          <span>{siteConfig.role}</span>
+          <span>Civic tech &middot; AI governance &middot; MENA</span>
         </div>
+      </section>
 
-        {/* Quiet Actions */}
-        <div className="flex flex-wrap items-center gap-5 text-xs font-mono-meta pt-2">
+      {/* Headline + intro */}
+      <section className="space-y-8 -mt-6 sm:-mt-8">
+        <p className="font-serif-title text-2xl sm:text-[2rem] leading-snug text-stone-900 dark:text-stone-100 max-w-2xl">
+          <span className="text-accent">&ldquo;</span>
+          {siteConfig.headline}
+          <span className="text-accent">&rdquo;</span>
+        </p>
+
+        <p className="text-base sm:text-lg text-stone-600 dark:text-stone-400 leading-relaxed max-w-xl">
+          {siteConfig.intro}
+        </p>
+
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm">
           <Link
             href="/cv"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-sm bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 font-medium hover:opacity-90 transition-opacity"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-sm bg-stone-900 text-stone-50 dark:bg-stone-100 dark:text-stone-900 font-medium hover:bg-accent dark:hover:bg-accent dark:hover:text-stone-950 transition-colors"
           >
-            <FileText className="w-3.5 h-3.5" />
-            <span>Curriculum Vitae</span>
+            Curriculum Vitae
           </Link>
-          <Link
-            href="/thesis"
-            className="text-stone-700 dark:text-stone-300 hover:text-stone-950 dark:hover:text-stone-100 flex items-center gap-1 group transition-colors editorial-link"
+          <a
+            href={`mailto:${siteConfig.email}`}
+            className="text-stone-700 dark:text-stone-300 editorial-link hover:text-accent"
           >
-            <span>Master&apos;s Thesis</span>
-            <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
-          </Link>
+            Get in touch
+          </a>
           <a
             href={siteConfig.substack}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100 flex items-center gap-1 transition-colors"
+            className="text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100 flex items-center gap-1.5 transition-colors"
           >
             <SubstackIcon className="w-3.5 h-3.5" />
             <span>Substack</span>
           </a>
-          <a
-            href={siteConfig.spotify}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100 flex items-center gap-1 transition-colors"
-          >
-            <SpotifyIcon className="w-3.5 h-3.5" />
-            <span>Spotify</span>
-          </a>
         </div>
       </section>
 
-      {/* Featured Master's Thesis Section - Editorial Publication Style */}
-      <section className="space-y-4 pt-4 border-t border-stone-200/80 dark:border-stone-800/80">
-        <div className="flex items-baseline justify-between text-xs font-mono-meta text-stone-400 dark:text-stone-500">
-          <span className="uppercase tracking-wider">Research Focus</span>
-          <span>M.Sc. Cultural Data & AI &bull; 2024–2026</span>
-        </div>
-
-        <div className="space-y-3">
-          <h2 className="font-serif-title text-2xl sm:text-3xl text-stone-900 dark:text-stone-100 leading-snug">
-            Latent Assemblies: AI Ethics, Cultural Data, and the Democratic Politics of Collective Memory
-          </h2>
-          <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed font-sans max-w-2xl">
-            Investigating the epistemological consequences of applying multimodal foundation models to digitized public cultural heritage. Developing an open audit suite to evaluate cultural skew and proposing sovereign AI architectures for citizen assemblies.
-          </p>
-        </div>
-
-        <div className="pt-2">
-          <Link
-            href="/thesis"
-            className="inline-flex items-center gap-1.5 text-xs font-mono-meta font-medium text-stone-900 dark:text-stone-100 group editorial-link"
-          >
-            <span>Read full thesis proposal & methodologies</span>
-            <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
-          </Link>
-        </div>
+      {/* Now */}
+      <section className="grid grid-cols-1 sm:grid-cols-[8rem_1fr] gap-3 sm:gap-6 pt-6 border-t border-stone-200/80 dark:border-stone-800/80">
+        <h2 className="label text-stone-400 dark:text-stone-500 pt-1">Now</h2>
+        <ul className="space-y-2 text-[15px] text-stone-700 dark:text-stone-300">
+          {siteConfig.now.map((item) => (
+            <li key={item} className="flex gap-3">
+              <span className="text-accent select-none">&rarr;</span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
       </section>
 
-      {/* Selected Works - Refined Typographic Index */}
-      <section className="space-y-6 pt-4 border-t border-stone-200/80 dark:border-stone-800/80">
-        <div className="flex items-baseline justify-between">
-          <h2 className="font-mono-meta text-xs uppercase tracking-wider text-stone-400 dark:text-stone-500">
-            Selected Works & Systems
-          </h2>
+      {/* Built: numbered register of entries */}
+      <section className="space-y-2">
+        <div className="flex items-baseline justify-between pb-3 border-b border-stone-900 dark:border-stone-200">
+          <h2 className="label text-stone-900 dark:text-stone-100">Built</h2>
           <Link
             href="/work"
-            className="text-xs font-mono-meta text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100 flex items-center gap-1 group"
+            className="label text-stone-500 hover:text-accent dark:text-stone-400 flex items-center gap-1 group"
           >
-            <span>All projects ({projects.length})</span>
+            <span>Full register</span>
             <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
           </Link>
         </div>
 
-        <div className="divide-y divide-stone-200/60 dark:divide-stone-800/60">
-          {featuredProjects.map((project) => (
-            <article
-              key={project.id}
-              className="group py-4.5 transition-colors flex flex-col sm:flex-row sm:items-baseline justify-between gap-2"
-            >
-              <div className="space-y-1 max-w-xl">
-                <div className="flex items-baseline gap-2.5">
-                  <h3 className="font-serif-title text-lg sm:text-xl text-stone-900 dark:text-stone-100 group-hover:text-stone-600 dark:group-hover:text-stone-300 transition-colors">
-                    {project.title}
-                  </h3>
-                  <span className="text-[10px] font-mono-meta text-stone-400 dark:text-stone-500">
-                    {project.category}
+        <ol className="divide-y divide-stone-200/80 dark:divide-stone-800/80">
+          {entries.map((project, i) => {
+            const href = project.demo ?? `/work#${project.id}`;
+            const external = Boolean(project.demo);
+            return (
+              <li key={project.id}>
+                <a
+                  href={href}
+                  {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  className="group grid grid-cols-[2.75rem_1fr] sm:grid-cols-[3.5rem_1fr_auto] gap-x-2 gap-y-1 py-5"
+                >
+                  <span className="font-mono-meta text-xs text-accent pt-1.5">
+                    №&nbsp;{String(i + 1).padStart(2, "0")}
                   </span>
-                </div>
-                <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 leading-relaxed font-sans">
-                  {project.tagline}
-                </p>
-              </div>
 
-              <div className="flex items-center gap-3 text-xs font-mono-meta text-stone-400 dark:text-stone-500 shrink-0 self-start sm:self-auto pt-1 sm:pt-0">
-                <span>{project.year}</span>
-                {project.demo && (
-                  <a
-                    href={project.demo}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-stone-800 dark:text-stone-200 hover:underline flex items-center gap-0.5"
-                  >
-                    <span>demo</span>
-                    <ArrowUpRight className="w-3 h-3" />
-                  </a>
-                )}
-                {project.github && (
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-stone-800 dark:text-stone-200 hover:underline flex items-center gap-0.5"
-                  >
-                    <span>code</span>
-                    <ArrowUpRight className="w-3 h-3" />
-                  </a>
-                )}
-              </div>
-            </article>
-          ))}
-        </div>
+                  <div className="space-y-1.5 min-w-0">
+                    <h3 className="font-serif-title text-xl sm:text-2xl text-stone-900 dark:text-stone-100 leading-tight flex items-baseline gap-2">
+                      <span className="group-hover:text-accent transition-colors">{project.title}</span>
+                      {external && (
+                        <ArrowUpRight className="w-4 h-4 shrink-0 text-stone-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      )}
+                    </h3>
+                    <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed">
+                      {project.tagline}
+                    </p>
+                    {project.metrics && !project.metrics.startsWith("In development") && (
+                      <p className="font-mono-meta text-[11px] text-stone-500 dark:text-stone-500">
+                        {project.metrics}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="col-start-2 sm:col-start-3 sm:row-start-1 sm:text-right pt-1 sm:pt-2 flex sm:flex-col items-center sm:items-end gap-3 sm:gap-1">
+                    <StatusMark status={project.status} />
+                    <span className="font-mono-meta text-[11px] text-stone-400 dark:text-stone-500">
+                      {project.year}
+                    </span>
+                  </div>
+                </a>
+              </li>
+            );
+          })}
+        </ol>
       </section>
 
-      {/* Writing / Essays - Clean Literary Index (renders once user publishes essays) */}
-      {recentPosts.length > 0 && (
-        <section className="space-y-6 pt-4 border-t border-stone-200/80 dark:border-stone-800/80">
-          <div className="flex items-baseline justify-between">
-            <h2 className="font-mono-meta text-xs uppercase tracking-wider text-stone-400 dark:text-stone-500">
-              Essays & Writings
-            </h2>
+      {/* Thesis */}
+      <section className="space-y-6">
+        <div className="flex items-baseline justify-between pb-3 border-b border-stone-900 dark:border-stone-200">
+          <h2 className="label text-stone-900 dark:text-stone-100">Thesis</h2>
+          <span className="label text-stone-500 dark:text-stone-400">
+            MA &middot; University of Amsterdam &middot; {thesisData.status}
+          </span>
+        </div>
+
+        <div className="space-y-4">
+          <h3 className="font-serif-title text-3xl sm:text-4xl text-stone-900 dark:text-stone-100 leading-tight">
+            <span className="font-mono-meta text-accent text-2xl sm:text-3xl tracking-tight">402</span>{" "}
+            Payment Required
+          </h3>
+          <p className="font-serif-title italic text-lg text-stone-600 dark:text-stone-400">
+            Agency, Dependency, and the Lebanese Official Gazette
+          </p>
+          <p className="text-[15px] text-stone-700 dark:text-stone-300 leading-relaxed max-w-2xl">
+            I tried to rebuild Lebanon&apos;s paywalled archive of laws and decrees with AI
+            tools: 816 issues, 149,094 scanned images, Arabic OCR and semantic search. At
+            one point a commercial API&apos;s billing threshold cut off Arabic search. The
+            thesis is about what that moment shows: building is easier than ever, but the
+            infrastructure underneath still belongs to someone else.
+          </p>
+        </div>
+
+        <Link
+          href="/thesis"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-stone-900 dark:text-stone-100 group hover:text-accent transition-colors"
+        >
+          <span>Read the abstract and method</span>
+          <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+        </Link>
+      </section>
+
+      {/* Latest note */}
+      {latestNote && (
+        <section className="space-y-6">
+          <div className="flex items-baseline justify-between pb-3 border-b border-stone-900 dark:border-stone-200">
+            <h2 className="label text-stone-900 dark:text-stone-100">Latest note</h2>
             <Link
-              href="/writing"
-              className="text-xs font-mono-meta text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100 flex items-center gap-1 group"
+              href="/notes"
+              className="label text-stone-500 hover:text-accent dark:text-stone-400 flex items-center gap-1 group"
             >
-              <span>All essays ({posts.length})</span>
+              <span>All notes</span>
               <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
             </Link>
           </div>
 
-          <div className="divide-y divide-stone-200/60 dark:divide-stone-800/60">
-            {recentPosts.map((post) => (
-              <Link
-                key={post.slug}
-                href={`/writing/${post.slug}`}
-                className="group block py-4.5 transition-colors"
-              >
-                <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 mb-1">
-                  <h3 className="font-serif-title text-lg sm:text-xl text-stone-900 dark:text-stone-100 group-hover:text-stone-600 dark:group-hover:text-stone-300 transition-colors">
-                    {post.title}
-                  </h3>
-                  <span className="text-[11px] font-mono-meta text-stone-400 dark:text-stone-500 shrink-0">
-                    {post.date}
-                  </span>
-                </div>
-                <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 line-clamp-2 leading-relaxed font-sans">
-                  {post.summary}
-                </p>
-              </Link>
-            ))}
-          </div>
+          <Link href="/notes" className="group block space-y-3">
+            <div className="font-mono-meta text-[11px] text-stone-400 dark:text-stone-500">
+              {new Date(latestNote.date).toLocaleDateString("en-GB", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
+            </div>
+            <h3 className="font-serif-title text-2xl text-stone-900 dark:text-stone-100 group-hover:text-accent transition-colors">
+              {latestNote.title}
+            </h3>
+            <p className="text-[15px] text-stone-600 dark:text-stone-400 leading-relaxed max-w-2xl">
+              {excerpt(latestNote.content)}
+            </p>
+          </Link>
         </section>
       )}
-
-      {/* Field Notes - Clean Stream */}
-      <section className="space-y-6 pt-4 border-t border-stone-200/80 dark:border-stone-800/80">
-        <div className="flex items-baseline justify-between">
-          <h2 className="font-mono-meta text-xs uppercase tracking-wider text-stone-400 dark:text-stone-500">
-            Field Notes & Garden
-          </h2>
-          <Link
-            href="/notes"
-            className="text-xs font-mono-meta text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100 flex items-center gap-1 group"
-          >
-            <span>Digital Garden ({notes.length})</span>
-            <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          {recentNotes.map((note) => (
-            <div key={note.id} className="space-y-2">
-              <div className="text-[10px] font-mono-meta text-stone-400 dark:text-stone-500 flex justify-between">
-                <span>{note.category}</span>
-                <span>{note.date}</span>
-              </div>
-              <h4 className="text-sm font-medium text-stone-900 dark:text-stone-100 font-sans">
-                {note.title}
-              </h4>
-              <p className="text-xs text-stone-600 dark:text-stone-400 leading-relaxed line-clamp-4">
-                {note.content}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Visual Archive Preview - Editorial Gallery Strip */}
-      <section className="space-y-6 pt-4 border-t border-stone-200/80 dark:border-stone-800/80">
-        <div className="flex items-baseline justify-between">
-          <h2 className="font-mono-meta text-xs uppercase tracking-wider text-stone-400 dark:text-stone-500">
-            Visual Archive
-          </h2>
-          <Link
-            href="/visuals"
-            className="text-xs font-mono-meta text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100 flex items-center gap-1 group"
-          >
-            <span>Full Gallery & Upload</span>
-            <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {previewPhotos.map((photo) => (
-            <Link
-              key={photo.id}
-              href="/visuals"
-              className="group block aspect-[4/3] max-w-sm overflow-hidden bg-stone-100 dark:bg-stone-900 relative"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={photo.url}
-                alt={photo.title}
-                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* Curated Canon & Recommendations Strip */}
-      <section className="space-y-6 pt-4 border-t border-stone-200/80 dark:border-stone-800/80">
-        <div className="flex items-baseline justify-between">
-          <h2 className="font-mono-meta text-xs uppercase tracking-wider text-stone-400 dark:text-stone-500">
-            Curated Canon & Media
-          </h2>
-          <Link
-            href="/recommendations"
-            className="text-xs font-mono-meta text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100 flex items-center gap-1 group"
-          >
-            <span>All recommendations ({recommendations.length})</span>
-            <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {featuredRecs.map((rec) => (
-            <Link
-              key={rec.id}
-              href="/recommendations"
-              className="p-4 rounded-sm border border-stone-200/80 dark:border-stone-800/80 hover:border-stone-400 dark:hover:border-stone-600 bg-white/40 dark:bg-stone-900/30 space-y-2 transition-all block group"
-            >
-              <div className="flex items-center justify-between text-[10px] font-mono-meta text-stone-400">
-                <span>{rec.categoryLabel}</span>
-                {rec.subscribers && <span>{rec.subscribers} subs</span>}
-              </div>
-              <h3 className="font-serif-title text-base text-stone-900 dark:text-stone-100 group-hover:underline">
-                {rec.title}
-              </h3>
-              <p className="text-xs text-stone-600 dark:text-stone-400 font-sans line-clamp-3 leading-relaxed">
-                {rec.description}
-              </p>
-            </Link>
-          ))}
-        </div>
-      </section>
     </div>
   );
 }
