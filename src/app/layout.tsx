@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     default: "Louaï Mroueh — Responsible AI & Digital Policy",
   },
   description:
-    "Louaï Mroueh (oulaidegar): researcher in responsible AI, data governance and digital rights. Led AI integration at Daraj Media; MA Cultural Data & AI, University of Amsterdam. Brussels from February 2027.",
+    "Louaï Mroueh (oulaidegar): researcher in responsible AI, data governance and digital rights. Led AI integration at Daraj Media; MA Media Studies (Cultural Data & AI), University of Amsterdam. Brussels from February 2027.",
   authors: [{ name: "Louaï Mroueh", url: "https://oulaidegar.com" }],
   keywords: [
     "Louaï Mroueh",

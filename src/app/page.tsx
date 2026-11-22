@@ -166,7 +166,7 @@ export default function Home() {
         <div className="grid grid-cols-1 sm:grid-cols-[8.5rem_1fr] gap-x-6 gap-y-2 pt-6 border-t border-stone-200/80 dark:border-stone-800/80">
           <span className="label text-stone-400 dark:text-stone-500 pt-0.5">Training</span>
           <ul className="space-y-1 text-sm text-stone-700 dark:text-stone-300">
-            <li>MA Cultural Data &amp; AI, University of Amsterdam (2026)</li>
+            <li>MA Media Studies (Cultural Data &amp; AI), University of Amsterdam (2026)</li>
             <li>
               AI and Digital Transformation in Government; AI, Justice, and the Rule of Law
               <span className="text-stone-500 dark:text-stone-400"> · Oxford Saïd &amp; UNESCO</span>

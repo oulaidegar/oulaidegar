@@ -23,7 +23,7 @@ export const cvData = {
 
   education: [
     {
-      degree: "Master of Arts in Cultural Data & Artificial Intelligence",
+      degree: "MA Media Studies: Cultural Data & AI",
       institution: "University of Amsterdam (UvA), Faculty of Humanities",
       location: "Amsterdam, Netherlands",
       period: "2025 — 2026",

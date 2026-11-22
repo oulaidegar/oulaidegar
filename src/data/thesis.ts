@@ -40,7 +40,7 @@ export interface ThesisData {
 }
 
 export const thesisData: ThesisData = {
-  degree: "Master of Arts in Cultural Data & Artificial Intelligence",
+  degree: "MA Media Studies: Cultural Data & AI",
   field: "AI Ethics, Civic Technology & Democratic Epistemology",
   institution: "University of Amsterdam (UvA) · Faculty of Humanities",
   expectedYear: "2025 – 2026",

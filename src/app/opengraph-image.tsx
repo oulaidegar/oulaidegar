@@ -8,6 +8,6 @@ export default function Image() {
   return ogCard({
     kicker: "Brussels from February 2027",
     title: "Louaï Mroueh",
-    subtitle: "Responsible AI & digital policy. Led AI integration at Daraj Media; MA in Cultural Data & AI, University of Amsterdam.",
+    subtitle: "Responsible AI & digital policy. Led AI integration at Daraj Media; MA Media Studies (Cultural Data & AI), University of Amsterdam.",
   });
 }
