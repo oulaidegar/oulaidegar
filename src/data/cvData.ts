@@ -9,16 +9,17 @@ export interface CVEducation {
 }
 
 export const cvData = {
-  name: "oulaidegar",
+  name: "Louaï Mroueh",
   title:
-    "Creative Technologist & Researcher | AI Ethics, Civic Technology & Digital Media",
+    "Responsible AI & Digital Policy | Researcher & Creative Technologist",
   email: "oulaidegar@gmail.com",
   website: "https://oulaidegar.com",
-  github: "https://github.com",
-  location: "Beirut / Remote",
+  github: "https://github.com/oulaidegar",
+  linkedin: "https://www.linkedin.com/in/louai-m-24664b1b7",
+  location: "Brussels from February 2027 · French citizen (EU)",
 
   summary:
-    "Creative technologist and researcher working at the intersection of artificial intelligence, digital humanities, journalism, and democratic systems. With a background in literary and cultural analysis, AI integration, and multimedia production, I combine technical development with critical inquiry into how technologies shape human agency, public knowledge, and institutional power. My work spans AI-assisted civic infrastructure, privacy-first applications, newsroom automation, and independent research into algorithmic accountability, digital sovereignty, and the political economy of AI. I am particularly interested in building public-interest technologies that address information inequality and the infrastructural challenges facing the Middle East.",
+    "Researcher in responsible AI and digital policy, with hands-on experience putting AI into practice. I led AI integration at Daraj Media, an independent Arabic-language newsroom, where the workflows I introduced to a team of about 20 were largely adopted and remain in use. My MA thesis (University of Amsterdam) examined how dependence on commercial AI infrastructure limits access to public information, through a reconstruction of Lebanon's Official Gazette. I work on AI governance, data governance and digital rights, and build public-interest tools that test these questions in practice.",
 
   education: [
     {
@@ -66,6 +67,7 @@ export const cvData = {
       period: "March 2024 — August 2025",
       highlights: [
         "Led AI research and integration across an independent digital media organization, aligning technical initiatives with editorial, operational, and strategic objectives.",
+        "Introduced AI workflows to a team of about 20 people; most were adopted and remain in use.",
         "Developed and evaluated AI-assisted workflows for research, document analysis, data extraction, content production, and audience analytics.",
         "Worked with journalists, editors, and developers to identify and implement tools supporting investigative reporting and newsroom efficiency.",
         "Addressed ethical and operational challenges involving data privacy, source protection, Arabic-language processing, and the use of proprietary AI models in journalism.",
@@ -79,11 +81,9 @@ export const cvData = {
       location: "Amsterdam, Netherlands",
       period: "November 2021 — June 2023",
       highlights: [
-        "Coordinated creative productions, studio sessions, music video shoots, and live events for musical artists.",
-        "Managed logistics involving production crews, locations, technical equipment, accommodations, and artist schedules.",
+        "Coordinated 6–7 live events and about 10 shoots (studio sessions and music videos) for musical artists.",
+        "Managed logistics across production crews, locations, technical equipment, accommodation, and artist schedules.",
         "Developed brand partnerships and product-seeding initiatives connecting artists with fashion and lifestyle companies.",
-        "Worked with creative teams, artists, vendors, and venues to execute productions and commercial projects.",
-        "Combined production planning, client communication, and creative direction across multidisciplinary assignments.",
       ],
     },
     {
@@ -92,8 +92,7 @@ export const cvData = {
       location: "Amsterdam, Netherlands",
       period: "2022",
       highlights: [
-        "Contributed to the development of a podcast concept, including research, editorial planning, and creative coordination.",
-        "Collaborated with the team on production planning and the program's editorial direction.",
+        "Developed a podcast concept, including research, editorial planning, and production coordination.",
       ],
     },
     {
@@ -102,9 +101,7 @@ export const cvData = {
       location: "Amsterdam, Netherlands",
       period: "September — December 2022",
       highlights: [
-        "Supported photography and audiovisual productions through studio preparation, equipment management, and technical setup.",
-        "Coordinated with clients and creative teams to ensure smooth production operations.",
-        "Contributed to the organization and maintenance of studio facilities and equipment.",
+        "Supported photography and audiovisual productions: studio preparation, equipment, and technical setup.",
       ],
     },
     {
@@ -113,20 +110,7 @@ export const cvData = {
       location: "Dubai, United Arab Emirates",
       period: "December 2017",
       highlights: [
-        "Selected as a finalist and participant in the festival's Young Journalist Award program.",
-        "Produced film reviews, interviews, and cultural reporting under editorial deadlines.",
-        "Gained practical experience in journalism, film criticism, interviewing, and arts reporting.",
-      ],
-    },
-    {
-      role: "Commercial Photographer",
-      organization: "The Good Life",
-      location: "Dubai, United Arab Emirates",
-      period: "April 2016 — June 2017",
-      highlights: [
-        "Produced photography and visual assets for the company's website, social media, and brand communications.",
-        "Covered events and commercial activations, combining photography with guest interaction and visual storytelling.",
-        "Worked with the creative team to maintain consistency across the company's visual identity.",
+        "Selected as a finalist; produced film reviews, interviews, and cultural reporting under editorial deadlines.",
       ],
     },
   ],
@@ -188,7 +172,7 @@ export const cvData = {
       period: "2025 — Present",
       link: "https://dotfocus.app/",
       description:
-        "An independently developed, privacy-first web application for attention training through visual fixation and gaze-based exercises. Designed around minimalist interaction, client-side visual processing, and privacy-conscious data practices. The project combines experimental human-computer interaction, web development, and product design, exploring how technology can support concentration rather than compete for attention.",
+        "An independently developed web application for attention training through visual fixation and gaze-based exercises. Face and gaze tracking run entirely on the device: no video leaves the browser. The project combines experimental human-computer interaction, web development, and product design, exploring how technology can support concentration rather than compete for attention.",
       technologies: [
         "TypeScript",
         "React",
@@ -207,7 +191,55 @@ export const cvData = {
       year: "2026",
       type: "Academic Thesis",
     },
+    {
+      title: "The Government Doesn't Have to Build Everything",
+      venue: "oulaidegar.com/notes",
+      year: "2026",
+      type: "Essay",
+      link: "https://oulaidegar.com/notes",
+    },
   ],
+
+  // Ordered by relevance to responsible AI and digital policy roles.
+  certifications: [
+    {
+      title: "AI and Digital Transformation in Government",
+      issuer: "Saïd Business School, University of Oxford, with UNESCO",
+      date: "November 2026",
+    },
+    {
+      title: "AI, Justice, and the Rule of Law",
+      issuer: "Saïd Business School, University of Oxford, with UNESCO",
+      date: "November 2026",
+    },
+    {
+      title: "Ethics of AI (2 ECTS)",
+      issuer: "University of Helsinki",
+      date: "September 2026",
+      link: "https://certificates.mooc.fi/validate/lt2vd3vzj1",
+    },
+    {
+      title: "EU AI Act Fundamentals",
+      issuer: "DataCamp",
+      date: "December 2025",
+    },
+    {
+      title: "Data Governance Fundamentals",
+      issuer: "DataCamp",
+      date: "December 2025",
+    },
+    {
+      title: "Google Project Management Professional Certificate",
+      issuer: "Google, via Coursera",
+      date: "August 2026",
+      link: "https://www.credly.com/go/xhgfl2zI",
+    },
+    {
+      title: "AI Engineer for Data Scientists Associate; Associate Data Scientist; Associate Data Analyst; AI Fundamentals",
+      issuer: "DataCamp certifications",
+      date: "December 2025 – February 2026",
+    },
+  ] as { title: string; issuer: string; date: string; link?: string }[],
 
   talks: [] as { title: string; event: string; location: string; year: string }[],
 
@@ -271,7 +303,7 @@ export const cvData = {
     languages: [
       "French (Native)",
       "English (Fluent)",
-      "Arabic (Conversational)",
+      "Arabic (B2, spoken)",
       "Spanish (B1)",
     ],
   },

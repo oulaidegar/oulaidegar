@@ -12,10 +12,10 @@ export default function Footer() {
         <div className="flex flex-col sm:flex-row justify-between items-start gap-6">
           <div className="space-y-1">
             <div className="font-medium text-stone-800 dark:text-stone-200">
-              {siteConfig.name}
+              {siteConfig.fullName}
             </div>
             <div className="text-[11px] text-stone-400 dark:text-stone-500">
-              {siteConfig.location} &middot; {currentYear}
+              {siteConfig.name} &middot; {siteConfig.location} &middot; {currentYear}
             </div>
           </div>
 
@@ -27,6 +27,16 @@ export default function Footer() {
               <Mail className="w-3.5 h-3.5" />
               <span>{siteConfig.email}</span>
             </a>
+            {siteConfig.linkedin && (
+              <a
+                href={siteConfig.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-stone-900 dark:hover:text-stone-100 transition-colors"
+              >
+                LinkedIn
+              </a>
+            )}
             <a
               href={siteConfig.substack}
               target="_blank"
@@ -50,7 +60,7 @@ export default function Footer() {
 
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pt-6 border-t border-stone-200/60 dark:border-stone-800/60">
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-            {siteConfig.secondaryLinks.map((link) => (
+            {siteConfig.secondaryLinks.filter((l) => l.href !== "/data").map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -59,12 +69,6 @@ export default function Footer() {
                 {link.name}
               </Link>
             ))}
-            <Link
-              href="/play"
-              className="hover:text-stone-900 dark:hover:text-stone-100 transition-colors"
-            >
-              Pong
-            </Link>
           </div>
 
           <Link

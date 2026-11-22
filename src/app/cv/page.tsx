@@ -17,7 +17,7 @@ export default function CVPage() {
             Curriculum Vitae
           </h1>
           <p className="text-xs text-stone-500 font-mono-meta mt-1">
-            Academic, Civic & Creative Technology Track &bull; Updated 2025
+            Responsible AI &amp; Digital Policy &middot; Updated November 2026
           </p>
         </div>
 
@@ -43,10 +43,26 @@ export default function CVPage() {
                 {cvData.title}
               </p>
             </div>
-            <div className="text-xs font-mono-meta text-stone-500 dark:text-stone-400 space-y-0.5 sm:text-right">
-              <div>{cvData.email}</div>
-              <div>{cvData.website}</div>
-              <div>{cvData.location}</div>
+            <div className="text-xs font-mono-meta text-stone-500 dark:text-stone-400 space-y-0.5 sm:text-right shrink-0">
+              <div>
+                <a href={`mailto:${cvData.email}`} className="hover:text-accent">{cvData.email}</a>
+              </div>
+              <div>
+                <a href={cvData.website} className="hover:text-accent">oulaidegar.com</a>
+              </div>
+              <div>
+                <a href={cvData.github} target="_blank" rel="noopener noreferrer" className="hover:text-accent">
+                  github.com/oulaidegar
+                </a>
+              </div>
+              {cvData.linkedin && (
+                <div>
+                  <a href={cvData.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-accent">
+                    LinkedIn
+                  </a>
+                </div>
+              )}
+              <div className="text-stone-700 dark:text-stone-300">{cvData.location}</div>
             </div>
           </div>
 
@@ -138,7 +154,11 @@ export default function CVPage() {
             {cvData.publications.map((pub, idx) => (
               <div key={idx} className="space-y-0.5">
                 <div className="font-serif-title text-base sm:text-lg text-stone-900 dark:text-stone-100">
-                  &ldquo;{pub.title}&rdquo;
+                  {"link" in pub && pub.link ? (
+                    <a href={pub.link} className="hover:text-accent">&ldquo;{pub.title}&rdquo;</a>
+                  ) : (
+                    <>&ldquo;{pub.title}&rdquo;</>
+                  )}
                 </div>
                 <div className="text-stone-500 dark:text-stone-400 font-mono-meta text-xs">
                   {pub.venue} &bull; {pub.year} ({pub.type})
@@ -160,11 +180,40 @@ export default function CVPage() {
           </div>
         </section>
 
+        {/* Certifications */}
+        <section className="space-y-6">
+          <h3 className="text-xs font-mono-meta uppercase tracking-wider text-stone-400 dark:text-stone-500 font-semibold border-b border-stone-200/60 dark:border-stone-800/60 pb-2">
+            Certifications
+          </h3>
+
+          <ul className="space-y-3">
+            {cvData.certifications.map((c) => (
+              <li key={c.title} className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-0.5">
+                <div>
+                  <div className="text-sm text-stone-900 dark:text-stone-100">
+                    {c.link ? (
+                      <a href={c.link} target="_blank" rel="noopener noreferrer" className="hover:text-accent">
+                        {c.title}
+                      </a>
+                    ) : (
+                      c.title
+                    )}
+                  </div>
+                  <div className="text-xs text-stone-500 dark:text-stone-400 font-mono-meta">{c.issuer}</div>
+                </div>
+                <span className="text-xs font-mono-meta text-stone-400 dark:text-stone-500 shrink-0">
+                  {c.date}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
         {/* Selected Projects if present */}
         {cvData.projects && cvData.projects.length > 0 && (
           <section className="space-y-6">
             <h3 className="text-xs font-mono-meta uppercase tracking-wider text-stone-400 dark:text-stone-500 font-semibold border-b border-stone-200/60 dark:border-stone-800/60 pb-2">
-              Civic Technology & Research Projects
+              Projects
             </h3>
 
             <div className="space-y-6">
@@ -190,7 +239,7 @@ export default function CVPage() {
 
                   {proj.technologies && (
                     <div className="text-[11px] font-mono-meta text-stone-400 pt-0.5">
-                      {proj.technologies.join(" &bull; ")}
+                      {proj.technologies.join(" · ")}
                     </div>
                   )}
                 </div>

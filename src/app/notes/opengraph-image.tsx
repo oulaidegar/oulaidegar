@@ -1,6 +1,6 @@
 import { ogCard, ogSize, ogContentType } from "@/lib/og";
 
-export const alt = "Notes by oulaidegar";
+export const alt = "Notes by Louaï Mroueh";
 export const size = ogSize;
 export const contentType = ogContentType;
 

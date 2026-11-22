@@ -18,6 +18,15 @@ export interface Project {
   status: "Live" | "Prototype" | "In development";
   metrics?: string;
   highlights?: string[];
+  /** Evidence-first write-up: Problem → What I did → Evidence → Governance lesson. */
+  caseStudy?: CaseStudy;
+}
+
+export interface CaseStudy {
+  problem: string;
+  whatIDid: string;
+  evidence: string[];
+  lesson: string;
 }
 
 export const projects: Project[] = [
@@ -44,6 +53,19 @@ export const projects: Project[] = [
     demo: "https://techinmena.org/",
     featured: true,
     metrics: "Public iCalendar feeds by city and category",
+    caseStudy: {
+      problem:
+        "Tech events across the Middle East and North Africa are scattered across social media, ticketing platforms and group chats, so grassroots meetups and student clubs are hard to find next to large commercial summits.",
+      whatIDid:
+        "Designed and built an open directory that lists events by city, date, topic and format, links each one straight to its organizer, and publishes every city and category as a standard iCalendar feed. No accounts, no trackers, no ticketing fees; English, Arabic and French.",
+      evidence: [
+        "Live at techinmena.org",
+        "Public iCalendar (RFC 5545) feeds per city and category",
+        "Free organizer submissions, reviewed within 24 hours",
+      ],
+      lesson:
+        "Open standards are a governance choice. Publishing listings as open feeds instead of locking them inside an app lets anyone reuse the data, the same principle I argue public institutions should apply to their own records.",
+    },
     highlights: [
       "Designed around a single test: anyone should find a relevant event in less than 15 seconds.",
       "Lists meetups, workshops, hackathons, talks, summits and more, filterable by city, date, topic, price and format.",
@@ -79,6 +101,19 @@ export const projects: Project[] = [
     demo: "https://matlaa.org/",
     featured: true,
     metrics: "48 audited tools & datasets · 12 country dossiers",
+    caseStudy: {
+      problem:
+        "Journalists, human rights researchers and humanitarian responders in the region rely on digital tools while working under conflict and surveillance, with no shared way to judge which tools are safe, maintained and usable in Arabic.",
+      whatIDid:
+        "Researched, designed and built a bilingual directory in which every tool is assessed on security posture, privacy safeguards, censorship resilience, Arabic localisation and maintenance health, with a documented threat model, plus country dossiers that map where data and tools are missing.",
+      evidence: [
+        "48 audited tools and datasets",
+        "12 country dossiers, including Lebanon, Palestine, Syria, Sudan and Yemen",
+        "Live at matlaa.org",
+      ],
+      lesson:
+        "Choosing a tool is a risk decision that depends on who uses it and where. Judging systems by their context of use rather than their feature list is the same logic behind risk-based regulation such as the EU AI Act.",
+    },
     highlights: [
       "Audited and cataloged open-source tools, datasets, and platforms across conflict monitoring, satellite damage assessment, environmental hazards, and humanitarian response.",
       "Developed structured threat-model assessments for each tool, scoring security posture, privacy risks, censorship resilience, and offline viability.",
@@ -110,6 +145,19 @@ export const projects: Project[] = [
     demo: "https://gazette-reader.vercel.app/",
     featured: true,
     metrics: "816 archival issues · 14.52 GB research corpus",
+    caseStudy: {
+      problem:
+        "Lebanon's Official Gazette, the state's record of laws and decrees, sits behind a paywall and is published as scanned images, so citizens, journalists and researchers cannot search their own laws.",
+      whatIDid:
+        "Collected the full 2014–2025 archive and built an AI-assisted pipeline (scraping, Arabic OCR, splitting texts into legal units, multilingual embeddings and hybrid search) behind a citizen-facing interface, documenting every decision and failure as the method of my MA thesis.",
+      evidence: [
+        "816 issues, 149,094 pages, 14.52 GB collected",
+        "All of 2025 (79 issues, 15,540 pages) searchable in the prototype",
+        "Public research reader at gazette-reader.vercel.app",
+      ],
+      lesson:
+        "When a commercial API's billing threshold cut off Arabic search, an economic dependency became a barrier to access. Public-interest technology built on proprietary infrastructure inherits its owners' terms, which is why public records need open, machine-readable access at the source.",
+    },
     highlights: [
       "Collected a research corpus covering 2014–2025, comprising 816 Gazette issues and 149,094 scanned images.",
       "Developed an experimental pipeline for extracting, processing, and searching Arabic legal documents, with testing focused on a 2025 subset.",
@@ -125,9 +173,9 @@ export const projects: Project[] = [
     status: "Live",
     title: "DotFocus",
     tagline:
-      "A privacy-first approach to training attention in an age of distraction",
+      "Attention training with eye tracking that runs on your device: no video leaves the browser",
     description:
-      "DotFocus is an independent web application exploring how digital technology can help people strengthen their attention rather than compete for it. Built around visual fixation exercises, gaze tracking, and minimalist interactions, the application enables users to practice sustained concentration and explore their focus patterns over time. Combining browser-based computer vision with a privacy-conscious design philosophy, DotFocus challenges the conventions of productivity software and the attention economy. The project brings together experimental human-computer interaction, creative technology, behavioral self-observation, and independent product development.",
+      "DotFocus is an independent web application exploring how digital technology can help people strengthen their attention rather than compete for it. Built around visual fixation exercises, gaze tracking, and minimalist interactions, the application enables users to practice sustained concentration and explore their focus patterns over time. Face and gaze tracking run entirely on the device, so no video ever leaves the browser. DotFocus challenges the conventions of productivity software and the attention economy. The project brings together experimental human-computer interaction, creative technology, behavioral self-observation, and independent product development.",
     year: "2025 — Present",
     category: "Creative Tech & Interfaces",
     tags: [
@@ -143,6 +191,18 @@ export const projects: Project[] = [
     demo: "https://dotfocus.app/",
     featured: true,
     metrics: "Live web application",
+    caseStudy: {
+      problem:
+        "Most attention apps are built to capture attention, and eye tracking usually means streaming camera video to someone else's server.",
+      whatIDid:
+        "Built a web app for attention training with fixation and eye-movement exercises. Face and gaze tracking runs on the device, inside the browser, and turns each session into a Focus Score.",
+      evidence: [
+        "Live at dotfocus.app",
+        "Tracking runs on the device; no video leaves the browser",
+      ],
+      lesson:
+        "Privacy by design is an architecture decision. Processing sensitive data on the device leaves nothing to store, secure or hand over: data minimisation, as the GDPR requires, is built in rather than promised.",
+    },
     highlights: [
       "Designed visual fixation and eye-movement exercises to help users practice sustained attention.",
       "Implemented browser-based face and gaze tracking to generate session-level focus metrics.",
@@ -173,7 +233,7 @@ export const projects: Project[] = [
       "Grant Reporting",
       "Data Analytics",
     ],
-    featured: true,
+    featured: false,
     metrics: "In development · Civic impact intelligence",
     highlights: [
       "Developing social listening capabilities to track public conversations, media coverage, and campaign visibility across digital platforms.",
@@ -208,7 +268,7 @@ export const projects: Project[] = [
       "Investment Tracking",
       "Open Knowledge",
     ],
-    featured: true,
+    featured: false,
     metrics: "In development · MENA digital governance atlas",
     highlights: [
       "Developing a comparative country index assessing digital rights, privacy protections, AI regulation, cybersecurity governance, and technological development across MENA countries.",

@@ -49,7 +49,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL("https://oulaidegar.com"),
   openGraph: {
-    siteName: "oulaidegar",
+    siteName: "Louaï Mroueh",
     type: "website",
     locale: "en_GB",
   },
@@ -57,13 +57,19 @@ export const metadata: Metadata = {
     card: "summary_large_image",
   },
   title: {
-    template: "%s | oulaidegar",
-    default: "oulaidegar — Civic technology, AI & power",
+    template: "%s | Louaï Mroueh",
+    default: "Louaï Mroueh — Responsible AI & Digital Policy",
   },
   description:
-    "Creative technologist and researcher building civic tools for the Middle East and studying who holds power when AI makes building easier.",
-  authors: [{ name: "oulaidegar" }],
+    "Louaï Mroueh (oulaidegar): researcher in responsible AI, data governance and digital rights. Led AI integration at Daraj Media; MA Cultural Data & AI, University of Amsterdam. Brussels from February 2027.",
+  authors: [{ name: "Louaï Mroueh", url: "https://oulaidegar.com" }],
   keywords: [
+    "Louaï Mroueh",
+    "Louai Mroueh",
+    "Responsible AI",
+    "Digital Policy",
+    "Data Governance",
+    "EU AI Act",
     "Civic Technology",
     "AI Governance",
     "Digital Rights",

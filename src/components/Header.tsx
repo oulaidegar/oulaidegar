@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { siteConfig } from "@/data/siteConfig";
 import ThemeToggle from "./ThemeToggle";
 import { useState } from "react";
-import { Menu, X, Gamepad2 } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 
 export default function Header() {
   const pathname = usePathname();
@@ -29,7 +29,7 @@ export default function Header() {
             alt=""
             className="w-5 h-5 object-contain rounded-xs transition-transform duration-200 group-hover:scale-110"
           />
-          <span>{siteConfig.name}</span>
+          <span className="font-sans">{siteConfig.fullName}</span>
         </Link>
 
         {/* Desktop navigation */}
@@ -51,19 +51,25 @@ export default function Header() {
               </Link>
             );
           })}
-          <div className="pl-3 border-l border-stone-200 dark:border-stone-800 flex items-center gap-1">
-            <Link
-              href="/play"
-              title="Play Monastic Pong"
-              aria-label="Play Monastic Pong"
-              className={`p-1.5 rounded transition-colors ${
-                pathname === "/play"
-                  ? "text-accent"
-                  : "text-stone-400 hover:text-stone-900 dark:text-stone-500 dark:hover:text-stone-100"
-              }`}
-            >
-              <Gamepad2 className="w-3.5 h-3.5" />
-            </Link>
+          <details className="relative group/more">
+            <summary className="list-none cursor-pointer flex items-center gap-0.5 py-1 text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100 select-none [&::-webkit-details-marker]:hidden">
+              More
+              <ChevronDown className="w-3 h-3 transition-transform group-open/more:rotate-180" />
+            </summary>
+            <div className="absolute right-0 top-full mt-3 min-w-40 py-1.5 rounded-sm border border-stone-200 dark:border-stone-800 bg-[#faf8f5] dark:bg-[#11100f] shadow-sm">
+              {siteConfig.secondaryLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={(e) => e.currentTarget.closest("details")?.removeAttribute("open")}
+                  className="block px-3.5 py-1.5 text-stone-600 hover:text-accent dark:text-stone-400"
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </div>
+          </details>
+          <div className="pl-3 border-l border-stone-200 dark:border-stone-800 flex items-center">
             <ThemeToggle />
           </div>
         </nav>
@@ -102,14 +108,6 @@ export default function Header() {
               </Link>
             );
           })}
-          <Link
-            href="/play"
-            onClick={() => setMobileMenuOpen(false)}
-            className="flex items-center gap-2 px-3 py-2.5 rounded text-[15px] text-stone-500 dark:text-stone-400"
-          >
-            <Gamepad2 className="w-4 h-4" />
-            <span>Pong</span>
-          </Link>
         </div>
       )}
     </header>

@@ -127,7 +127,7 @@ export async function ogCard({ kicker, title, subtitle, children }: CardProps) {
             color: MUTED,
           }}
         >
-          <span>Civic tech · AI governance · MENA</span>
+          <span>Responsible AI · Digital policy · Data governance</span>
           <span style={{ display: "flex", width: 14, height: 14, background: ACCENT }} />
         </div>
       </div>
